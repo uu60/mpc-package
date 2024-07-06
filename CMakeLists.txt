@@ -1,13 +1,20 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.22)
 project(mpc_package)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(${PROJECT_NAME} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/ArithmeticShare.cpp)
+find_package(MPI REQUIRED)
+
+add_library(mpc_package SHARED
+        src/arithmetic/AdditionShareExecutor.cpp
+        include/arithmetic/AdditionShareExecutor.h
+        src/utils/Utils.cpp
+        include/utils/Utils.h
+)
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/ArithmeticShare.h")
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/arithmetic/AdditionShareExecutor.h")
 
 # install libxx.so to ${CMAKE_INSTALL_PREFIX}/lib
 install(
@@ -50,11 +57,9 @@ configure_package_config_file(
         INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}
 )
 
-#[[add_executable(${PROJECT_NAME} main.cpp
-        src/ArithmeticShare.cpp
-        include/ArithmeticShare.h)]]
-
 install(
         FILES ${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake ${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
         DESTINATION lib/cmake/${PROJECT_NAME}
 )
+
+target_link_libraries(${PROJECT_NAME} PUBLIC MPI::MPI_CXX)
