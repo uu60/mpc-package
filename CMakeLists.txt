@@ -6,15 +6,17 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(MPI REQUIRED)
 
 add_library(mpc_package SHARED
-        src/arithmetic/AdditionShareExecutor.cpp
-        include/arithmetic/AdditionShareExecutor.h
+        src/executor/arithmetic/AbstractAdditionShareExecutor.cpp
+        include/executor/arithmetic/AbstractAdditionShareExecutor.h
         src/utils/Utils.cpp
         include/utils/Utils.h
+        src/executor/AbstractExecutor.cpp
+        include/executor/AbstractExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/arithmetic/AdditionShareExecutor.h")
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/executor/arithmetic/AbstractAdditionShareExecutor.h")
 
 # install libxx.so to ${CMAKE_INSTALL_PREFIX}/lib
 install(
