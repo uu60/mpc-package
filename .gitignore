@@ -128,3 +128,4 @@ compile_commands.json
 CTestTestfile.cmake
 
 install
+.DS_Store
