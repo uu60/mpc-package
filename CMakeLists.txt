@@ -16,17 +16,23 @@ add_library(mpc_package SHARED
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/executor/arithmetic/AbstractAdditionShareExecutor.h")
+#set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/executor/arithmetic/AbstractAdditionShareExecutor.h;include/executor/AbstractExecutor.h")
 
 # install libxx.so to ${CMAKE_INSTALL_PREFIX}/lib
 install(
         TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}Targets
-        PUBLIC_HEADER DESTINATION include
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin
 )
+# headers path
+install(FILES
+        "include/executor/arithmetic/AbstractAdditionShareExecutor.h"
+        DESTINATION "include/executor/arithmetic"
+)
+install(FILES "include/executor/AbstractExecutor.h"
+        DESTINATION "include/executor")
 
 # generate xxTargets.cmake
 install(

@@ -33,6 +33,9 @@ protected:
 
     void initData() override;
 
+    // calculate process
+    void calculate() override;
+
 public:
     // get calculated result
     int result() override;
@@ -49,9 +52,6 @@ private:
 
     // calculate result
     void calculateResult();
-
-    // calculate process
-    void calculate();
 };
 
 

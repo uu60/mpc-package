@@ -28,3 +28,7 @@ void AbstractExecutor::initMpcEnv(int argc, char **argv) {
         throw std::runtime_error("2 processes restricted.");
     }
 }
+
+void AbstractExecutor::customFinalize() {
+    // do nothing by default
+}
