@@ -2,13 +2,13 @@
 // Created by 杜建璋 on 2024/7/6.
 //
 
-#ifndef MPC_PACKAGE_ABSTRACTADDITIONSHAREEXECUTOR_H
-#define MPC_PACKAGE_ABSTRACTADDITIONSHAREEXECUTOR_H
+#ifndef MPC_PACKAGE_ABSTRACTINTADDITIONSHAREEXECUTOR_H
+#define MPC_PACKAGE_ABSTRACTINTADDITIONSHAREEXECUTOR_H
 
 
 #include "executor/AbstractExecutor.h"
 
-class AbstractAdditionShareExecutor : public AbstractExecutor {
+class AbstractIntAdditionShareExecutor : public AbstractExecutor {
 protected:
     // holding param
     int x{};
@@ -55,4 +55,4 @@ private:
 };
 
 
-#endif //MPC_PACKAGE_ABSTRACTADDITIONSHAREEXECUTOR_H
+#endif //MPC_PACKAGE_ABSTRACTINTADDITIONSHAREEXECUTOR_H

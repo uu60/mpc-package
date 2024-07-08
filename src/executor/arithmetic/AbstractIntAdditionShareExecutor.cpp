@@ -2,40 +2,40 @@
 // Created by 杜建璋 on 2024/7/6.
 //
 #include "utils/Utils.h"
-#include "executor/arithmetic/AbstractAdditionShareExecutor.h"
+#include "executor/arithmetic/AbstractIntAdditionShareExecutor.h"
 
-void AbstractAdditionShareExecutor::generateSaved() {
+void AbstractIntAdditionShareExecutor::generateSaved() {
     // return random by default
     x1 = Utils::generateRandomInt();
     x2 = x - x1;
 }
 
-void AbstractAdditionShareExecutor::exchangePart() {
+void AbstractIntAdditionShareExecutor::exchangePart() {
     Utils::exchangeData(&x2, &y2, mpiRank);
 }
 
-void AbstractAdditionShareExecutor::calculateTempResult() {
+void AbstractIntAdditionShareExecutor::calculateTempResult() {
     temp = x1 + y2;
 }
 
-void AbstractAdditionShareExecutor::exchangeTempResult() {
+void AbstractIntAdditionShareExecutor::exchangeTempResult() {
     Utils::exchangeData(&temp, &recvTemp, mpiRank);
 }
 
-int AbstractAdditionShareExecutor::result() {
+int AbstractIntAdditionShareExecutor::result() {
     calculate();
     finalize();
     return res;
 }
 
-void AbstractAdditionShareExecutor::initData() {
+void AbstractIntAdditionShareExecutor::initData() {
     // get holding param
     obtainX();
     // get saved
     generateSaved();
 }
 
-void AbstractAdditionShareExecutor::calculate() {
+void AbstractIntAdditionShareExecutor::calculate() {
     generateSaved();
     exchangePart();
     calculateTempResult();
@@ -43,7 +43,7 @@ void AbstractAdditionShareExecutor::calculate() {
     calculateResult();
 }
 
-void AbstractAdditionShareExecutor::calculateResult() {
+void AbstractIntAdditionShareExecutor::calculateResult() {
     res = temp + recvTemp;
 }
 
