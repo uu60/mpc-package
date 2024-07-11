@@ -2,13 +2,13 @@
 // Created by 杜建璋 on 2024/7/6.
 //
 
-#ifndef MPC_PACKAGE_ABSTRACTINTADDITIONSHAREEXECUTOR_H
-#define MPC_PACKAGE_ABSTRACTINTADDITIONSHAREEXECUTOR_H
+#ifndef MPC_PACKAGE_ABSTRACTDEMOADDITIONSHAREEXECUTOR_H
+#define MPC_PACKAGE_ABSTRACTDEMOADDITIONSHAREEXECUTOR_H
 
 
 #include "executor/AbstractExecutor.h"
 
-class AbstractIntAdditionShareExecutor : public AbstractExecutor {
+class AbstractDemoAdditionShareExecutor : public AbstractExecutor {
 protected:
     // holding param
     int x{};
@@ -22,8 +22,6 @@ protected:
     int temp{};
     // received temp result (from the other)
     int recvTemp{};
-    // final result
-    int res{};
 protected:
     // must define how to obtain holding param
     virtual void obtainX() = 0;
@@ -31,28 +29,25 @@ protected:
     // define how to generate saved part of x
     virtual void generateSaved();
 
-    void initData() override;
-
-    // calculate process
-    void calculate() override;
+    void generateShare() override;
 
 public:
-    // get calculated result
-    int result() override;
+    // compute process
+    void compute() override;
 
 private:
     // exchange part
     void exchangePart();
 
-    // calculate temp result
+    // compute temp result
     void calculateTempResult();
 
     // exchange temp result
     void exchangeTempResult();
 
-    // calculate result
+    // compute result
     void calculateResult();
 };
 
 
-#endif //MPC_PACKAGE_ABSTRACTINTADDITIONSHAREEXECUTOR_H
+#endif //MPC_PACKAGE_ABSTRACTDEMOADDITIONSHAREEXECUTOR_H

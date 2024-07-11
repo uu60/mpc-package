@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTEXECUTOR_H
-
+#include <vector>
 
 class AbstractExecutor {
 protected:
@@ -12,17 +12,21 @@ protected:
     int mpiSize{};
     // mpiRank of current device
     int mpiRank{};
+    // result
+    std::vector<int> res;
 public:
     // whole init process, containing env and data
     // should not override
     void init(int argc, char **argv);
+    // secret sharing process
+    virtual void compute() = 0;
+    // get calculated result
+    std::vector<int> result();
+    void finalize();
 protected:
     // modify this to prepare data after env
-    virtual void initData() = 0;
-    virtual void calculate() = 0;
-    virtual int result() = 0;
+    virtual void generateShare() = 0;
     virtual void customFinalize();
-    void finalize();
 private:
     void initMpcEnv(int argc, char **argv);
 };

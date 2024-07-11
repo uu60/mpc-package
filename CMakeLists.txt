@@ -6,11 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(MPI REQUIRED)
 
 add_library(mpc_package SHARED
-        src/executor/arithmetic/AbstractIntAdditionShareExecutor.cpp
-        include/executor/arithmetic/AbstractIntAdditionShareExecutor.h
-        src/utils/Utils.cpp
+        src/AbstractDemoAdditionShareExecutor.cpp
+        include/demo/AbstractDemoAdditionShareExecutor.h
+        src/Utils.cpp
         include/utils/Utils.h
-        src/executor/AbstractExecutor.cpp
+        src/AbstractExecutor.cpp
         include/executor/AbstractExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -28,7 +28,7 @@ install(
 )
 # headers path
 install(FILES
-        "include/executor/arithmetic/AbstractIntAdditionShareExecutor.h"
+        "include/demo/AbstractDemoAdditionShareExecutor.h"
         DESTINATION "include/executor/arithmetic"
 )
 install(FILES "include/executor/AbstractExecutor.h"

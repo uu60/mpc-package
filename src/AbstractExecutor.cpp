@@ -8,7 +8,7 @@
 
 void AbstractExecutor::init(int argc, char **argv) {
     initMpcEnv(argc, argv);
-    initData();
+    generateShare();
 }
 
 void AbstractExecutor::finalize() {
@@ -31,4 +31,8 @@ void AbstractExecutor::initMpcEnv(int argc, char **argv) {
 
 void AbstractExecutor::customFinalize() {
     // do nothing by default
+}
+
+std::vector<int> AbstractExecutor::result() {
+    return res;
 }

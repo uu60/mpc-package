@@ -3,7 +3,6 @@
 //
 
 #include "Test.h"
-#include "iostream"
 
 void Test::obtainX() {
     x = 25;

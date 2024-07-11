@@ -4,10 +4,10 @@
 
 #ifndef UNTITLED1_TEST_H
 #define UNTITLED1_TEST_H
-#include "./executor/arithmetic/AbstractIntAdditionShareExecutor.h"
+#include "./executor/arithmetic/AbstractDemoAdditionShareExecutor.h"
 
 
-class Test : public AbstractIntAdditionShareExecutor {
+class Test : public AbstractDemoAdditionShareExecutor {
 private:
     void obtainX() override;
 };

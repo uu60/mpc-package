@@ -2,7 +2,7 @@
 // Created by 杜建璋 on 2024/7/6.
 //
 
-#include "../../include/utils/Utils.h"
+#include "utils/Utils.h"
 #include "random"
 #include "mpi.h"
 

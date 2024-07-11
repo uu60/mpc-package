@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(mpc_package REQUIRED)
 
-add_executable(untitled1 main.cpp
+add_executable(demo main.cpp
         Test.cpp
         Test.h
 )
