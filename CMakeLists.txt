@@ -12,6 +12,8 @@ add_library(mpc_package SHARED
         include/executor/Executor.h
         src/AdditiveExecutor.cpp
         include/executor/arithmetic/AdditiveExecutor.h
+        src/Log.cpp
+        include/utils/Log.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -27,12 +29,9 @@ install(
         RUNTIME DESTINATION bin
 )
 # headers path
-install(FILES "include/executor/Executor.h"
-        DESTINATION "include/executor")
-install(FILES "include/executor/arithmetic/AdditiveExecutor.h"
-        DESTINATION "include/executor/arithmetic")
-install(FILES "include/utils/Utils.h"
-        DESTINATION "include/utils")
+install(DIRECTORY include/
+        DESTINATION include/${PROJECT_NAME}
+        FILES_MATCHING PATTERN "*.h")
 
 # generate xxTargets.cmake
 install(

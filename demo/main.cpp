@@ -1,15 +1,17 @@
 #include <iostream>
 #include "Test.h"
+#include <string>
+#include "./mpc_package/utils/Log.h"
 
 int main(int argc, char **argv) {
-    std::cout << "beginning..." << std::endl;
+    Log::e("beginning");
     Test::initMPI(argc, argv);
     Test *t = new Test();
     t->init();
     t->compute();
     std::cout << t->result() << std::endl;
     Test::finalizeMPI();
-    std::cout << "done" << std::endl;
+    Log::i("done");
     delete t;
     return 0;
 }
