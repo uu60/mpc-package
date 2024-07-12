@@ -39,7 +39,7 @@ which will imports the package.
 > Currently only addition share is implemented as a demo
 1. Include like this `#include "./executor/arithmetic/AbstractAdditionShareExecutor.h"` 
 2. `AbstractAdditionShareExecutor` is an abstract class but only method `obtainX` needs implementing, which is used to describe how current device gets its own data to be calculated later as a parameter.
-3. `result` method is for getting the calculated result. `customFinalize` can be defined with some other process to be executed before the result returned.
+3. `result` method is for getting the calculated result. `finalize` can be defined with some other process to be executed before the result returned.
 ### 5 Execute
 1. Use the same username of Linux/macOS.
 2. Set up non-password login between 2 machines. Using `ssh-keygen` and `ssh-copy-id`.

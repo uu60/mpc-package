@@ -11,7 +11,7 @@ public:
     // generate a random
     static int generateRandomInt();
     // exchange data
-    static void exchangeData(int *px2, int *py2, int mpiRank);
+    static void exchangeData(int *send, int *recv, int mpiRank);
 };
 
 

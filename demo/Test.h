@@ -4,12 +4,14 @@
 
 #ifndef UNTITLED1_TEST_H
 #define UNTITLED1_TEST_H
-#include "./executor/arithmetic/AbstractDemoAdditionShareExecutor.h"
+#include "./executor/arithmetic/AdditiveExecutor.h"
 
 
-class Test : public AbstractDemoAdditionShareExecutor {
-private:
-    void obtainX() override;
+class Test : public AdditiveExecutor {
+protected:
+    void obtainX1() override;
+
+    void obtainY1() override;
 };
 
 

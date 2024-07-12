@@ -6,17 +6,17 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(MPI REQUIRED)
 
 add_library(mpc_package SHARED
-        src/AbstractDemoAdditionShareExecutor.cpp
-        include/demo/AbstractDemoAdditionShareExecutor.h
         src/Utils.cpp
         include/utils/Utils.h
-        src/AbstractExecutor.cpp
-        include/executor/AbstractExecutor.h
+        src/Executor.cpp
+        include/executor/Executor.h
+        src/AdditiveExecutor.cpp
+        include/executor/arithmetic/AdditiveExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
-#set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/executor/arithmetic/AbstractAdditionShareExecutor.h;include/executor/AbstractExecutor.h")
+#set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/executor/arithmetic/AbstractAdditionShareExecutor.h;include/executor/Executor.h")
 
 # install libxx.so to ${CMAKE_INSTALL_PREFIX}/lib
 install(
@@ -27,12 +27,12 @@ install(
         RUNTIME DESTINATION bin
 )
 # headers path
-install(FILES
-        "include/demo/AbstractDemoAdditionShareExecutor.h"
-        DESTINATION "include/executor/arithmetic"
-)
-install(FILES "include/executor/AbstractExecutor.h"
+install(FILES "include/executor/Executor.h"
         DESTINATION "include/executor")
+install(FILES "include/executor/arithmetic/AdditiveExecutor.h"
+        DESTINATION "include/executor/arithmetic")
+install(FILES "include/utils/Utils.h"
+        DESTINATION "include/utils")
 
 # generate xxTargets.cmake
 install(

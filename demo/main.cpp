@@ -3,10 +3,13 @@
 
 int main(int argc, char **argv) {
     std::cout << "beginning..." << std::endl;
+    Test::initMPI(argc, argv);
     Test *t = new Test();
-    t->init(argc, argv);
+    t->init();
     t->compute();
-    std::cout << t->result()[0] << std::endl;
+    std::cout << t->result() << std::endl;
+    Test::finalizeMPI();
+    std::cout << "done" << std::endl;
     delete t;
     return 0;
 }

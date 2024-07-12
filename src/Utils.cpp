@@ -18,7 +18,7 @@ int Utils::generateRandomInt() {
     return distribution(generator);
 }
 
-void Utils::exchangeData(int *px2, int *py2, int mpiRank) {
-    MPI_Send(px2, 1, MPI_INT, 1 - mpiRank, 0, MPI_COMM_WORLD);
-    MPI_Recv(py2, 1, MPI_INT, 1 - mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+void Utils::exchangeData(int *send, int *recv, int mpiRank) {
+    MPI_Send(send, 1, MPI_INT, 1 - mpiRank, 0, MPI_COMM_WORLD);
+    MPI_Recv(recv, 1, MPI_INT, 1 - mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
