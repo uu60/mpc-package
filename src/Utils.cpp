@@ -4,9 +4,8 @@
 
 #include "utils/Utils.h"
 #include "random"
-#include "mpi.h"
 
-int Utils::generateRandomInt() {
+int Utils::randomInt() {
     // random engine
     std::random_device rd;
     std::mt19937 generator(rd());
@@ -16,9 +15,4 @@ int Utils::generateRandomInt() {
 
     // generation
     return distribution(generator);
-}
-
-void Utils::exchangeData(int *send, int *recv, int mpiRank) {
-    MPI_Send(send, 1, MPI_INT, 1 - mpiRank, 0, MPI_COMM_WORLD);
-    MPI_Recv(recv, 1, MPI_INT, 1 - mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }

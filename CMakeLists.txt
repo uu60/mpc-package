@@ -10,10 +10,14 @@ add_library(mpc_package SHARED
         include/utils/Utils.h
         src/Executor.cpp
         include/executor/Executor.h
-        src/AdditiveExecutor.cpp
-        include/executor/arithmetic/AdditiveExecutor.h
+        src/PartialAdditionExecutor.cpp
+        include/executor/arithmetic/PartialAdditionExecutor.h
         src/Log.cpp
         include/utils/Log.h
+        src/MultiplicationExecutor.cpp
+        include/executor/arithmetic/MultiplicationExecutor.h
+        src/CompleteAdditionExecutor.cpp
+        include/executor/arithmetic/CompleteAdditionExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

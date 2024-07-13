@@ -4,19 +4,10 @@
 
 #include "Test.h"
 
-void Test::obtainX1() {
-
-    if (mpiRank == 0) {
-        x1 = 100;
-    } else {
-        x1 = 50;
-    }
+void Test::obtainXA() {
+    xa = mpiRank == 0 ? 100 : 50;
 }
 
-void Test::obtainY1() {
-    if (mpiRank == 0) {
-        y1 = 200;
-    } else {
-        y1 = 150;
-    }
+void Test::obtainYA() {
+    ya = mpiRank == 0 ? 200 : 150;
 }

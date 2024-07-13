@@ -4,14 +4,14 @@
 
 #ifndef UNTITLED1_TEST_H
 #define UNTITLED1_TEST_H
-#include "./mpc_package/executor/arithmetic/AdditiveExecutor.h"
+#include "./mpc_package/executor/arithmetic/PartialAdditionExecutor.h"
 
 
-class Test : public AdditiveExecutor {
+class Test : public PartialAdditionExecutor {
 protected:
-    void obtainX1() override;
+    void obtainXA() override;
 
-    void obtainY1() override;
+    void obtainYA() override;
 };
 
 

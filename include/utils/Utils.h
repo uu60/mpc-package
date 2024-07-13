@@ -9,9 +9,7 @@
 class Utils {
 public:
     // generate a random
-    static int generateRandomInt();
-    // exchange data
-    static void exchangeData(int *send, int *recv, int mpiRank);
+    static int randomInt();
 };
 
 

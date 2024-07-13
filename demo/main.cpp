@@ -5,12 +5,12 @@
 
 int main(int argc, char **argv) {
     Log::e("beginning");
-    Test::initMPI(argc, argv);
+    Executor::initMPI(argc, argv);
     Test *t = new Test();
     t->init();
     t->compute();
     std::cout << t->result() << std::endl;
-    Test::finalizeMPI();
+    Executor::finalizeMPI();
     Log::i("done");
     delete t;
     return 0;

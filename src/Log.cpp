@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "utils/Log.h"
+#include <chrono>
 #include <iomanip>
 #include <sstream>
 #include <unistd.h>
@@ -45,7 +46,7 @@ void Log::print(const std::string& level, const std::string& msg) {
         HOSTNAME.append(std::string(hostName));
     }
 
-    std::cout << "[" << HOSTNAME << ":" << getpid() << "] "
+    std::cout << "[" << std::setw(20) << HOSTNAME + ":" + std::to_string(getpid()) << "] "
               << "[" << getCurrentTimestamp() << "] "
               << "[" << std::setw(5) << level << "] "
               << msg << std::endl;

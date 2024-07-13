@@ -39,3 +39,8 @@ void Executor::finalize() {
 int Executor::result() const {
     return res;
 }
+
+void Executor::exchange(int *send, int *recv) {
+    MPI_Send(send, 1, MPI_INT, 1 - Executor::mpiRank, 0, MPI_COMM_WORLD);
+    MPI_Recv(recv, 1, MPI_INT, 1 - Executor::mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+}

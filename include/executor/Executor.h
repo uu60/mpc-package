@@ -23,6 +23,9 @@ public:
     virtual void compute() = 0;
     // get calculated result
     int result() const;
+
+    // exchange data
+    static void exchange(int *send, int *recv);
 protected:
     // modify this to prepare data after env
     virtual void init() = 0;
