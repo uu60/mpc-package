@@ -2,19 +2,21 @@
 // Created by 杜建璋 on 2024/7/13.
 //
 
-#include "executor/arithmetic/CompleteAdditionExecutor.h"
-#include "utils/Utils.h"
+#include "share/arithmetic/CompleteAdditionExecutor.h"
+#include "utils/MathUtils.h"
+#include "utils/MpiUtils.h"
 
 void CompleteAdditionExecutor::compute() {
-    Executor::exchange(&xb, &ya);
+    MpiUtils::exchange(&xb, &ya);
     za = xa + ya;
-    Executor::exchange(&za, &zb);
+    MpiUtils::exchange(&za, &zb);
     res = za + zb;
 }
 
-void CompleteAdditionExecutor::init() {
-    obtainX();
-    xb = Utils::randomInt();
+void CompleteAdditionExecutor::init(int x0) {
+    x = x0;
+    xb = MathUtils::randomInt();
     xa = x - xb;
+    inited();
 }
 

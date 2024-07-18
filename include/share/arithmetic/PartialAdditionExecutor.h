@@ -5,7 +5,7 @@
 #ifndef MPC_PACKAGE_PARTIALADDITIONEXECUTOR_H
 #define MPC_PACKAGE_PARTIALADDITIONEXECUTOR_H
 
-#include "../Executor.h"
+#include "share/Executor.h"
 
 class PartialAdditionExecutor : public Executor {
 protected:
@@ -23,15 +23,10 @@ protected:
     int zb{};
 
 public:
-    void init() override;
+    void init(int xa, int ya);
 
     // compute process
     void compute() override;
-
-protected:
-    virtual void obtainXA() = 0;
-
-    virtual void obtainYA() = 0;
 };
 
 

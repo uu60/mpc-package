@@ -4,20 +4,27 @@ project(mpc_package)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(MPI REQUIRED)
+find_package(OpenSSL REQUIRED)
 
-add_library(mpc_package SHARED
-        src/Utils.cpp
-        include/utils/Utils.h
+add_library(${PROJECT_NAME} SHARED
+        src/MathUtils.cpp
+        include/utils/MathUtils.h
         src/Executor.cpp
-        include/executor/Executor.h
+        include/share/Executor.h
         src/PartialAdditionExecutor.cpp
-        include/executor/arithmetic/PartialAdditionExecutor.h
+        include/share/arithmetic/PartialAdditionExecutor.h
         src/Log.cpp
         include/utils/Log.h
         src/MultiplicationExecutor.cpp
-        include/executor/arithmetic/MultiplicationExecutor.h
+        include/share/arithmetic/MultiplicationExecutor.h
         src/CompleteAdditionExecutor.cpp
-        include/executor/arithmetic/CompleteAdditionExecutor.h
+        include/share/arithmetic/CompleteAdditionExecutor.h
+        src/RsaExecutor.cpp
+        include/ot/one_of_two/RsaExecutor.h
+        src/MpiUtils.cpp
+        include/utils/MpiUtils.h
+        src/CryptUtils.cpp
+        include/utils/CryptUtils.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -73,4 +80,6 @@ install(
         DESTINATION lib/cmake/${PROJECT_NAME}
 )
 
-target_link_libraries(${PROJECT_NAME} PUBLIC MPI::MPI_CXX)
+target_link_libraries(
+        ${PROJECT_NAME} PUBLIC MPI::MPI_CXX OpenSSL::SSL OpenSSL::Crypto
+)

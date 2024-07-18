@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_COMPLETEADDITIONEXECUTOR_H
 #define MPC_PACKAGE_COMPLETEADDITIONEXECUTOR_H
-#include "../Executor.h"
+#include "share/Executor.h"
 
 class CompleteAdditionExecutor : public Executor {
 protected:
@@ -21,10 +21,7 @@ protected:
     int zb{};
 public:
     void compute() override;
-
-protected:
-    void init() override;
-    virtual void obtainX() = 0;
+    void init(int x);
 };
 
 

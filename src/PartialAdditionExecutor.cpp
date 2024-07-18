@@ -2,16 +2,18 @@
 // Created by 杜建璋 on 2024/7/12.
 //
 
-#include "executor/arithmetic/PartialAdditionExecutor.h"
-#include "utils/Utils.h"
-
-void PartialAdditionExecutor::init() {
-    obtainXA();
-    obtainYA();
-}
+#include "share/arithmetic/PartialAdditionExecutor.h"
+#include "utils/MathUtils.h"
+#include "utils/MpiUtils.h"
 
 void PartialAdditionExecutor::compute() {
     za = xa + ya;
-    Executor::exchange(&za, &zb);
+    MpiUtils::exchange(&za, &zb);
     res = za + zb;
+}
+
+void PartialAdditionExecutor::init(int xa0, int ya0) {
+    xa = xa0;
+    ya = ya0;
+    inited();
 }
