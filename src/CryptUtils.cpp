@@ -5,16 +5,25 @@
 #include "utils/CryptUtils.h"
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
-#include <openssl/err.h>
+#include <vector>
+#include <string>
 
 // copilot
 void CryptUtils::generateRsaKeys(int bits, std::string &publicKey, std::string &privateKey) {
-    RSA *rsa = RSA_generate_key(bits, RSA_F4, nullptr, nullptr);
+    EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr);
+    EVP_PKEY *pkey = nullptr;
+
+    if (!ctx || EVP_PKEY_keygen_init(ctx) <= 0 || EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, bits) <= 0 || EVP_PKEY_keygen(ctx, &pkey) <= 0) {
+        // Handle errors
+        if (ctx) EVP_PKEY_CTX_free(ctx);
+        return;
+    }
+
     BIO *pri = BIO_new(BIO_s_mem());
     BIO *pub = BIO_new(BIO_s_mem());
 
-    PEM_write_bio_RSAPrivateKey(pri, rsa, nullptr, nullptr, 0, nullptr, nullptr);
-    PEM_write_bio_RSA_PUBKEY(pub, rsa);
+    PEM_write_bio_PrivateKey(pri, pkey, nullptr, nullptr, 0, nullptr, nullptr);
+    PEM_write_bio_PUBKEY(pub, pkey);
 
     size_t pri_len = BIO_pending(pri);
     size_t pub_len = BIO_pending(pub);
@@ -31,7 +40,7 @@ void CryptUtils::generateRsaKeys(int bits, std::string &publicKey, std::string &
     privateKey = std::string(pri_key);
     publicKey = std::string(pub_key);
 
-    RSA_free(rsa);
+    EVP_PKEY_free(pkey);
     BIO_free_all(pub);
     BIO_free_all(pri);
     free(pri_key);
@@ -40,45 +49,102 @@ void CryptUtils::generateRsaKeys(int bits, std::string &publicKey, std::string &
 
 // copilot
 std::string CryptUtils::rsaEncrypt(const std::string &data, const std::string &publicKey) {
-    RSA *rsa = RSA_new();
+    EVP_PKEY *pkey = nullptr;
+    EVP_PKEY_CTX *ctx = nullptr;
     BIO *keybio = BIO_new_mem_buf((void *)publicKey.c_str(), -1);
-    PEM_read_bio_RSA_PUBKEY(keybio, &rsa, nullptr, nullptr);
+    pkey = PEM_read_bio_PUBKEY(keybio, nullptr, nullptr, nullptr);
 
-    int len = RSA_size(rsa);
-    char *encrypted = (char *)malloc(len);
-    int result = RSA_public_encrypt(data.size(), (unsigned char *)data.c_str(), (unsigned char *)encrypted, rsa, RSA_PKCS1_PADDING);
-
-    std::string encryptedStr;
-    if (result >= 0) {
-        encryptedStr = std::string(encrypted, result);
+    if (!pkey) {
+        BIO_free(keybio);
+        throw std::runtime_error("Failed to read public key");
     }
 
-    free(encrypted);
-    BIO_free_all(keybio);
-    RSA_free(rsa);
+    ctx = EVP_PKEY_CTX_new(pkey, nullptr);
+    if (!ctx) {
+        EVP_PKEY_free(pkey);
+        BIO_free(keybio);
+        throw std::runtime_error("Failed to create context");
+    }
 
-    return encryptedStr;
+    if (EVP_PKEY_encrypt_init(ctx) <= 0) {
+        EVP_PKEY_CTX_free(ctx);
+        EVP_PKEY_free(pkey);
+        BIO_free(keybio);
+        throw std::runtime_error("Failed to initialize encryption");
+    }
 
+    size_t outlen;
+    if (EVP_PKEY_encrypt(ctx, nullptr, &outlen, (unsigned char *)data.c_str(), data.size()) <= 0) {
+        EVP_PKEY_CTX_free(ctx);
+        EVP_PKEY_free(pkey);
+        BIO_free(keybio);
+        throw std::runtime_error("Failed to determine buffer length");
+    }
+
+    std::vector<unsigned char> outbuf(outlen);
+    if (EVP_PKEY_encrypt(ctx, outbuf.data(), &outlen, (unsigned char *)data.c_str(), data.size()) <= 0) {
+        EVP_PKEY_CTX_free(ctx);
+        EVP_PKEY_free(pkey);
+        BIO_free(keybio);
+        throw std::runtime_error("Encryption failed");
+    }
+
+    EVP_PKEY_CTX_free(ctx);
+    EVP_PKEY_free(pkey);
+    BIO_free(keybio);
+
+    return std::string(outbuf.begin(), outbuf.end());
 }
 
 // copilot
 std::string CryptUtils::rsaDecrypt(const std::string &encryptedData, const std::string &privateKey) {
-    RSA *rsa = RSA_new();
+    EVP_PKEY *pkey = nullptr;
+    EVP_PKEY_CTX *ctx = nullptr;
     BIO *keybio = BIO_new_mem_buf((void *)privateKey.c_str(), -1);
-    PEM_read_bio_RSAPrivateKey(keybio, &rsa, nullptr, nullptr);
+    pkey = PEM_read_bio_PrivateKey(keybio, nullptr, nullptr, nullptr);
 
-    int len = RSA_size(rsa);
-    char *decrypted = (char *)malloc(len);
-    int result = RSA_private_decrypt(encryptedData.size(), (unsigned char *)encryptedData.c_str(), (unsigned char *)decrypted, rsa, RSA_PKCS1_PADDING);
-
-    std::string decryptedStr;
-    if (result >= 0) {
-        decryptedStr = std::string(decrypted, result);
+    if (!pkey) {
+        BIO_free(keybio);
+        throw std::runtime_error("Failed to read private key");
     }
 
-    free(decrypted);
-    BIO_free_all(keybio);
-    RSA_free(rsa);
+    ctx = EVP_PKEY_CTX_new(pkey, nullptr);
+    if (!ctx) {
+        EVP_PKEY_free(pkey);
+        BIO_free(keybio);
+        throw std::runtime_error("Failed to create context");
+    }
+
+    if (EVP_PKEY_decrypt_init(ctx) <= 0) {
+        EVP_PKEY_CTX_free(ctx);
+        EVP_PKEY_free(pkey);
+        BIO_free(keybio);
+        throw std::runtime_error("Failed to initialize decryption");
+    }
+
+    size_t outlen;
+    if (EVP_PKEY_decrypt(ctx, nullptr, &outlen, (unsigned char *)encryptedData.c_str(), encryptedData.size()) <= 0) {
+        EVP_PKEY_CTX_free(ctx);
+        EVP_PKEY_free(pkey);
+        BIO_free(keybio);
+        throw std::runtime_error("Failed to determine buffer length");
+    }
+
+    std::string decryptedStr(outlen, '\0');
+    if (EVP_PKEY_decrypt(ctx, (unsigned char *)decryptedStr.data(), &outlen, (unsigned char *)encryptedData.c_str(), encryptedData.size()) <= 0) {
+        EVP_PKEY_CTX_free(ctx);
+        EVP_PKEY_free(pkey);
+        BIO_free(keybio);
+        throw std::runtime_error("Decryption failed");
+    }
+
+    decryptedStr.resize(outlen);
+
+    EVP_PKEY_CTX_free(ctx);
+    EVP_PKEY_free(pkey);
+    BIO_free(keybio);
 
     return decryptedStr;
 }
+
+

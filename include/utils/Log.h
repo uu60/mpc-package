@@ -23,7 +23,7 @@ public:
     // error
     static void e(const std::string& msg);
 private:
-    static std::string getCurrentTimestamp();
+    static std::string getCurrentTimestampStr();
     static void print(const std::string& level, const std::string& msg);
 };
 

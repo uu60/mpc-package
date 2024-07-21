@@ -4,24 +4,25 @@
 
 #ifndef MPC_PACKAGE_COMPLETEADDITIONEXECUTOR_H
 #define MPC_PACKAGE_COMPLETEADDITIONEXECUTOR_H
+
 #include "share/Executor.h"
 
 class CompleteAdditionExecutor : public Executor {
 protected:
     /*
-     * Alice holds x = xa + xb
-     * Bob holds y = ya + yb
-     * compute x + y => za + zb = (xa + ya) + (yb + xb)
+     * Alice holds _x = _xa + _xb
+     * Bob holds y = _ya + yb
+     * compute _x + y => _za + _zb = (_xa + _ya) + (yb + _xb)
      */
-    int x{};
-    int xa{};
-    int xb{};
-    int ya{};
-    int za{};
-    int zb{};
+    int64_t _x{};
+    int64_t _xa{};
+    int64_t _xb{};
+    int64_t _ya{};
+    int64_t _za{};
+    int64_t _zb{};
 public:
     void compute() override;
-    void init(int x);
+    void init(int64_t x);
 };
 
 

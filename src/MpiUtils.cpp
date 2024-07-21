@@ -3,56 +3,82 @@
 //
 
 #include "utils/MpiUtils.h"
-#include "mpi.h"
+#include "utils/MathUtils.h"
+#include <mpi.h>
 #include <iostream>
+#include <limits>
+#include <vector>
+#include "utils/Log.h"
 
 // inited
-bool MpiUtils::envInited = false;
-int MpiUtils::mpiRank = 0;
-int MpiUtils::mpiSize = 0;
+bool MpiUtils::_envInited = false;
+int MpiUtils::_mpiRank = 0;
+int MpiUtils::_mpiSize = 0;
 
 void MpiUtils::finalizeMPI() {
-    if (envInited) {
+    if (_envInited) {
         MPI_Finalize();
-        envInited = false;
+        _envInited = false;
     }
 }
 
 void MpiUtils::initMPI(int argc, char **argv) {
-    if (!envInited) {
+    if (!_envInited) {
         // inited MPI env
         MPI_Init(&argc, &argv);
-        // process mpiRank and sum
-        MPI_Comm_rank(MPI_COMM_WORLD, &mpiRank);
-        MPI_Comm_size(MPI_COMM_WORLD, &mpiSize);
-        if (mpiSize != 2) {
+        // process _mpiRank and sum
+        MPI_Comm_rank(MPI_COMM_WORLD, &_mpiRank);
+        MPI_Comm_size(MPI_COMM_WORLD, &_mpiSize);
+        if (_mpiSize != 2) {
             throw std::runtime_error("2 processes restricted.");
         }
-        envInited = true;
+        _envInited = true;
     }
 }
 
-void MpiUtils::exchange(const int *send0, int *recv0) {
-    send(send0);
-    recv(recv0);
+void MpiUtils::exchange(const int64_t *data, int64_t *target) {
+    send(data);
+    recv(target);
 }
 
-void MpiUtils::send(const int *send0) {
-    MPI_Send(send0, 1, MPI_INT, 1 - mpiRank, 0, MPI_COMM_WORLD);
+void MpiUtils::send(const int64_t *data) {
+    MPI_Send(data, 1, MPI_INT64_T, 1 - _mpiRank, 0, MPI_COMM_WORLD);
 }
 
-void MpiUtils::recv(int *recv0) {
-    MPI_Recv(recv0, 1, MPI_INT, 1 - mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+void MpiUtils::send(const std::string *data) {
+    if (data->length() > static_cast<size_t>(std::numeric_limits<int>::max())) {
+        std::cerr << "String size exceeds MPI_Send limit." << std::endl;
+        MPI_Abort(MPI_COMM_WORLD, 1);
+    }
+    MPI_Send(data->data(), static_cast<int>(data->length()), MPI_CHAR, 1 - _mpiRank, 0, MPI_COMM_WORLD);
+//    Log::d("send:  " + *data);
+}
+
+void MpiUtils::recv(int64_t *target) {
+    MPI_Recv(target, 1, MPI_INT64_T, 1 - _mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+}
+
+void MpiUtils::recv(std::string *target) {
+    MPI_Status status;
+    MPI_Probe(1 - _mpiRank, 0, MPI_COMM_WORLD, &status);
+
+    int count;
+    MPI_Get_count(&status, MPI_CHAR, &count);
+
+    std::vector<char> buffer(count);
+    MPI_Recv( buffer.data(), count, MPI_CHAR, 1 - _mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    *target = std::string(buffer.data(), count);
+//    Log::d("recv: " + *target);
 }
 
 bool MpiUtils::isEnvInited() {
-    return envInited;
+    return _envInited;
 }
 
 int MpiUtils::getMpiSize() {
-    return mpiSize;
+    return _mpiSize;
 }
 
 int MpiUtils::getMpiRank() {
-    return mpiRank;
+    return _mpiRank;
 }

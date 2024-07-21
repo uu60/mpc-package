@@ -7,16 +7,16 @@
 #include "utils/MpiUtils.h"
 
 void CompleteAdditionExecutor::compute() {
-    MpiUtils::exchange(&xb, &ya);
-    za = xa + ya;
-    MpiUtils::exchange(&za, &zb);
-    res = za + zb;
+    MpiUtils::exchange(&_xb, &_ya);
+    _za = _xa + _ya;
+    MpiUtils::exchange(&_za, &_zb);
+    _res = _za + _zb;
 }
 
-void CompleteAdditionExecutor::init(int x0) {
-    x = x0;
-    xb = MathUtils::randomInt();
-    xa = x - xb;
+void CompleteAdditionExecutor::init(int64_t x) {
+    _x = x;
+    _xb = MathUtils::rand32();
+    _xa = _x - _xb;
     inited();
 }
 

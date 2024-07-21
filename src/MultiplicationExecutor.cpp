@@ -8,32 +8,32 @@
 #include <vector>
 
 void MultiplicationExecutor::compute() {
-    int xi, yi, *self, *other;
+    int64_t xi, yi, *self, *other;
     self = MpiUtils::getMpiRank() == 0 ? &xi : &yi;
     other = MpiUtils::getMpiRank() == 0 ? &yi : &xi;
 
-    *self = xa;
-    MpiUtils::exchange(&xb, other);
-    int ea = xi - aa;
-    int fa = yi - ba;
-    int eb, fb;
+    *self = _xa;
+    MpiUtils::exchange(&_xb, other);
+    int64_t ea = xi - _aa;
+    int64_t fa = yi - _ba;
+    int64_t eb, fb;
     MpiUtils::exchange(&ea, &eb);
     MpiUtils::exchange(&fa, &fb);
-    int e = ea + eb;
-    int f = fa + fb;
-    int za = MpiUtils::getMpiRank() * e * f + f * aa + e * ba + ca;
-    int zb;
+    int64_t e = ea + eb;
+    int64_t f = fa + fb;
+    int64_t za = MpiUtils::getMpiRank() * e * f + f * _aa + e * _ba + _ca;
+    int64_t zb;
     MpiUtils::exchange(&za, &zb);
-    res = za + zb;
+    _res = za + zb;
 }
 
-void MultiplicationExecutor::init(int x0, int l0) {
+void MultiplicationExecutor::init(int64_t x, int l) {
     // data
-    x = x0;
-    xb = MathUtils::randomInt();
-    xa = x - xb;
+    _x = x;
+    _xb = MathUtils::rand32();
+    _xa = _x - _xb;
 
-    l = l0;
+    _l = l;
     // MT
     obtainMultiplicationTriple();
     // inited
@@ -45,7 +45,7 @@ void MultiplicationExecutor::obtainMultiplicationTriple() {
     int a[] = {6, 9};
     int b[] = {12, 8};
     int c[] = {125, 175};
-    aa = a[MpiUtils::getMpiRank()];
-    ba = b[MpiUtils::getMpiRank()];
-    ca = c[MpiUtils::getMpiRank()];
+    _aa = a[MpiUtils::getMpiRank()];
+    _ba = b[MpiUtils::getMpiRank()];
+    _ca = c[MpiUtils::getMpiRank()];
 }

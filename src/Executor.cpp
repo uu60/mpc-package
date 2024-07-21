@@ -5,14 +5,14 @@
 #include <iostream>
 #include "share/Executor.h"
 #include "utils/MpiUtils.h"
-#include "mpi.h"
+#include <mpi.h>
 
 void Executor::finalize() {
     // do nothing by default
 }
 
-int Executor::result() const {
-    return res;
+int64_t Executor::result() const {
+    return _res;
 }
 
 void Executor::inited() {

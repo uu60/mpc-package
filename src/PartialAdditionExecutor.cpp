@@ -7,13 +7,13 @@
 #include "utils/MpiUtils.h"
 
 void PartialAdditionExecutor::compute() {
-    za = xa + ya;
-    MpiUtils::exchange(&za, &zb);
-    res = za + zb;
+    _za = _xa + _ya;
+    MpiUtils::exchange(&_za, &_zb);
+    _res = _za + _zb;
 }
 
-void PartialAdditionExecutor::init(int xa0, int ya0) {
-    xa = xa0;
-    ya = ya0;
+void PartialAdditionExecutor::init(int64_t xa, int64_t ya) {
+    _xa = xa;
+    _ya = ya;
     inited();
 }

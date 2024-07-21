@@ -10,20 +10,20 @@
 class PartialAdditionExecutor : public Executor {
 protected:
     /*
-     * Alice holds xa and ya
-     * Bob holds xb and yb
-     * compute x + y => za + zb = (xa + ya) + (xb + yb)
+     * Alice holds _xa and _ya
+     * Bob holds _xb and yb
+     * compute _x + y => _za + _zb = (_xa + _ya) + (_xb + yb)
      */
 
-    // part of x
-    int xa{};
+    // part of _x
+    int64_t _xa{};
     // part of y
-    int ya{};
-    int za{};
-    int zb{};
+    int64_t _ya{};
+    int64_t _za{};
+    int64_t _zb{};
 
 public:
-    void init(int xa, int ya);
+    void init(int64_t xa, int64_t ya);
 
     // compute process
     void compute() override;

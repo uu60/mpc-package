@@ -5,15 +5,17 @@
 #ifndef MPC_PACKAGE_EXECUTOR_H
 #define MPC_PACKAGE_EXECUTOR_H
 
+#include <cstdint>
+
 class Executor {
 protected:
     // result
-    int res{};
+    int64_t _res{};
 public:
     // secret sharing process
     virtual void compute() = 0;
     // get calculated result
-    int result() const;
+    int64_t result() const;
 protected:
     // custom inited
     virtual void inited();

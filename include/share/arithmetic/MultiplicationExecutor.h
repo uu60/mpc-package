@@ -9,24 +9,24 @@
 class MultiplicationExecutor : public Executor {
 protected:
     // hold
-    int x{};
+    int64_t _x{};
     // parts
-    // x = xa + xb
-    // y = ya + yb
-    int xa{};
-    int xb{};
+    // _x = _xa + _xb
+    // y = _ya + yb
+    int64_t _xa{};
+    int64_t _xb{};
     // MT
-    // aa, ba, ca belongs to Alice
-    // c = (ca + cb) = a * b = (aa + ab) * (ba + bb)
-    int l{};
-    int aa{};
-    int ba{};
-    int ca{};
-    int ua{};
-    int va{};
+    // _aa, _ba, _ca belongs to Alice
+    // c = (_ca + cb) = a * b = (_aa + ab) * (_ba + bb)
+    int _l{};
+    int64_t _aa{};
+    int64_t _ba{};
+    int64_t _ca{};
+    int64_t _ua{};
+    int64_t _va{};
 
 public:
-    void init(int x, int l);
+    void init(int64_t x, int l);
     void compute() override;
 
 private:
