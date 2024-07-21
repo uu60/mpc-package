@@ -35,12 +35,7 @@ target_link_libraries(demo mpc_package)
 target_include_directories(demo PUBLIC ${mpc_package_INCLUDE_DIRS})
 ```
 which will imports the package.
-### 4 Use classes
-> Currently only addition share is implemented as a demo
-1. Include like this `#include "./executor/arithmetic/AddictiveExecutor.h"` 
-2. `AddictiveExecutor` is an abstract class but only method `setXA` and `setYA` needs implementing, which is used to describe how current device gets its own data to be calculated later as a parameter.
-3. `result` method is for getting the calculated result. `finalize` can be defined with some other process to be executed before the result returned.
-### 5 Execute
+### 4 Execute
 1. Use the same username of Linux/macOS.
 2. Set up non-password login between 2 machines. Using `ssh-keygen` and `ssh-copy-id`.
 3. Place the executable file on the same path of 2 machines.
