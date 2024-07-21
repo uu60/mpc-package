@@ -2,12 +2,12 @@
 // Created by 杜建璋 on 2024/7/7.
 //
 
-#ifndef MPC_PACKAGE_EXECUTOR_H
-#define MPC_PACKAGE_EXECUTOR_H
+#ifndef MPC_PACKAGE_SHAREEXECUTOR_H
+#define MPC_PACKAGE_SHAREEXECUTOR_H
 
 #include <cstdint>
 
-class Executor {
+class ShareExecutor {
 protected:
     // result
     int64_t _res{};
@@ -17,9 +17,7 @@ public:
     // get calculated result
     int64_t result() const;
 protected:
-    // custom inited
-    virtual void inited();
     virtual void finalize();
 };
 
-#endif //MPC_PACKAGE_EXECUTOR_H
+#endif //MPC_PACKAGE_SHAREEXECUTOR_H

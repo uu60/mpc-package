@@ -10,7 +10,7 @@
 #include <vector>
 #include "utils/Log.h"
 
-// inited
+// init
 bool MpiUtils::_envInited = false;
 int MpiUtils::_mpiRank = 0;
 int MpiUtils::_mpiSize = 0;
@@ -24,7 +24,7 @@ void MpiUtils::finalizeMPI() {
 
 void MpiUtils::initMPI(int argc, char **argv) {
     if (!_envInited) {
-        // inited MPI env
+        // init MPI env
         MPI_Init(&argc, &argv);
         // process _mpiRank and sum
         MPI_Comm_rank(MPI_COMM_WORLD, &_mpiRank);

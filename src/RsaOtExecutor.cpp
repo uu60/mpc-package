@@ -4,17 +4,17 @@
 
 #include <utility>
 
-#include "ot/one_of_two/RsaExecutor.h"
+#include "ot/one_of_two/RsaOtExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
 #include "utils/CryptUtils.h"
 #include "utils/Log.h"
 
-RsaExecutor::RsaExecutor(int sender, int64_t m0, int64_t m1, int i)
-        : RsaExecutor(2048, sender, m0, m1, i) {
+RsaOtExecutor::RsaOtExecutor(int sender, int64_t m0, int64_t m1, int i)
+        : RsaOtExecutor(2048, sender, m0, m1, i) {
 }
 
-RsaExecutor::RsaExecutor(int bits, int sender, int64_t m0, int64_t m1, int i) {
+RsaOtExecutor::RsaOtExecutor(int bits, int sender, int64_t m0, int64_t m1, int i) {
     _bits = bits;
     _isSender = sender == MpiUtils::getMpiRank();
     if (_isSender) {
@@ -25,7 +25,7 @@ RsaExecutor::RsaExecutor(int bits, int sender, int64_t m0, int64_t m1, int i) {
     }
 }
 
-void RsaExecutor::compute() {
+void RsaOtExecutor::compute() {
     // preparation
     generateAndShareRandoms();
     generateAndShareRsaKeys();
@@ -34,7 +34,7 @@ void RsaExecutor::compute() {
     process();
 }
 
-void RsaExecutor::generateAndShareRsaKeys() {
+void RsaOtExecutor::generateAndShareRsaKeys() {
     if (_isSender) {
         CryptUtils::generateRsaKeys(_bits, _pub, _pri);
         MpiUtils::send(&_pub);
@@ -43,7 +43,7 @@ void RsaExecutor::generateAndShareRsaKeys() {
     }
 }
 
-void RsaExecutor::generateAndShareRandoms() {
+void RsaOtExecutor::generateAndShareRandoms() {
     // 11 for PKCS#1 v1.5 padding
     int maxLen = (_bits >> 3) - 11;
     if (_isSender) {
@@ -58,7 +58,7 @@ void RsaExecutor::generateAndShareRandoms() {
     }
 }
 
-void RsaExecutor::process() {
+void RsaOtExecutor::process() {
     if (!_isSender) {
         std::string ek = CryptUtils::rsaEncrypt(_randK, _pub);
 //        Log::d(ek);
@@ -88,6 +88,6 @@ void RsaExecutor::process() {
     }
 }
 
-int64_t RsaExecutor::result() {
+int64_t RsaOtExecutor::result() {
     return _i == 0 ? _m0 : _m1;
 }

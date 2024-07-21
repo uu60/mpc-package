@@ -2,12 +2,23 @@
 // Created by 杜建璋 on 2024/7/13.
 //
 
-#include "share/arithmetic/MultiplicationExecutor.h"
+#include "share/arithmetic/MultiplicationShareExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
 #include <vector>
 
-void MultiplicationExecutor::compute() {
+MultiplicationShareExecutor::MultiplicationShareExecutor(int64_t x, int l) {
+    // data
+    _x = x;
+    _xb = MathUtils::rand32();
+    _xa = _x - _xb;
+
+    _l = l;
+    // MT
+    obtainMultiplicationTriple();
+}
+
+void MultiplicationShareExecutor::compute() {
     int64_t xi, yi, *self, *other;
     self = MpiUtils::getMpiRank() == 0 ? &xi : &yi;
     other = MpiUtils::getMpiRank() == 0 ? &yi : &xi;
@@ -27,20 +38,7 @@ void MultiplicationExecutor::compute() {
     _res = za + zb;
 }
 
-void MultiplicationExecutor::init(int64_t x, int l) {
-    // data
-    _x = x;
-    _xb = MathUtils::rand32();
-    _xa = _x - _xb;
-
-    _l = l;
-    // MT
-    obtainMultiplicationTriple();
-    // inited
-    inited();
-}
-
-void MultiplicationExecutor::obtainMultiplicationTriple() {
+void MultiplicationShareExecutor::obtainMultiplicationTriple() {
     // temporarily fixed
     int a[] = {6, 9};
     int b[] = {12, 8};

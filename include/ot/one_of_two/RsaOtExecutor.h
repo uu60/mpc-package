@@ -2,8 +2,8 @@
 // Created by 杜建璋 on 2024/7/15.
 //
 
-#ifndef MPC_PACKAGE_RSAEXECUTOR_H
-#define MPC_PACKAGE_RSAEXECUTOR_H
+#ifndef MPC_PACKAGE_RSAOTEXECUTOR_H
+#define MPC_PACKAGE_RSAOTEXECUTOR_H
 #include <string>
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
@@ -11,7 +11,7 @@
 #include <openssl/sha.h>
 
 // according to https://blog.csdn.net/qq_16763983/article/details/128055146
-class RsaExecutor {
+class RsaOtExecutor {
 private:
     // RSA key _bits
     int _bits{};
@@ -34,8 +34,8 @@ private:
 public:
     // _m0 and _m1 are for sender (invalid for receiver)
     // i is for receiver (invalid for sender)
-    explicit RsaExecutor(int sender, int64_t m0, int64_t m1, int i);
-    explicit RsaExecutor(int bits, int sender, int64_t m0, int64_t m1, int i);
+    explicit RsaOtExecutor(int sender, int64_t m0, int64_t m1, int i);
+    explicit RsaOtExecutor(int bits, int sender, int64_t m0, int64_t m1, int i);
     void compute();
     int64_t result();
 
@@ -51,4 +51,4 @@ private:
 };
 
 
-#endif //MPC_PACKAGE_RSAEXECUTOR_H
+#endif //MPC_PACKAGE_RSAOTEXECUTOR_H

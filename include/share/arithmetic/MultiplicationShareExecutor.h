@@ -2,11 +2,11 @@
 // Created by 杜建璋 on 2024/7/13.
 //
 
-#ifndef MPC_PACKAGE_MULTIPLICATIONEXECUTOR_H
-#define MPC_PACKAGE_MULTIPLICATIONEXECUTOR_H
-#include "share/Executor.h"
+#ifndef MPC_PACKAGE_MULTIPLICATIONSHAREEXECUTOR_H
+#define MPC_PACKAGE_MULTIPLICATIONSHAREEXECUTOR_H
+#include "share/ShareExecutor.h"
 
-class MultiplicationExecutor : public Executor {
+class MultiplicationShareExecutor : public ShareExecutor {
 protected:
     // hold
     int64_t _x{};
@@ -26,7 +26,7 @@ protected:
     int64_t _va{};
 
 public:
-    void init(int64_t x, int l);
+    MultiplicationShareExecutor(int64_t x, int l);
     void compute() override;
 
 private:
@@ -34,4 +34,4 @@ private:
 };
 
 
-#endif //MPC_PACKAGE_MULTIPLICATIONEXECUTOR_H
+#endif //MPC_PACKAGE_MULTIPLICATIONSHAREEXECUTOR_H

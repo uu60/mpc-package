@@ -2,12 +2,12 @@
 // Created by 杜建璋 on 2024/7/13.
 //
 
-#ifndef MPC_PACKAGE_COMPLETEADDITIONEXECUTOR_H
-#define MPC_PACKAGE_COMPLETEADDITIONEXECUTOR_H
+#ifndef MPC_PACKAGE_COMPLETEADDITIONSHAREEXECUTOR_H
+#define MPC_PACKAGE_COMPLETEADDITIONSHAREEXECUTOR_H
 
-#include "share/Executor.h"
+#include "share/ShareExecutor.h"
 
-class CompleteAdditionExecutor : public Executor {
+class CompleteAdditionShareExecutor : public ShareExecutor {
 protected:
     /*
      * Alice holds _x = _xa + _xb
@@ -21,9 +21,9 @@ protected:
     int64_t _za{};
     int64_t _zb{};
 public:
+    explicit CompleteAdditionShareExecutor(int64_t x);
     void compute() override;
-    void init(int64_t x);
 };
 
 
-#endif //MPC_PACKAGE_COMPLETEADDITIONEXECUTOR_H
+#endif //MPC_PACKAGE_COMPLETEADDITIONSHAREEXECUTOR_H

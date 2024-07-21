@@ -9,18 +9,18 @@ find_package(OpenSSL REQUIRED)
 add_library(${PROJECT_NAME} SHARED
         src/MathUtils.cpp
         include/utils/MathUtils.h
-        src/Executor.cpp
-        include/share/Executor.h
-        src/PartialAdditionExecutor.cpp
-        include/share/arithmetic/PartialAdditionExecutor.h
+        src/ShareExecutor.cpp
+        include/share/ShareExecutor.h
+        src/PartialAdditionShareExecutor.cpp
+        include/share/arithmetic/PartialAdditionShareExecutor.h
         src/Log.cpp
         include/utils/Log.h
-        src/MultiplicationExecutor.cpp
-        include/share/arithmetic/MultiplicationExecutor.h
-        src/CompleteAdditionExecutor.cpp
-        include/share/arithmetic/CompleteAdditionExecutor.h
-        src/RsaExecutor.cpp
-        include/ot/one_of_two/RsaExecutor.h
+        src/MultiplicationShareExecutor.cpp
+        include/share/arithmetic/MultiplicationShareExecutor.h
+        src/CompleteAdditionShareExecutor.cpp
+        include/share/arithmetic/CompleteAdditionShareExecutor.h
+        src/RsaOtExecutor.cpp
+        include/ot/one_of_two/RsaOtExecutor.h
         src/MpiUtils.cpp
         include/utils/MpiUtils.h
         src/CryptUtils.cpp

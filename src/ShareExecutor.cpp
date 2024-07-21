@@ -3,18 +3,15 @@
 //
 
 #include <iostream>
-#include "share/Executor.h"
+#include "share/ShareExecutor.h"
 #include "utils/MpiUtils.h"
 #include <mpi.h>
 
-void Executor::finalize() {
+void ShareExecutor::finalize() {
     // do nothing by default
 }
 
-int64_t Executor::result() const {
+int64_t ShareExecutor::result() const {
     return _res;
 }
 
-void Executor::inited() {
-    // do nothing by default
-}

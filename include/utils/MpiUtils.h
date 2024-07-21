@@ -8,7 +8,7 @@
 
 class MpiUtils {
 private:
-    // mpi env inited
+    // mpi env init
     static bool _envInited;
     // joined party number
     static int _mpiSize;
@@ -18,7 +18,7 @@ public:
     static bool isEnvInited();
     static int getMpiSize();
     static int getMpiRank();
-    // inited env
+    // init env
     static void initMPI(int argc, char **argv);
     static void finalizeMPI();
     // exchange data
