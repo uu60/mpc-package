@@ -3,8 +3,9 @@
 //
 
 #include "utils/MathUtils.h"
-#include "random"
-#include "string"
+#include <random>
+#include <string>
+#include <limits>
 #include <iomanip>
 
 int MathUtils::rand32() {
@@ -129,6 +130,11 @@ std::string MathUtils::add(const std::string &add0, const std::string &add1, boo
     BN_free(add1N);
     BN_free(result);
     return resultStr;
+}
+
+int64_t MathUtils::ringMod(int64_t num, int l) {
+    int64_t ring = 1LL << l;
+    return ((num % ring) + ring) % ring;
 }
 
 std::string MathUtils::rand0b(int lowBytes, int highBytes) {

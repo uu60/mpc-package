@@ -4,26 +4,26 @@
 
 #ifndef MPC_PACKAGE_MULTIPLICATIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_MULTIPLICATIONSHAREEXECUTOR_H
-#include "share/ShareExecutor.h"
+#include "../ShareExecutor.h"
 
 class MultiplicationShareExecutor : public ShareExecutor {
 protected:
     // hold
     int64_t _x{};
     // parts
-    // _x = _xa + _xb
-    // y = _ya + yb
-    int64_t _xa{};
-    int64_t _xb{};
+    // _x = _x0 + _x1
+    // y = _y0 + yb
+    int64_t _x0{};
+    int64_t _x1{};
     // MT
-    // _aa, _ba, _ca belongs to Alice
-    // c = (_ca + cb) = a * b = (_aa + ab) * (_ba + bb)
+    // _a0, _b0, _c0 belongs to Alice
+    // c = (_c0 + c1) = a * b = (_a0 + a1) * (_b0 + b1)
     int _l{};
-    int64_t _aa{};
-    int64_t _ba{};
-    int64_t _ca{};
-    int64_t _ua{};
-    int64_t _va{};
+    int64_t _a0{};
+    int64_t _b0{};
+    int64_t _c0{};
+    int64_t _u0{};
+    int64_t _v0{};
 
 public:
     MultiplicationShareExecutor(int64_t x, int l);
@@ -31,6 +31,13 @@ public:
 
 private:
     void obtainMultiplicationTriple();
+    void process();
+    void generateRandoms();
+    void computeU();
+    void computeV();
+    void computeMix(int sender, int64_t &mix);
+    void computeC();
+    int64_t corr(int i, int64_t x) const;
 };
 
 

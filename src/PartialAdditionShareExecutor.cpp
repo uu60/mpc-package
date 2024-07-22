@@ -5,13 +5,13 @@
 #include "share/arithmetic/PartialAdditionShareExecutor.h"
 #include "utils/MpiUtils.h"
 
-PartialAdditionShareExecutor::PartialAdditionShareExecutor(int64_t xa, int64_t ya) {
-    _xa = xa;
-    _ya = ya;
+PartialAdditionShareExecutor::PartialAdditionShareExecutor(int64_t x0, int64_t y0) {
+    _x0 = x0;
+    _y0 = y0;
 }
 
 void PartialAdditionShareExecutor::compute() {
-    _za = _xa + _ya;
-    MpiUtils::exchange(&_za, &_zb);
-    _res = _za + _zb;
+    _z0 = _x0 + _y0;
+    MpiUtils::exchange(&_z0, &_z1);
+    _res = _z0 + _z1;
 }
