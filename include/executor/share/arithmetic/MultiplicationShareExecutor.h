@@ -14,6 +14,7 @@ protected:
     int64_t _otRsaGenerationTime{};
     int64_t _otRsaEncryptionTime{};
     int64_t _otRsaDecryptionTime{};
+    int64_t _otMpiTime{};
     int64_t _otEntireComputationTime{};
     // hold
     int64_t _x{};

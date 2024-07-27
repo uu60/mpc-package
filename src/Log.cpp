@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "utils/Log.h"
+#include "utils/MpiUtils.h"
 #include <chrono>
 #include <iomanip>
 #include <sstream>
@@ -51,6 +52,7 @@ void Log::print(const std::string& level, const std::string& msg) {
 
     std::cout << "[" << HOSTNAME + ":" + std::to_string(getpid()) << "] "
               << "[" << getCurrentTimestampStr() << "] "
+              << "[" + std::to_string(MpiUtils::getMpiRank()) + "] "
               << "[" << std::setw(5) << level << "] "
               << msg << std::endl;
 }

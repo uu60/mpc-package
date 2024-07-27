@@ -30,11 +30,7 @@ void MultiplicationShareExecutor::compute() {
     obtainMultiplicationTriple();
     if (_benchmark) {
         end = System::currentTimeMillis();
-        Log::i(BM_TAG + " Triple generation time: " + std::to_string(end - start) + " ms.");
-        Log::i(BM_TAG + " OT RSA keys generation time: " + std::to_string(_otRsaGenerationTime) + " ms.");
-        Log::i(BM_TAG + " OT RSA encryption time: " + std::to_string(_otRsaEncryptionTime) + " ms.");
-        Log::i(BM_TAG + " OT RSA decryption time: " + std::to_string(_otRsaDecryptionTime) + " ms.");
-        Log::i(BM_TAG + " OT total computation time: " + std::to_string(_otEntireComputationTime) + " ms.");
+        Log::i(BM_TAG + " Triple computation time: " + std::to_string(end - start) + " ms.");
     }
     // process
     process();
@@ -83,6 +79,14 @@ void MultiplicationShareExecutor::obtainMultiplicationTriple() {
     computeU();
     computeV();
     computeC();
+
+    if (_benchmark) {
+        Log::i(BM_TAG + " OT RSA keys generation time: " + std::to_string(_otRsaGenerationTime) + " ms.");
+        Log::i(BM_TAG + " OT RSA encryption time: " + std::to_string(_otRsaEncryptionTime) + " ms.");
+        Log::i(BM_TAG + " OT RSA decryption time: " + std::to_string(_otRsaDecryptionTime) + " ms.");
+        Log::i(BM_TAG + " OT MPI transmission and synchronization time: " + std::to_string(_otMpiTime) + " ms.");
+        Log::i(BM_TAG + " OT total computation time: " + std::to_string(_otEntireComputationTime) + " ms.");
+    }
 }
 
 void MultiplicationShareExecutor::generateRandoms() {
@@ -122,6 +126,7 @@ void MultiplicationShareExecutor::computeMix(int sender, int64_t &mix) {
         if (_benchmark) {
             // add mpi time
             _mpiTime += r.getMpiTime();
+            _otMpiTime += r.getMpiTime();
             _otRsaGenerationTime += r.getRsaGenerationTime();
             _otRsaEncryptionTime += r.getRsaEncryptionTime();
             _otRsaDecryptionTime += r.getRsaDecryptionTime();
