@@ -4,10 +4,17 @@
 
 #ifndef MPC_PACKAGE_MULTIPLICATIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_MULTIPLICATIONSHAREEXECUTOR_H
-#include "../ShareExecutor.h"
+#include "../../../executor/Executor.h"
 
-class MultiplicationShareExecutor : public ShareExecutor {
+class MultiplicationShareExecutor : public Executor {
+public:
+    static const std::string BM_TAG;
 protected:
+    // benchmark
+    int64_t _otRsaGenerationTime{};
+    int64_t _otRsaEncryptionTime{};
+    int64_t _otRsaDecryptionTime{};
+    int64_t _otEntireComputationTime{};
     // hold
     int64_t _x{};
     // parts
@@ -29,15 +36,17 @@ public:
     MultiplicationShareExecutor(int64_t x, int l);
     void compute() override;
 
+protected:
+    virtual void obtainMultiplicationTriple();
+
 private:
-    void obtainMultiplicationTriple();
     void process();
     void generateRandoms();
     void computeU();
     void computeV();
     void computeMix(int sender, int64_t &mix);
     void computeC();
-    int64_t corr(int i, int64_t x) const;
+    [[nodiscard]] int64_t corr(int i, int64_t x) const;
 };
 
 

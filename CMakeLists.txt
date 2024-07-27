@@ -9,22 +9,24 @@ find_package(OpenSSL REQUIRED)
 add_library(${PROJECT_NAME} SHARED
         src/MathUtils.cpp
         include/utils/MathUtils.h
-        src/ShareExecutor.cpp
-        include/share/ShareExecutor.h
+        src/Executor.cpp
+        include/executor/Executor.h
         src/PartialAdditionShareExecutor.cpp
-        include/share/arithmetic/PartialAdditionShareExecutor.h
+        include/executor/share/arithmetic/PartialAdditionShareExecutor.h
         src/Log.cpp
         include/utils/Log.h
         src/MultiplicationShareExecutor.cpp
-        include/share/arithmetic/MultiplicationShareExecutor.h
+        include/executor/share/arithmetic/MultiplicationShareExecutor.h
         src/CompleteAdditionShareExecutor.cpp
-        include/share/arithmetic/CompleteAdditionShareExecutor.h
+        include/executor/share/arithmetic/CompleteAdditionShareExecutor.h
         src/RsaOtExecutor.cpp
-        include/ot/one_of_two/RsaOtExecutor.h
+        include/executor/ot/one_of_two/RsaOtExecutor.h
         src/MpiUtils.cpp
         include/utils/MpiUtils.h
         src/CryptUtils.cpp
         include/utils/CryptUtils.h
+        src/System.cpp
+        include/utils/System.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

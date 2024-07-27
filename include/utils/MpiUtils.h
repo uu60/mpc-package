@@ -23,10 +23,15 @@ public:
     static void finalizeMPI();
     // exchange data
     static void exchange(const int64_t *data, int64_t *target);
+    static void exchange(const int64_t *data, int64_t *target, int64_t &mpiTime);
     static void send(const int64_t *data);
+    static void send(const int64_t *data, int64_t &mpiTime);
     static void recv(int64_t *target);
-    static void send(const std::string *encoded);
+    static void recv(int64_t *target, int64_t &mpiTime);
+    static void send(const std::string *data);
+    static void send(const std::string *data, int64_t &mpiTime);
     static void recv(std::string *target);
+    static void recv(std::string *target, int64_t &mpiTime);
 };
 
 

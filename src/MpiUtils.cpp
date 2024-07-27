@@ -9,6 +9,7 @@
 #include <limits>
 #include <vector>
 #include "utils/Log.h"
+#include "utils/System.h"
 
 // init
 bool MpiUtils::_envInited = false;
@@ -81,4 +82,39 @@ int MpiUtils::getMpiSize() {
 
 int MpiUtils::getMpiRank() {
     return _mpiRank;
+}
+
+void MpiUtils::exchange(const int64_t *data, int64_t *target, int64_t &mpiTime) {
+    int64_t start = System::currentTimeMillis();
+    exchange(data, target);
+    int64_t end = System::currentTimeMillis();
+    mpiTime += end - start;
+}
+
+void MpiUtils::send(const int64_t *data, int64_t &mpiTime) {
+    int64_t start = System::currentTimeMillis();
+    send(data);
+    int64_t end = System::currentTimeMillis();
+    mpiTime += end - start;
+}
+
+void MpiUtils::recv(int64_t *target, int64_t &mpiTime) {
+    int64_t start = System::currentTimeMillis();
+    recv(target);
+    int64_t end = System::currentTimeMillis();
+    mpiTime += end - start;
+}
+
+void MpiUtils::send(const std::string *data, int64_t &mpiTime) {
+    int64_t start = System::currentTimeMillis();
+    send(data);
+    int64_t end = System::currentTimeMillis();
+    mpiTime += end - start;
+}
+
+void MpiUtils::recv(std::string *target, int64_t &mpiTime) {
+    int64_t start = System::currentTimeMillis();
+    recv(target);
+    int64_t end = System::currentTimeMillis();
+    mpiTime += end - start;
 }

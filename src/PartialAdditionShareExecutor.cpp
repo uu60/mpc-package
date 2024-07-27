@@ -2,7 +2,7 @@
 // Created by 杜建璋 on 2024/7/12.
 //
 
-#include "share/arithmetic/PartialAdditionShareExecutor.h"
+#include "executor/share/arithmetic/PartialAdditionShareExecutor.h"
 #include "utils/MpiUtils.h"
 
 PartialAdditionShareExecutor::PartialAdditionShareExecutor(int64_t x0, int64_t y0) {

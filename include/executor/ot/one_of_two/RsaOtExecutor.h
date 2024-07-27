@@ -9,10 +9,18 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <openssl/sha.h>
+#include "../../../executor/Executor.h"
 
 // according to https://blog.csdn.net/qq_16763983/article/details/128055146
-class RsaOtExecutor {
+class RsaOtExecutor : public Executor {
+public:
+    static const std::string BM_TAG;
 private:
+    // for benchmark
+    int64_t _rsaGenerationTime{};
+    int64_t _rsaEncryptionTime{};
+    int64_t _rsaDecryptionTime{};
+    int64_t _entireComputationTime{};
     // RSA key _bits
     int _bits{};
     // correspond mpi rank
@@ -21,6 +29,8 @@ private:
     std::string _rand0{};
     std::string _rand1{};
     std::string _pri{};
+    int64_t _m0{};
+    int64_t _m1{};
 
     // params for receiver
     std::string _randK{};
@@ -28,16 +38,17 @@ private:
 
     // params for both
     std::string _pub{};
-    int64_t _m0{};
-    int64_t _m1{};
 
 public:
     // _m0 and _m1 are for sender (invalid for receiver)
     // i is for receiver (invalid for sender)
     explicit RsaOtExecutor(int sender, int64_t m0, int64_t m1, int i);
     explicit RsaOtExecutor(int bits, int sender, int64_t m0, int64_t m1, int i);
-    void compute();
-    int64_t result();
+    void compute() override;
+    [[nodiscard]] int64_t getRsaGenerationTime() const;
+    [[nodiscard]] int64_t getRsaEncryptionTime() const;
+    [[nodiscard]] int64_t getRsaDecryptionTime() const;
+    [[nodiscard]] int64_t getEntireComputationTime() const;
 
 private:
     // methods for sender

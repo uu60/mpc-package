@@ -2,13 +2,15 @@
 // Created by 杜建璋 on 2024/7/13.
 //
 
-#include "share/arithmetic/MultiplicationShareExecutor.h"
+#include "executor/share/arithmetic/MultiplicationShareExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
 #include <vector>
 #include <limits>
-#include "ot/one_of_two/RsaOtExecutor.h"
+#include "executor/ot/one_of_two/RsaOtExecutor.h"
 #include "utils/Log.h"
+
+const std::string MultiplicationShareExecutor::BM_TAG = "[Multiplication Share]";
 
 MultiplicationShareExecutor::MultiplicationShareExecutor(int64_t x, int l) {
     // data
@@ -16,15 +18,31 @@ MultiplicationShareExecutor::MultiplicationShareExecutor(int64_t x, int l) {
     _x1 = MathUtils::rand64();
     _x0 = _x - _x1;
 
-    _l = l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4));
+    _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
 }
 
 void MultiplicationShareExecutor::compute() {
+    int64_t start, end, end1;
+    if (_benchmark) {
+        start = System::currentTimeMillis();
+    }
     // MT
     obtainMultiplicationTriple();
-
+    if (_benchmark) {
+        end = System::currentTimeMillis();
+        Log::i(BM_TAG + " Triple generation time: " + std::to_string(end - start) + " ms.");
+        Log::i(BM_TAG + " OT RSA keys generation time: " + std::to_string(_otRsaGenerationTime) + " ms.");
+        Log::i(BM_TAG + " OT RSA encryption time: " + std::to_string(_otRsaEncryptionTime) + " ms.");
+        Log::i(BM_TAG + " OT RSA decryption time: " + std::to_string(_otRsaDecryptionTime) + " ms.");
+        Log::i(BM_TAG + " OT total computation time: " + std::to_string(_otEntireComputationTime) + " ms.");
+    }
     // process
     process();
+    if (_benchmark) {
+        end1 = System::currentTimeMillis();
+        Log::i(BM_TAG + " MPI transmission and synchronization time: " + std::to_string(_mpiTime) + " ms.");
+        Log::i(BM_TAG + " Entire computation time: " + std::to_string(end1 - start) + " ms.");
+    }
 }
 
 void MultiplicationShareExecutor::process() {
@@ -32,17 +50,30 @@ void MultiplicationShareExecutor::process() {
     self = MpiUtils::getMpiRank() == 0 ? &x0 : &y0;
     other = MpiUtils::getMpiRank() == 0 ? &y0 : &x0;
     *self = _x0;
-    MpiUtils::exchange(&_x1, other);
+    if (_benchmark) {
+        MpiUtils::exchange(&_x1, other, _mpiTime);
+    } else {
+        MpiUtils::exchange(&_x1, other);
+    }
     int64_t e0 = x0 - _a0;
     int64_t f0 = y0 - _b0;
     int64_t e1, f1;
-    MpiUtils::exchange(&e0, &e1);
-    MpiUtils::exchange(&f0, &f1);
+    if (_benchmark) {
+        MpiUtils::exchange(&e0, &e1, _mpiTime);
+        MpiUtils::exchange(&f0, &f1, _mpiTime);
+    } else {
+        MpiUtils::exchange(&e0, &e1);
+        MpiUtils::exchange(&f0, &f1);
+    }
     int64_t e = e0 + e1;
     int64_t f = f0 + f1;
     int64_t z0 = MpiUtils::getMpiRank() * e * f + f * _a0 + e * _b0 + _c0;
     int64_t z1;
-    MpiUtils::exchange(&z0, &z1);
+    if (_benchmark) {
+        MpiUtils::exchange(&z0, &z1, _mpiTime);
+    } else {
+        MpiUtils::exchange(&z0, &z1);
+    }
     _res = MathUtils::ringMod(z0 + z1, _l);
 }
 
@@ -84,13 +115,24 @@ void MultiplicationShareExecutor::computeMix(int sender, int64_t &mix) {
             choice = (int)((_b0 >> i) & 1);
         }
         RsaOtExecutor r(sender, s0, s1, choice);
+        if (_benchmark) {
+            r.setBenchmark(true);
+        }
         r.compute();
+        if (_benchmark) {
+            // add mpi time
+            _mpiTime += r.getMpiTime();
+            _otRsaGenerationTime += r.getRsaGenerationTime();
+            _otRsaEncryptionTime += r.getRsaEncryptionTime();
+            _otRsaDecryptionTime += r.getRsaDecryptionTime();
+            _otEntireComputationTime += r.getEntireComputationTime();
+        }
         if (isSender) {
             sum += s0;
         } else {
-            int64_t temp = r.result();
+            int64_t temp = r.getResult();
             if (choice == 0) {
-                temp = MathUtils::ringMod(-r.result(), _l);
+                temp = MathUtils::ringMod(-r.getResult(), _l);
             }
             sum += temp;
         }
