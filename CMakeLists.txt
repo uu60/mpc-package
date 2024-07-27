@@ -27,8 +27,6 @@ add_library(${PROJECT_NAME} SHARED
         include/utils/CryptUtils.h
         src/System.cpp
         include/utils/System.h
-        src/FixedMultiplicationTripleHolder.cpp
-        include/utils/FixedMultiplicationTripleHolder.h
         src/RsaOtMultiplicationShareExecutor.cpp
         include/executor/share/arithmetic/RsaOtMultiplicationShareExecutor.h
         include/executor/share/arithmetic/FixedMultiplicationShareExecutor.h

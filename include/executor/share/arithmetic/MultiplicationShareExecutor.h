@@ -39,12 +39,7 @@ public:
 
 protected:
     virtual void obtainMultiplicationTriple() = 0;
-    void generateRandomAB();
-    void computeU();
-    void computeV();
-    void computeMix(int sender, int64_t &mix);
-    void computeC();
-    [[nodiscard]] int64_t corr(int i, int64_t x) const;
+
 private:
     void process();
 };

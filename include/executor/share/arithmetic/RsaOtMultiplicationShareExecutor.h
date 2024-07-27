@@ -12,6 +12,13 @@ public:
     RsaOtMultiplicationShareExecutor(int64_t x, int l) : MultiplicationShareExecutor(x, l) {}
 protected:
     void obtainMultiplicationTriple() override;
+private:
+    void generateRandomAB();
+    void computeU();
+    void computeV();
+    void computeMix(int sender, int64_t &mix);
+    void computeC();
+    [[nodiscard]] int64_t corr(int i, int64_t x) const;
 };
 
 
