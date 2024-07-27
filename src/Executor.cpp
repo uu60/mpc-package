@@ -2,10 +2,7 @@
 // Created by 杜建璋 on 2024/7/7.
 //
 
-#include <iostream>
 #include "executor/Executor.h"
-#include "utils/MpiUtils.h"
-#include <mpi.h>
 
 void Executor::finalize() {
     // do nothing by default

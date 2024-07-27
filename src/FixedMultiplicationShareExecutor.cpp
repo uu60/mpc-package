@@ -2,12 +2,10 @@
 // Created by 杜建璋 on 2024/7/27.
 //
 
-#include "FixedMultiplicationShareExecutor.h"
-#include "mpc_package/utils/MpiUtils.h"
-#include "mpc_package/utils/MathUtils.h"
-#include "mpc_package/utils/FixedMultiplicationTripleHolder.h"
-#include "mpc_package/utils/Log.h"
-#include <iostream>
+#include "executor/share/arithmetic/FixedMultiplicationShareExecutor.h"
+#include "utils/MpiUtils.h"
+#include "utils/MathUtils.h"
+#include "utils/FixedMultiplicationTripleHolder.h"
 
 void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
     int64_t idx = 0;

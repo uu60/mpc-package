@@ -5,10 +5,11 @@
 #include <iostream>
 #include "utils/Log.h"
 #include "utils/MpiUtils.h"
-#include <chrono>
 #include <iomanip>
 #include <sstream>
 #include <unistd.h>
+// required
+#include <chrono>
 
 const std::string Log::INFO = "INFO";
 const std::string Log::DEBUG = "DEBUG";

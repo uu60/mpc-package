@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include "../utils/System.h"
+#include "../utils/Log.h"
 
 class Executor {
 protected:

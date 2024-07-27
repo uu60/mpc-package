@@ -5,8 +5,6 @@
 #include "executor/share/arithmetic/MultiplicationShareExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
-#include <vector>
-#include <limits>
 #include "executor/ot/one_of_two/RsaOtExecutor.h"
 #include "utils/Log.h"
 
@@ -73,23 +71,7 @@ void MultiplicationShareExecutor::process() {
     _res = MathUtils::ringMod(z0 + z1, _l);
 }
 
-void MultiplicationShareExecutor::obtainMultiplicationTriple() {
-    generateRandoms();
-
-    computeU();
-    computeV();
-    computeC();
-
-    if (_benchmark) {
-        Log::i(BM_TAG + " OT RSA keys generation time: " + std::to_string(_otRsaGenerationTime) + " ms.");
-        Log::i(BM_TAG + " OT RSA encryption time: " + std::to_string(_otRsaEncryptionTime) + " ms.");
-        Log::i(BM_TAG + " OT RSA decryption time: " + std::to_string(_otRsaDecryptionTime) + " ms.");
-        Log::i(BM_TAG + " OT MPI transmission and synchronization time: " + std::to_string(_otMpiTime) + " ms.");
-        Log::i(BM_TAG + " OT total computation time: " + std::to_string(_otEntireComputationTime) + " ms.");
-    }
-}
-
-void MultiplicationShareExecutor::generateRandoms() {
+void MultiplicationShareExecutor::generateRandomAB() {
     _a0 = MathUtils::rand64(0, (1LL << _l) - 1);
     _b0 = MathUtils::rand64(0, (1LL << _l) - 1);
 }

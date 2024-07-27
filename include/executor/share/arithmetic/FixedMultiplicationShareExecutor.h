@@ -4,7 +4,7 @@
 
 #ifndef DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
 #define DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
-#include "mpc_package/executor/share/arithmetic/MultiplicationShareExecutor.h"
+#include "MultiplicationShareExecutor.h"
 
 class FixedMultiplicationShareExecutor : public MultiplicationShareExecutor {
 public:

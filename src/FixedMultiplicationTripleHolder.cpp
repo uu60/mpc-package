@@ -3,7 +3,6 @@
 //
 
 #include "utils/FixedMultiplicationTripleHolder.h"
-#include "utils/MathUtils.h"
 #include "utils/Log.h"
 
 const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t,

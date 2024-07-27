@@ -29,6 +29,10 @@ add_library(${PROJECT_NAME} SHARED
         include/utils/System.h
         src/FixedMultiplicationTripleHolder.cpp
         include/utils/FixedMultiplicationTripleHolder.h
+        src/RsaOtMultiplicationShareExecutor.cpp
+        include/executor/share/arithmetic/RsaOtMultiplicationShareExecutor.h
+        include/executor/share/arithmetic/FixedMultiplicationShareExecutor.h
+        src/FixedMultiplicationShareExecutor.cpp
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

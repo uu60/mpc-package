@@ -3,7 +3,7 @@
 #include "mpc_package/utils/Log.h"
 #include "mpc_package/utils/MpiUtils.h"
 #include "mpc_package/utils/MathUtils.h"
-#include "FixedMultiplicationShareExecutor.h"
+#include "mpc_package/executor/share/arithmetic/FixedMultiplicationShareExecutor.h"
 
 int main(int argc, char **argv) {
     MpiUtils::initMPI(argc, argv);

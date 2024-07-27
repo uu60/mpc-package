@@ -5,8 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(mpc_package REQUIRED)
 
-add_executable(demo main.cpp
-)
+add_executable(demo main.cpp)
 
 target_link_directories(demo PUBLIC ${mpc_package_LIBRARY_DIRS})
 target_link_libraries(demo mpc_package)

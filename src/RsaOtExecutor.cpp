@@ -2,13 +2,10 @@
 // Created by 杜建璋 on 2024/7/15.
 //
 
-#include <utility>
-
 #include "executor/ot/one_of_two/RsaOtExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
 #include "utils/CryptUtils.h"
-#include "utils/Log.h"
 
 const std::string RsaOtExecutor::BM_TAG = "[RSA OT]";
 

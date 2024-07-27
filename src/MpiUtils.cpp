@@ -3,7 +3,6 @@
 //
 
 #include "utils/MpiUtils.h"
-#include "utils/MathUtils.h"
 #include <mpi.h>
 #include <iostream>
 #include <limits>
