@@ -9,19 +9,29 @@
 #include "../utils/System.h"
 #include "../utils/Log.h"
 
+enum class BenchmarkLevel {
+    NONE, GENERAL, DETAILED
+};
+
 class Executor {
 protected:
     // getResult
     int64_t _res{};
-    bool _benchmark = false;
+
+    // for benchmark
+    BenchmarkLevel _benchmarkLevel = BenchmarkLevel::NONE;
+    bool _isLogBenchmark = false;
     int64_t _mpiTime{};
+    int64_t _entireComputationTime{};
 public:
     // secret sharing process
     virtual void compute() = 0;
     // get calculated getResult
     [[nodiscard]] int64_t getResult() const;
-    void setBenchmark(bool enabled);
+    void setBenchmark(BenchmarkLevel lv);
+    void setLogBenchmark(bool isLogBenchmark);
     [[nodiscard]] int64_t getMpiTime() const;
+    [[nodiscard]] int64_t getEntireComputationTime() const;
 protected:
     virtual void finalize();
 };

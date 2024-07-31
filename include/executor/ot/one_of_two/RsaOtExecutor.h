@@ -20,7 +20,6 @@ private:
     int64_t _rsaGenerationTime{};
     int64_t _rsaEncryptionTime{};
     int64_t _rsaDecryptionTime{};
-    int64_t _entireComputationTime{};
     // RSA key _bits
     int _bits{};
     // correspond mpi rank
@@ -48,7 +47,6 @@ public:
     [[nodiscard]] int64_t getRsaGenerationTime() const;
     [[nodiscard]] int64_t getRsaEncryptionTime() const;
     [[nodiscard]] int64_t getRsaDecryptionTime() const;
-    [[nodiscard]] int64_t getEntireComputationTime() const;
 
 private:
     // methods for sender

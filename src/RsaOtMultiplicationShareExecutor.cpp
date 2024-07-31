@@ -14,7 +14,7 @@ void RsaOtMultiplicationShareExecutor::obtainMultiplicationTriple() {
     computeV();
     computeC();
 
-    if (_benchmark) {
+    if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
         Log::i(BM_TAG + " OT RSA keys generation time: " + std::to_string(_otRsaGenerationTime) + " ms.");
         Log::i(BM_TAG + " OT RSA encryption time: " + std::to_string(_otRsaEncryptionTime) + " ms.");
         Log::i(BM_TAG + " OT RSA decryption time: " + std::to_string(_otRsaDecryptionTime) + " ms.");
@@ -53,11 +53,12 @@ void RsaOtMultiplicationShareExecutor::computeMix(int sender, int64_t &mix) {
             choice = (int)((_b0 >> i) & 1);
         }
         RsaOtExecutor r(sender, s0, s1, choice);
-        if (_benchmark) {
-            r.setBenchmark(true);
+        r.setLogBenchmark(false);
+        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+            r.setBenchmark(BenchmarkLevel::DETAILED);
         }
         r.compute();
-        if (_benchmark) {
+        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             // add mpi time
             _mpiTime += r.getMpiTime();
             _otMpiTime += r.getMpiTime();
