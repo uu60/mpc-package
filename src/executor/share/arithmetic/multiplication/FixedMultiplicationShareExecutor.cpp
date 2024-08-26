@@ -2,7 +2,7 @@
 // Created by 杜建璋 on 2024/7/27.
 //
 
-#include "executor/share/arithmetic/FixedMultiplicationShareExecutor.h"
+#include "executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
 

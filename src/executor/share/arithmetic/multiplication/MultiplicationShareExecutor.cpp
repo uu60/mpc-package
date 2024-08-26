@@ -2,7 +2,7 @@
 // Created by 杜建璋 on 2024/7/13.
 //
 
-#include "executor/share/arithmetic/MultiplicationShareExecutor.h"
+#include "executor/share/arithmetic/multiplication/MultiplicationShareExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
 #include "executor/ot/one_of_two/RsaOtExecutor.h"

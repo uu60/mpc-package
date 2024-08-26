@@ -7,30 +7,30 @@ find_package(MPI REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED
-        src/MathUtils.cpp
+        src/utils/MathUtils.cpp
         include/utils/MathUtils.h
-        src/Executor.cpp
+        src/executor/Executor.cpp
         include/executor/Executor.h
-        src/PartialAdditionShareExecutor.cpp
-        include/executor/share/arithmetic/PartialAdditionShareExecutor.h
-        src/Log.cpp
+        src/executor/share/arithmetic/addition/PartialAdditionShareExecutor.cpp
+        include/executor/share/arithmetic/addition/PartialAdditionShareExecutor.h
+        src/utils/Log.cpp
         include/utils/Log.h
-        src/MultiplicationShareExecutor.cpp
-        include/executor/share/arithmetic/MultiplicationShareExecutor.h
-        src/CompleteAdditionShareExecutor.cpp
-        include/executor/share/arithmetic/CompleteAdditionShareExecutor.h
-        src/RsaOtExecutor.cpp
+        src/executor/share/arithmetic/multiplication/MultiplicationShareExecutor.cpp
+        include/executor/share/arithmetic/multiplication/MultiplicationShareExecutor.h
+        src/executor/share/arithmetic/addition/CompleteAdditionShareExecutor.cpp
+        include/executor/share/arithmetic/addition/CompleteAdditionShareExecutor.h
+        src/executor/ot/one_of_two/RsaOtExecutor.cpp
         include/executor/ot/one_of_two/RsaOtExecutor.h
-        src/MpiUtils.cpp
+        src/utils/MpiUtils.cpp
         include/utils/MpiUtils.h
-        src/CryptUtils.cpp
+        src/utils/CryptUtils.cpp
         include/utils/CryptUtils.h
-        src/System.cpp
+        src/utils/System.cpp
         include/utils/System.h
-        src/RsaOtMultiplicationShareExecutor.cpp
-        include/executor/share/arithmetic/RsaOtMultiplicationShareExecutor.h
-        include/executor/share/arithmetic/FixedMultiplicationShareExecutor.h
-        src/FixedMultiplicationShareExecutor.cpp
+        src/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.cpp
+        include/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
+        include/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.h
+        src/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.cpp
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

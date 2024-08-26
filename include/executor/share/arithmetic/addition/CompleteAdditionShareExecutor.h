@@ -5,7 +5,7 @@
 #ifndef MPC_PACKAGE_COMPLETEADDITIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_COMPLETEADDITIONSHAREEXECUTOR_H
 
-#include "../../../executor/Executor.h"
+#include "executor/Executor.h"
 
 class CompleteAdditionShareExecutor : public Executor {
 protected:
