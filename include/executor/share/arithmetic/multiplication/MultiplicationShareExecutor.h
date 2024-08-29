@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_MULTIPLICATIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_MULTIPLICATIONSHAREEXECUTOR_H
-#include "executor/Executor.h"
+#include "../../../Executor.h"
 
 class MultiplicationShareExecutor : public Executor {
 public:

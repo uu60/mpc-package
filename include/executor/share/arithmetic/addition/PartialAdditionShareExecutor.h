@@ -5,7 +5,7 @@
 #ifndef MPC_PACKAGE_PARTIALADDITIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_PARTIALADDITIONSHAREEXECUTOR_H
 
-#include "executor/Executor.h"
+#include "../../../Executor.h"
 
 class PartialAdditionShareExecutor : public Executor {
 protected:

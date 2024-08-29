@@ -9,7 +9,7 @@
 XorBooleanShareExecutor::XorBooleanShareExecutor(bool x) {
     _x = x;
     _x1 = MathUtils::rand32(0, 1);
-    _x0 = _x0 xor _x;
+    _x0 = _x1 xor _x;
 }
 
 void XorBooleanShareExecutor::compute() {
