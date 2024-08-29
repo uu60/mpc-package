@@ -70,9 +70,9 @@ void RsaOtMultiplicationShareExecutor::computeMix(int sender, int64_t &mix) {
         if (isSender) {
             sum += s0;
         } else {
-            int64_t temp = r.getResult();
+            int64_t temp = r.result();
             if (choice == 0) {
-                temp = MathUtils::ringMod(-r.getResult(), _l);
+                temp = MathUtils::ringMod(-r.result(), _l);
             }
             sum += temp;
         }

@@ -15,7 +15,7 @@ enum class BenchmarkLevel {
 
 class Executor {
 protected:
-    // getResult
+    // result
     int64_t _res{};
 
     // for benchmark
@@ -26,8 +26,8 @@ protected:
 public:
     // secret sharing process
     virtual void compute() = 0;
-    // get calculated getResult
-    [[nodiscard]] int64_t getResult() const;
+    // get calculated result
+    [[nodiscard]] int64_t result() const;
     void setBenchmark(BenchmarkLevel lv);
     void setLogBenchmark(bool isLogBenchmark);
     [[nodiscard]] int64_t getMpiTime() const;

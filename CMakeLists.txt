@@ -17,8 +17,8 @@ add_library(${PROJECT_NAME} SHARED
         include/utils/Log.h
         src/executor/share/arithmetic/multiplication/MultiplicationShareExecutor.cpp
         include/executor/share/arithmetic/multiplication/MultiplicationShareExecutor.h
-        src/executor/share/arithmetic/addition/CompleteAdditionShareExecutor.cpp
-        include/executor/share/arithmetic/addition/CompleteAdditionShareExecutor.h
+        src/executor/share/arithmetic/addition/AdditionShareExecutor.cpp
+        include/executor/share/arithmetic/addition/AdditionShareExecutor.h
         src/executor/ot/one_of_two/RsaOtExecutor.cpp
         include/executor/ot/one_of_two/RsaOtExecutor.h
         src/utils/MpiUtils.cpp
@@ -31,6 +31,8 @@ add_library(${PROJECT_NAME} SHARED
         include/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
         include/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.h
         src/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.cpp
+        src/executor/share/boolean/XorBooleanShareExecutor.cpp
+        include/executor/share/boolean/XorBooleanShareExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

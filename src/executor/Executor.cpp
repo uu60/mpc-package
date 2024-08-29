@@ -8,7 +8,7 @@ void Executor::finalize() {
     // do nothing by default
 }
 
-int64_t Executor::getResult() const {
+int64_t Executor::result() const {
     return _res;
 }
 
