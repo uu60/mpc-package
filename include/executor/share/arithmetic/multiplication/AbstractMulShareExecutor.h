@@ -2,11 +2,11 @@
 // Created by 杜建璋 on 2024/7/13.
 //
 
-#ifndef MPC_PACKAGE_MULSHAREEXECUTOR_H
-#define MPC_PACKAGE_MULSHAREEXECUTOR_H
+#ifndef MPC_PACKAGE_ABSTRACTMULSHAREEXECUTOR_H
+#define MPC_PACKAGE_ABSTRACTMULSHAREEXECUTOR_H
 #include "../../../Executor.h"
 
-class MulShareExecutor : public Executor {
+class AbstractMulShareExecutor : public Executor {
 protected:
     // hold
     int64_t _x{};
@@ -24,7 +24,7 @@ protected:
     int64_t _c0{};
 
 public:
-    MulShareExecutor(int64_t x, int l);
+    AbstractMulShareExecutor(int64_t x, int l);
     void compute() override;
 
 protected:
@@ -35,4 +35,4 @@ private:
 };
 
 
-#endif //MPC_PACKAGE_MULSHAREEXECUTOR_H
+#endif //MPC_PACKAGE_ABSTRACTMULSHAREEXECUTOR_H

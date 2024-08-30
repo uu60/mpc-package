@@ -2,33 +2,33 @@
 // Created by 杜建璋 on 2024/8/30.
 //
 
-#include "executor/bmt/MulTripleExecutor.h"
+#include "executor/bmt/RsaOtTripleExecutor.h"
 #include "executor/ot/RsaOtExecutor.h"
 #include "utils/MathUtils.h"
 #include "utils/MpiUtils.h"
 
-MulTripleExecutor::MulTripleExecutor(int l) {
+RsaOtTripleExecutor::RsaOtTripleExecutor(int l) {
     _l = l;
 }
 
-void MulTripleExecutor::generateRandomAB() {
+void RsaOtTripleExecutor::generateRandomAB() {
     _a0 = MathUtils::rand64(0, (1LL << _l) - 1);
     _b0 = MathUtils::rand64(0, (1LL << _l) - 1);
 }
 
-void MulTripleExecutor::computeU() {
+void RsaOtTripleExecutor::computeU() {
     computeMix(0, _u0);
 }
 
-void MulTripleExecutor::computeV() {
+void RsaOtTripleExecutor::computeV() {
     computeMix(1, _v0);
 }
 
-int64_t MulTripleExecutor::corr(int i, int64_t x) const {
+int64_t RsaOtTripleExecutor::corr(int i, int64_t x) const {
     return MathUtils::ringMod((_a0 << i) - x, _l);
 }
 
-void MulTripleExecutor::computeMix(int sender, int64_t &mix) {
+void RsaOtTripleExecutor::computeMix(int sender, int64_t &mix) {
     bool isSender = MpiUtils::rank() == sender;
     int64_t sum = 0;
     for (int i = 0; i < _l; i++) {
@@ -68,23 +68,11 @@ void MulTripleExecutor::computeMix(int sender, int64_t &mix) {
     mix = MathUtils::ringMod(sum, _l);
 }
 
-void MulTripleExecutor::computeC() {
+void RsaOtTripleExecutor::computeC() {
     _c0 = MathUtils::ringMod(_a0 * _b0 + _u0 + _v0, _l);
 }
 
-int64_t MulTripleExecutor::a0() const {
-    return _a0;
-}
-
-int64_t MulTripleExecutor::b0() const {
-    return _b0;
-}
-
-int64_t MulTripleExecutor::c0() const {
-    return _c0;
-}
-
-void MulTripleExecutor::compute() {
+void RsaOtTripleExecutor::compute() {
     generateRandomAB();
 
     computeU();
@@ -92,27 +80,27 @@ void MulTripleExecutor::compute() {
     computeC();
 }
 
-int64_t MulTripleExecutor::otRsaGenerationTime() const {
+int64_t RsaOtTripleExecutor::otRsaGenerationTime() const {
     return _otRsaGenerationTime;
 }
 
-int64_t MulTripleExecutor::otRsaEncryptionTime() const {
+int64_t RsaOtTripleExecutor::otRsaEncryptionTime() const {
     return _otRsaEncryptionTime;
 }
 
-int64_t MulTripleExecutor::otRsaDecryptionTime() const {
+int64_t RsaOtTripleExecutor::otRsaDecryptionTime() const {
     return _otRsaDecryptionTime;
 }
 
-int64_t MulTripleExecutor::otMpiTime() const {
+int64_t RsaOtTripleExecutor::otMpiTime() const {
     return _otMpiTime;
 }
 
-int64_t MulTripleExecutor::otEntireComputationTime() const {
+int64_t RsaOtTripleExecutor::otEntireComputationTime() const {
     return _otEntireComputationTime;
 }
 
 
-std::string MulTripleExecutor::tag() const {
+std::string RsaOtTripleExecutor::tag() const {
     return "[BMT Generator]";
 }

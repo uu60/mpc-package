@@ -5,7 +5,7 @@
 #include "executor/share/boolean/and/AndBoolShareExecutor.h"
 #include "utils/MathUtils.h"
 #include "utils/MpiUtils.h"
-#include "executor/bmt/MulTripleExecutor.h"
+#include "executor/bmt/RsaOtTripleExecutor.h"
 
 AndBoolShareExecutor::AndBoolShareExecutor(bool x) {
     _x = x;
@@ -52,7 +52,7 @@ void AndBoolShareExecutor::compute() {
 }
 
 void AndBoolShareExecutor::obtainMultiplicationTriple() {
-    MulTripleExecutor m(1);
+    RsaOtTripleExecutor m(1);
     m.benchmark(_benchmarkLevel);
     m.compute();
     _a0 = m.a0();

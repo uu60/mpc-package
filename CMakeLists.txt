@@ -15,8 +15,8 @@ add_library(${PROJECT_NAME} SHARED
         include/executor/share/arithmetic/addition/PartialAddShareExecutor.h
         src/utils/Log.cpp
         include/utils/Log.h
-        src/executor/share/arithmetic/multiplication/MulShareExecutor.cpp
-        include/executor/share/arithmetic/multiplication/MulShareExecutor.h
+        src/executor/share/arithmetic/multiplication/AbstractMulShareExecutor.cpp
+        include/executor/share/arithmetic/multiplication/AbstractMulShareExecutor.h
         src/executor/share/arithmetic/addition/AddShareExecutor.cpp
         include/executor/share/arithmetic/addition/AddShareExecutor.h
         src/executor/ot/RsaOtExecutor.cpp
@@ -35,8 +35,12 @@ add_library(${PROJECT_NAME} SHARED
         include/executor/share/boolean/xor/XorBoolShareExecutor.h
         src/executor/share/boolean/and/AndBoolShareExecutor.cpp
         include/executor/share/boolean/and/AndBoolShareExecutor.h
-        src/executor/bmt/MulTripleExecutor.cpp
-        include/executor/bmt/MulTripleExecutor.h
+        src/executor/bmt/RsaOtTripleExecutor.cpp
+        include/executor/bmt/RsaOtTripleExecutor.h
+        src/executor/bmt/AbstractMulTripleExecutor.cpp
+        include/executor/bmt/AbstractMulTripleExecutor.h
+        src/executor/bmt/FixedTripleExecutor.cpp
+        include/executor/bmt/FixedTripleExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

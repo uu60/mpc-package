@@ -2,12 +2,12 @@
 // Created by 杜建璋 on 2024/7/13.
 //
 
-#include "executor/share/arithmetic/multiplication/MulShareExecutor.h"
+#include "executor/share/arithmetic/multiplication/AbstractMulShareExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
 #include "utils/Log.h"
 
-MulShareExecutor::MulShareExecutor(int64_t x, int l) {
+AbstractMulShareExecutor::AbstractMulShareExecutor(int64_t x, int l) {
     // data
     _x = x;
     _x1 = MathUtils::rand64();
@@ -16,7 +16,7 @@ MulShareExecutor::MulShareExecutor(int64_t x, int l) {
     _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
 }
 
-void MulShareExecutor::compute() {
+void AbstractMulShareExecutor::compute() {
     int64_t start, end, end1;
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         start = System::currentTimeMillis();
@@ -43,7 +43,7 @@ void MulShareExecutor::compute() {
     }
 }
 
-void MulShareExecutor::process() {
+void AbstractMulShareExecutor::process() {
     int64_t x0, y0, *self, *other;
     self = MpiUtils::rank() == 0 ? &x0 : &y0;
     other = MpiUtils::rank() == 0 ? &y0 : &x0;

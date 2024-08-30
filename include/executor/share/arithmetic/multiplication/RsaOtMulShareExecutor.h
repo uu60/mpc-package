@@ -4,12 +4,12 @@
 
 #ifndef MPC_PACKAGE_RSAOTMULSHAREEXECUTOR_H
 #define MPC_PACKAGE_RSAOTMULSHAREEXECUTOR_H
-#include "MulShareExecutor.h"
+#include "AbstractMulShareExecutor.h"
 
 
-class RsaOtMulShareExecutor : public MulShareExecutor {
+class RsaOtMulShareExecutor : public AbstractMulShareExecutor {
 public:
-    RsaOtMulShareExecutor(int64_t x, int l) : MulShareExecutor(x, l) {}
+    RsaOtMulShareExecutor(int64_t x, int l) : AbstractMulShareExecutor(x, l) {}
 protected:
     void obtainMultiplicationTriple() override;
     [[nodiscard]] std::string tag() const override;
