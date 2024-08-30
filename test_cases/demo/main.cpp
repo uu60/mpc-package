@@ -3,13 +3,13 @@
 #include "test_cases.h"
 
 int main(int argc, char **argv) {
-    MpiUtils::initMPI(argc, argv);
+    MpiUtils::init(argc, argv);
     Log::i("Beginning...");
 
-    test_XorBooleanShareExecutor();
+    test_AndBoolShareExecutor();
 
     Log::i("Done.");
-    MpiUtils::finalizeMPI();
+    MpiUtils::finalize();
     return 0;
 }
 
