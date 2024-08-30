@@ -2,12 +2,10 @@
 // Created by 杜建璋 on 2024/7/15.
 //
 
-#include "executor/ot/one_of_two/RsaOtExecutor.h"
+#include "executor/ot/RsaOtExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
 #include "utils/CryptUtils.h"
-
-const std::string RsaOtExecutor::BM_TAG = "[RSA OT]";
 
 RsaOtExecutor::RsaOtExecutor(int sender, int64_t m0, int64_t m1, int i)
         : RsaOtExecutor(2048, sender, m0, m1, i) {
@@ -15,7 +13,7 @@ RsaOtExecutor::RsaOtExecutor(int sender, int64_t m0, int64_t m1, int i)
 
 RsaOtExecutor::RsaOtExecutor(int bits, int sender, int64_t m0, int64_t m1, int i) {
     _bits = bits;
-    _isSender = sender == MpiUtils::getMpiRank();
+    _isSender = sender == MpiUtils::rank();
     if (_isSender) {
         _m0 = m0;
         _m1 = m1;
@@ -38,8 +36,8 @@ void RsaOtExecutor::compute() {
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         end = System::currentTimeMillis();
         if (_isLogBenchmark) {
-            Log::i(BM_TAG + " Entire computation time: " + std::to_string(end - start) + "ms.");
-            Log::i(BM_TAG + " MPI transmission and synchronization time: " + std::to_string(_mpiTime) + " ms.");
+            Log::i(tag() + " Entire computation time: " + std::to_string(end - start) + "ms.");
+            Log::i(tag() + " MPI transmission and synchronization time: " + std::to_string(_mpiTime) + " ms.");
         }
         _entireComputationTime = end - start;
     }
@@ -55,7 +53,7 @@ void RsaOtExecutor::generateAndShareRsaKeys() {
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             end = System::currentTimeMillis();
             if (_isLogBenchmark) {
-                Log::i(BM_TAG + " RSA keys generation time: " + std::to_string(end - start) + " ms.");
+                Log::i(tag() + " RSA keys generation time: " + std::to_string(end - start) + " ms.");
             }
             _rsaGenerationTime = end - start;
             MpiUtils::send(&_pub, _mpiTime);
@@ -107,7 +105,7 @@ void RsaOtExecutor::process() {
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             end = System::currentTimeMillis();
             if (_isLogBenchmark) {
-                Log::i(BM_TAG + " RSA encryption time: " + std::to_string(end - start) + " ms.");
+                Log::i(tag() + " RSA encryption time: " + std::to_string(end - start) + " ms.");
             }
             _rsaEncryptionTime = end - start;
         }
@@ -148,7 +146,7 @@ void RsaOtExecutor::process() {
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             end = System::currentTimeMillis();
             if (_isLogBenchmark) {
-                Log::i(BM_TAG + " RSA decryption time: " + std::to_string(end - start) + " ms.");
+                Log::i(tag() + " RSA decryption time: " + std::to_string(end - start) + " ms.");
             }
             _rsaDecryptionTime = end - start;
         }
@@ -174,4 +172,8 @@ int64_t RsaOtExecutor::getRsaEncryptionTime() const {
 
 int64_t RsaOtExecutor::getRsaDecryptionTime() const {
     return _rsaDecryptionTime;
+}
+
+std::string RsaOtExecutor::tag() const {
+    return "[RSA OT]";
 }

@@ -6,6 +6,7 @@
 #define MPC_PACKAGE_EXECUTOR_H
 
 #include <cstdint>
+#include <string>
 #include "../utils/System.h"
 #include "../utils/Log.h"
 
@@ -28,11 +29,12 @@ public:
     virtual void compute() = 0;
     // get calculated result
     [[nodiscard]] int64_t result() const;
-    void setBenchmark(BenchmarkLevel lv);
-    void setLogBenchmark(bool isLogBenchmark);
-    [[nodiscard]] int64_t getMpiTime() const;
-    [[nodiscard]] int64_t getEntireComputationTime() const;
+    void benchmark(BenchmarkLevel lv);
+    void logBenchmark(bool isLogBenchmark);
+    [[nodiscard]] int64_t mpiTime() const;
+    [[nodiscard]] int64_t entireComputationTime() const;
 protected:
+    [[nodiscard]] virtual std::string tag() const = 0;
     virtual void finalize();
 };
 

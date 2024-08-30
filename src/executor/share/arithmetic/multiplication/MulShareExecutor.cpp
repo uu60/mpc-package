@@ -2,15 +2,12 @@
 // Created by 杜建璋 on 2024/7/13.
 //
 
-#include "executor/share/arithmetic/multiplication/MultiplicationShareExecutor.h"
+#include "executor/share/arithmetic/multiplication/MulShareExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
-#include "executor/ot/one_of_two/RsaOtExecutor.h"
 #include "utils/Log.h"
 
-const std::string MultiplicationShareExecutor::BM_TAG = "[Multiplication Share]";
-
-MultiplicationShareExecutor::MultiplicationShareExecutor(int64_t x, int l) {
+MulShareExecutor::MulShareExecutor(int64_t x, int l) {
     // data
     _x = x;
     _x1 = MathUtils::rand64();
@@ -19,7 +16,7 @@ MultiplicationShareExecutor::MultiplicationShareExecutor(int64_t x, int l) {
     _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
 }
 
-void MultiplicationShareExecutor::compute() {
+void MulShareExecutor::compute() {
     int64_t start, end, end1;
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         start = System::currentTimeMillis();
@@ -29,7 +26,7 @@ void MultiplicationShareExecutor::compute() {
     if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
         end = System::currentTimeMillis();
         if (_isLogBenchmark) {
-            Log::i(BM_TAG + " Triple computation time: " + std::to_string(end - start) + " ms.");
+            Log::i(tag() + " Triple computation time: " + std::to_string(end - start) + " ms.");
         }
     }
     // process
@@ -37,19 +34,19 @@ void MultiplicationShareExecutor::compute() {
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         end1 = System::currentTimeMillis();
         if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
-            Log::i(BM_TAG + " MPI transmission and synchronization time: " + std::to_string(_mpiTime) + " ms.");
+            Log::i(tag() + " MPI transmission and synchronization time: " + std::to_string(_mpiTime) + " ms.");
         }
         if (_isLogBenchmark) {
-            Log::i(BM_TAG + " Entire computation time: " + std::to_string(end1 - start) + " ms.");
+            Log::i(tag() + " Entire computation time: " + std::to_string(end1 - start) + " ms.");
         }
         _entireComputationTime = end1 - start;
     }
 }
 
-void MultiplicationShareExecutor::process() {
+void MulShareExecutor::process() {
     int64_t x0, y0, *self, *other;
-    self = MpiUtils::getMpiRank() == 0 ? &x0 : &y0;
-    other = MpiUtils::getMpiRank() == 0 ? &y0 : &x0;
+    self = MpiUtils::rank() == 0 ? &x0 : &y0;
+    other = MpiUtils::rank() == 0 ? &y0 : &x0;
     *self = _x0;
     if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
         MpiUtils::exchange(&_x1, other, _mpiTime);
@@ -68,7 +65,7 @@ void MultiplicationShareExecutor::process() {
     }
     int64_t e = e0 + e1;
     int64_t f = f0 + f1;
-    int64_t z0 = MpiUtils::getMpiRank() * e * f + f * _a0 + e * _b0 + _c0;
+    int64_t z0 = MpiUtils::rank() * e * f + f * _a0 + e * _b0 + _c0;
     int64_t z1;
     if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
         MpiUtils::exchange(&z0, &z1, _mpiTime);

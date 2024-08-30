@@ -12,19 +12,19 @@ int64_t Executor::result() const {
     return _res;
 }
 
-void Executor::setBenchmark(BenchmarkLevel lv) {
+void Executor::benchmark(BenchmarkLevel lv) {
     _benchmarkLevel = lv;
 }
 
-int64_t Executor::getMpiTime() const {
+int64_t Executor::mpiTime() const {
     return _mpiTime;
 }
 
-void Executor::setLogBenchmark(bool isLogBenchmark) {
+void Executor::logBenchmark(bool isLogBenchmark) {
     _isLogBenchmark = isLogBenchmark;
 }
 
-int64_t Executor::getEntireComputationTime() const {
+int64_t Executor::entireComputationTime() const {
     return _entireComputationTime;
 }
 

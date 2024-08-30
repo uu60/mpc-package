@@ -53,7 +53,7 @@ void Log::print(const std::string& level, const std::string& msg) {
 
     std::cout << "[" << HOSTNAME + ":" + std::to_string(getpid()) << "] "
               << "[" << getCurrentTimestampStr() << "] "
-              << "[" + std::to_string(MpiUtils::getMpiRank()) + "] "
+              << "[" + std::to_string(MpiUtils::rank()) + "] "
               << "[" << std::setw(5) << level << "] "
               << msg << std::endl;
 }

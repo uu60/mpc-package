@@ -2,13 +2,13 @@
 // Created by 杜建璋 on 2024/7/27.
 //
 
-#include "executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.h"
+#include "executor/share/arithmetic/multiplication/FixedMulShareExecutor.h"
 #include "utils/MpiUtils.h"
 #include "utils/MathUtils.h"
 
-void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
+void FixedMulShareExecutor::obtainMultiplicationTriple() {
     int64_t idx = 0;
-    if (MpiUtils::getMpiRank() == 0) {
+    if (MpiUtils::rank() == 0) {
         idx = MathUtils::rand64(0, 99);
         MpiUtils::send(&idx);
     } else {
@@ -16,7 +16,7 @@ void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
     }
     std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>> triple = getRandomTriple(
             (int) idx);
-    if (MpiUtils::getMpiRank() == 0) {
+    if (MpiUtils::rank() == 0) {
         _a0 = (int64_t) std::get<0>(triple).first;
         _b0 = (int64_t) std::get<1>(triple).first;
         _c0 = (int64_t) std::get<2>(triple).first;
@@ -28,7 +28,7 @@ void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
 }
 
 std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>
-FixedMultiplicationShareExecutor::getRandomTriple(int idx) {
+FixedMulShareExecutor::getRandomTriple(int idx) {
     const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> *triple =
             _l == 64 ? &TRIPLES_64 :
             (_l == 32 ? &TRIPLES_32 :
@@ -38,7 +38,7 @@ FixedMultiplicationShareExecutor::getRandomTriple(int idx) {
 }
 
 const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t,
-        uint64_t>>, 100> FixedMultiplicationShareExecutor::TRIPLES_4 = {
+        uint64_t>>, 100> FixedMulShareExecutor::TRIPLES_4 = {
         {{{6u, 5u}, {1u, 12u}, {10u, 5u}}, {{0u, 3u}, {3u, 0u}, {4u, 5u}}, {{2u, 9u}, {7u, 8u}, {5u, 0u}},
          {{1u, 2u}, {0u, 11u}, {0u, 1u}}, {{10u, 4u}, {10u, 4u}, {3u, 1u}}, {{8u, 4u}, {8u, 1u}, {2u, 10u}},
          {{4u, 7u}, {0u, 0u}, {0u, 0u}}, {{0u, 0u}, {3u, 1u}, {0u, 0u}}, {{2u, 6u}, {5u, 0u}, {3u, 5u}},
@@ -74,7 +74,7 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
          {{10u, 4u}, {8u, 1u}, {7u, 7u}}, {{2u, 5u}, {0u, 6u}, {8u, 2u}}, {{3u, 0u}, {1u, 0u}, {2u, 1u}},
          {{5u, 6u}, {8u, 5u}, {9u, 6u}}}};
 
-const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedMultiplicationShareExecutor::TRIPLES_8 = {
+const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedMulShareExecutor::TRIPLES_8 = {
         {{{27u, 131u}, {72u, 49u}, {2u, 172u}}, {{51u, 22u}, {51u, 113u}, {95u, 101u}},
          {{79u, 11u}, {12u, 0u}, {42u, 14u}}, {{120u, 70u}, {111u, 61u}, {60u, 108u}},
          {{6u, 5u}, {28u, 60u}, {8u, 192u}}, {{49u, 114u}, {180u, 9u}, {30u, 57u}},
@@ -126,7 +126,7 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
          {{35u, 146u}, {72u, 55u}, {190u, 13u}}, {{46u, 62u}, {14u, 211u}, {226u, 10u}},
          {{123u, 125u}, {63u, 127u}, {5u, 11u}}, {{1u, 0u}, {89u, 26u}, {74u, 41u}}}};
 
-const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedMultiplicationShareExecutor::TRIPLES_16 = {
+const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedMulShareExecutor::TRIPLES_16 = {
         {{{1627u, 42520u}, {124u, 914u}, {3974u, 10948u}}, {{4157u, 3251u}, {54660u, 8723u}, {33723u, 7637u}},
          {{26437u, 15374u}, {15207u, 632u}, {2476u, 673u}}, {{7637u, 7713u}, {1372u, 3179u}, {45092u, 16918u}},
          {{8585u, 19072u}, {41227u, 4768u}, {3159u, 26796u}}, {{17686u, 10435u}, {1737u, 5934u}, {17381u, 19834u}},
@@ -182,7 +182,7 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
          {{6831u, 27963u}, {39791u, 22542u}, {9984u, 21570u}},
          {{15769u, 43576u}, {18817u, 7988u}, {17519u, 35414u}}}};
 
-const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedMultiplicationShareExecutor::TRIPLES_32 = {
+const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedMulShareExecutor::TRIPLES_32 = {
         {{{115612348u, 2907095997u}, {2379506638u, 891492028u}, {2948221942u, 908479300u}},
          {{1002030950u, 1718976374u}, {1984420463u, 1841230052u}, {495006711u, 2385197405u}},
          {{1120668244u, 2920252713u}, {491004948u, 3128934657u}, {228756719u, 1660029266u}},
@@ -284,7 +284,7 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
          {{1059501180u, 3139459735u}, {43280996u, 2094822292u}, {236428113u, 3289540119u}},
          {{211215035u, 171178733u}, {2931730081u, 968593108u}, {786254661u, 500025987u}}}};
 
-const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedMultiplicationShareExecutor::TRIPLES_64 = {
+const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedMulShareExecutor::TRIPLES_64 = {
         {{{3455707844174023398u, 368045344155006198u}, {1866817021635233342u, 2487611821973018856u},
           {66706130139586905u, 561170915510123855u}},
          {{10225935505306935750u, 7482612950540436966u}, {9564567009777799347u, 1831960930116096677u},
@@ -485,4 +485,8 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
           {1239258319673711054u, 11803636804888588400u}},
          {{79085538717898740u, 18204263100296787u}, {2918872397292474813u, 153151019041411908u},
           {10973873569563791506u, 5235230316260325557u}}}};
+
+std::string FixedMulShareExecutor::tag() const {
+    return "[Fixed Multiplication Share]";
+}
 

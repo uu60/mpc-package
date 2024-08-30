@@ -4,15 +4,17 @@
 
 #ifndef DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
 #define DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
-#include "MultiplicationShareExecutor.h"
+#include "MulShareExecutor.h"
 #include <array>
 #include <utility>  // For std::pair
 #include <tuple>   // For std::tuple
 
-class FixedMultiplicationShareExecutor : public MultiplicationShareExecutor {
+class FixedMulShareExecutor : public MulShareExecutor {
 public:
-    FixedMultiplicationShareExecutor(int64_t x, int l) : MultiplicationShareExecutor(x, l) {}
+    FixedMulShareExecutor(int64_t x, int l) : MulShareExecutor(x, l) {}
+
 protected:
+    [[nodiscard]] std::string tag() const override;
     void obtainMultiplicationTriple() override;
 private:
     std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>> getRandomTriple(int idx);

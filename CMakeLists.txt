@@ -11,28 +11,32 @@ add_library(${PROJECT_NAME} SHARED
         include/utils/MathUtils.h
         src/executor/Executor.cpp
         include/executor/Executor.h
-        src/executor/share/arithmetic/addition/PartialAdditionShareExecutor.cpp
-        include/executor/share/arithmetic/addition/PartialAdditionShareExecutor.h
+        src/executor/share/arithmetic/addition/PartialAddShareExecutor.cpp
+        include/executor/share/arithmetic/addition/PartialAddShareExecutor.h
         src/utils/Log.cpp
         include/utils/Log.h
-        src/executor/share/arithmetic/multiplication/MultiplicationShareExecutor.cpp
-        include/executor/share/arithmetic/multiplication/MultiplicationShareExecutor.h
-        src/executor/share/arithmetic/addition/AdditionShareExecutor.cpp
-        include/executor/share/arithmetic/addition/AdditionShareExecutor.h
-        src/executor/ot/one_of_two/RsaOtExecutor.cpp
-        include/executor/ot/one_of_two/RsaOtExecutor.h
+        src/executor/share/arithmetic/multiplication/MulShareExecutor.cpp
+        include/executor/share/arithmetic/multiplication/MulShareExecutor.h
+        src/executor/share/arithmetic/addition/AddShareExecutor.cpp
+        include/executor/share/arithmetic/addition/AddShareExecutor.h
+        src/executor/ot/RsaOtExecutor.cpp
+        include/executor/ot/RsaOtExecutor.h
         src/utils/MpiUtils.cpp
         include/utils/MpiUtils.h
         src/utils/CryptUtils.cpp
         include/utils/CryptUtils.h
         src/utils/System.cpp
         include/utils/System.h
-        src/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.cpp
-        include/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
-        include/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.h
-        src/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.cpp
-        src/executor/share/boolean/XorBooleanShareExecutor.cpp
-        include/executor/share/boolean/XorBooleanShareExecutor.h
+        src/executor/share/arithmetic/multiplication/RsaOtMulShareExecutor.cpp
+        include/executor/share/arithmetic/multiplication/RsaOtMulShareExecutor.h
+        include/executor/share/arithmetic/multiplication/FixedMulShareExecutor.h
+        src/executor/share/arithmetic/multiplication/FixedMulShareExecutor.cpp
+        src/executor/share/boolean/xor/XorBoolShareExecutor.cpp
+        include/executor/share/boolean/xor/XorBoolShareExecutor.h
+        src/executor/share/boolean/and/AndBoolShareExecutor.cpp
+        include/executor/share/boolean/and/AndBoolShareExecutor.h
+        src/executor/bmt/MulTripleExecutor.cpp
+        include/executor/bmt/MulTripleExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

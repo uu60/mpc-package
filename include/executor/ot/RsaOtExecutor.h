@@ -9,12 +9,10 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <openssl/sha.h>
-#include "../../../executor/Executor.h"
+#include "../Executor.h"
 
 // according to https://blog.csdn.net/qq_16763983/article/details/128055146
 class RsaOtExecutor : public Executor {
-public:
-    static const std::string BM_TAG;
 private:
     // for benchmark
     int64_t _rsaGenerationTime{};
@@ -47,6 +45,9 @@ public:
     [[nodiscard]] int64_t getRsaGenerationTime() const;
     [[nodiscard]] int64_t getRsaEncryptionTime() const;
     [[nodiscard]] int64_t getRsaDecryptionTime() const;
+
+protected:
+    [[nodiscard]] std::string tag() const override;
 
 private:
     // methods for sender

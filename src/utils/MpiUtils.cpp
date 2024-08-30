@@ -15,14 +15,14 @@ bool MpiUtils::_envInited = false;
 int MpiUtils::_mpiRank = 0;
 int MpiUtils::_mpiSize = 0;
 
-void MpiUtils::finalizeMPI() {
+void MpiUtils::finalize() {
     if (_envInited) {
         MPI_Finalize();
         _envInited = false;
     }
 }
 
-void MpiUtils::initMPI(int argc, char **argv) {
+void MpiUtils::init(int argc, char **argv) {
     if (!_envInited) {
         // init MPI env
         MPI_Init(&argc, &argv);
@@ -71,15 +71,15 @@ void MpiUtils::recv(std::string *target) {
 //    Log::d("recv: " + *target);
 }
 
-bool MpiUtils::isEnvInited() {
+bool MpiUtils::inited() {
     return _envInited;
 }
 
-int MpiUtils::getMpiSize() {
+int MpiUtils::size() {
     return _mpiSize;
 }
 
-int MpiUtils::getMpiRank() {
+int MpiUtils::rank() {
     return _mpiRank;
 }
 

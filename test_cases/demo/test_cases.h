@@ -15,7 +15,7 @@ void test_FixedMultiplicationShareExecutor() {
     int a = MathUtils::rand32();
     Log::i("Multiplier: " + std::to_string(a));
     FixedMultiplicationShareExecutor m(a, 32);
-    m.setBenchmark(BenchmarkLevel::DETAILED);
+    m.benchmark(BenchmarkLevel::DETAILED);
     m.compute();
     Log::i(std::to_string((m.result())));
 }
@@ -24,7 +24,7 @@ void test_RsaOtMultiplicationShareExecutor() {
     int a = MathUtils::rand32();
     Log::i("Multiplier: " + std::to_string(a));
     RsaOtMultiplicationShareExecutor m(a, 32);
-    m.setBenchmark(BenchmarkLevel::DETAILED);
+    m.benchmark(BenchmarkLevel::DETAILED);
     m.compute();
     Log::i(std::to_string((m.result())));
 }
@@ -33,7 +33,7 @@ void test_XorBooleanShareExecutor() {
     bool a = MathUtils::rand32(0, 1);
     Log::i("Boolean: " + std::to_string(a));
     XorBooleanShareExecutor e(a);
-    e.setBenchmark(BenchmarkLevel::DETAILED);
+    e.benchmark(BenchmarkLevel::DETAILED);
     e.compute();
     Log::d(std::to_string(e.result()));
 }

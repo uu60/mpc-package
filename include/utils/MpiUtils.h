@@ -15,12 +15,12 @@ private:
     // _mpiRank of current device
     static int _mpiRank;
 public:
-    static bool isEnvInited();
-    static int getMpiSize();
-    static int getMpiRank();
+    static bool inited();
+    static int size();
+    static int rank();
     // init env
-    static void initMPI(int argc, char **argv);
-    static void finalizeMPI();
+    static void init(int argc, char **argv);
+    static void finalize();
     // exchange data
     static void exchange(const int64_t *data, int64_t *target);
     static void exchange(const int64_t *data, int64_t *target, int64_t &mpiTime);
