@@ -5,9 +5,6 @@
 #ifndef DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
 #define DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
 #include "AbstractMulShareExecutor.h"
-#include <array>
-#include <utility>  // For std::pair
-#include <tuple>   // For std::tuple
 
 class FixedMulShareExecutor : public AbstractMulShareExecutor {
 public:

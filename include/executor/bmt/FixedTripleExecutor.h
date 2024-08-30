@@ -5,6 +5,9 @@
 #ifndef MPC_PACKAGE_FIXEDTRIPLEEXECUTOR_H
 #define MPC_PACKAGE_FIXEDTRIPLEEXECUTOR_H
 #include "AbstractMulTripleExecutor.h"
+#include <array>
+#include <utility>  // For std::pair
+#include <tuple>   // For std::tuple
 
 class FixedTripleExecutor : public AbstractMulTripleExecutor {
 private:
