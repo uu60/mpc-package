@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTMULTRIPLEEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTMULTRIPLEEXECUTOR_H
-#include "RsaOtTripleExecutor.h"
+#include "../Executor.h"
 
 class AbstractMulTripleExecutor : public Executor {
 protected:
