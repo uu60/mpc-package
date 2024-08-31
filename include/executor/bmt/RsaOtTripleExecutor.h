@@ -11,7 +11,6 @@
 class RsaOtTripleExecutor : public AbstractMulTripleExecutor {
 private:
     // benchmark
-    BenchmarkLevel _benchmarkLevel = BenchmarkLevel::NONE;
     int64_t _otRsaGenerationTime{};
     int64_t _otRsaEncryptionTime{};
     int64_t _otRsaDecryptionTime{};
