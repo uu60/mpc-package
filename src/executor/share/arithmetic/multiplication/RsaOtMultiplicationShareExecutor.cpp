@@ -2,12 +2,12 @@
 // Created by 杜建璋 on 2024/7/27.
 //
 
-#include "executor/share/arithmetic/multiplication/RsaOtMulShareExecutor.h"
-#include "utils/MpiUtils.h"
-#include "executor/bmt/RsaOtTripleExecutor.h"
+#include "executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h"
+#include "utils/Mpi.h"
+#include "executor/bmt/RsaOtTripleGenerator.h"
 
 void RsaOtMulShareExecutor::obtainMultiplicationTriple() {
-    RsaOtTripleExecutor e(_l);
+    RsaOtTripleGenerator e(_l);
     e.benchmark(_benchmarkLevel);
     e.logBenchmark(false);
     e.compute();

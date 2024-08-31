@@ -2,17 +2,17 @@
 // Created by 杜建璋 on 2024/7/6.
 //
 
-#include "utils/MathUtils.h"
+#include "utils/Math.h"
 #include <random>
 #include <string>
 #include <limits>
 #include <iomanip>
 
-int MathUtils::rand32() {
+int Math::rand32() {
     return rand32(-RAND_MAX - 1, RAND_MAX);
 }
 
-int MathUtils::rand32(int lowest, int highest) {
+int Math::rand32(int lowest, int highest) {
     // random engine
     std::random_device rd;
     std::mt19937 generator(rd());
@@ -25,11 +25,11 @@ int MathUtils::rand32(int lowest, int highest) {
 }
 
 
-int64_t MathUtils::rand64() {
+int64_t Math::rand64() {
     return rand64(std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max());
 }
 
-int64_t MathUtils::rand64(int64_t lowest, int64_t highest) {
+int64_t Math::rand64(int64_t lowest, int64_t highest) {
     // random engine
     std::random_device rd;
     std::mt19937 generator(rd());
@@ -41,7 +41,7 @@ int64_t MathUtils::rand64(int64_t lowest, int64_t highest) {
     return distribution(generator);
 }
 
-BIGNUM *MathUtils::bignum(const std::string &str, const bool positive) {
+BIGNUM *Math::bignum(const std::string &str, const bool positive) {
     std::vector<uint8_t> binaryData = std::vector<uint8_t>(str.begin(), str.end());
     BIGNUM *bn = BN_new();
     BN_bin2bn(binaryData.data(), binaryData.size(), bn);
@@ -51,7 +51,7 @@ BIGNUM *MathUtils::bignum(const std::string &str, const bool positive) {
     return bn;
 }
 
-std::string MathUtils::string(BIGNUM *bn) {
+std::string Math::string(BIGNUM *bn) {
     int num_bytes = BN_num_bytes(bn);
     std::vector<unsigned char> bin(num_bytes);
     BN_bn2bin(bn, bin.data());
@@ -71,7 +71,7 @@ std::string MathUtils::string(BIGNUM *bn) {
     return result;
 }
 
-BIGNUM *MathUtils::add(BIGNUM *add0, int64_t add1) {
+BIGNUM *Math::add(BIGNUM *add0, int64_t add1) {
     BIGNUM *bn_add1 = BN_new();
     if (add1 >= 0) {
         BN_set_word(bn_add1, add1);
@@ -85,16 +85,16 @@ BIGNUM *MathUtils::add(BIGNUM *add0, int64_t add1) {
     return result;
 }
 
-std::string MathUtils::add(const std::string &add0, int64_t add1) {
-    BIGNUM *add0N = MathUtils::bignum(add0);
-    BIGNUM *sum = MathUtils::add(add0N, add1);
-    std::string result = MathUtils::string(sum);
+std::string Math::add(const std::string &add0, int64_t add1) {
+    BIGNUM *add0N = Math::bignum(add0);
+    BIGNUM *sum = Math::add(add0N, add1);
+    std::string result = Math::string(sum);
     BN_free(add0N);
     BN_free(sum);
     return result;
 }
 
-std::string MathUtils::rand0b(int bytes) {
+std::string Math::rand0b(int bytes) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int8_t> dis(-128, 127);
@@ -108,21 +108,21 @@ std::string MathUtils::rand0b(int bytes) {
     return std::string(temp.begin(), temp.end());
 }
 
-std::string MathUtils::add(const std::string &add0, const std::string &add1) {
+std::string Math::add(const std::string &add0, const std::string &add1) {
     return add(add0, add1, false);
 }
 
-std::string MathUtils::minus(const std::string &add0, const std::string &add1) {
+std::string Math::minus(const std::string &add0, const std::string &add1) {
     return add(add0, add1, true);
 }
 
-BIGNUM *MathUtils::bignum(const std::string &str) {
+BIGNUM *Math::bignum(const std::string &str) {
     return bignum(str, true);
 }
 
-std::string MathUtils::add(const std::string &add0, const std::string &add1, bool minus) {
-    BIGNUM *add0N = MathUtils::bignum(add0);
-    BIGNUM *add1N = MathUtils::bignum(add1, !minus);
+std::string Math::add(const std::string &add0, const std::string &add1, bool minus) {
+    BIGNUM *add0N = Math::bignum(add0);
+    BIGNUM *add1N = Math::bignum(add1, !minus);
     BIGNUM *result = BN_new();
     BN_add(result, add0N, add1N);
     std::string resultStr = string(result);
@@ -132,11 +132,11 @@ std::string MathUtils::add(const std::string &add0, const std::string &add1, boo
     return resultStr;
 }
 
-int64_t MathUtils::ringMod(int64_t num, int l) {
+int64_t Math::ringMod(int64_t num, int l) {
     int64_t ring = 1LL << l;
     return ((num % ring) + ring) % ring;
 }
 
-std::string MathUtils::rand0b(int lowBytes, int highBytes) {
-    return MathUtils::rand0b(MathUtils::rand32(lowBytes, highBytes));
+std::string Math::rand0b(int lowBytes, int highBytes) {
+    return Math::rand0b(Math::rand32(lowBytes, highBytes));
 }

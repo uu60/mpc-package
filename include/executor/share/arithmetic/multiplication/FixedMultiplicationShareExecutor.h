@@ -4,11 +4,11 @@
 
 #ifndef DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
 #define DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
-#include "AbstractMulShareExecutor.h"
+#include "AbstractMultiplicationShareExecutor.h"
 
-class FixedMulShareExecutor : public AbstractMulShareExecutor {
+class FixedMultiplicationShareExecutor : public AbstractMultiplicationShareExecutor {
 public:
-    FixedMulShareExecutor(int64_t x, int l) : AbstractMulShareExecutor(x, l) {}
+    FixedMultiplicationShareExecutor(int64_t x, int l) : AbstractMultiplicationShareExecutor(x, l) {}
 
 protected:
     [[nodiscard]] std::string tag() const override;

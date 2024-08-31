@@ -2,18 +2,18 @@
 // Created by 杜建璋 on 2024/8/30.
 //
 
-#ifndef MPC_PACKAGE_FIXEDTRIPLEEXECUTOR_H
-#define MPC_PACKAGE_FIXEDTRIPLEEXECUTOR_H
-#include "AbstractMulTripleExecutor.h"
+#ifndef MPC_PACKAGE_FIXEDTRIPLEGENERATOR_H
+#define MPC_PACKAGE_FIXEDTRIPLEGENERATOR_H
+#include "AbstractMultiplicationTripleGenerator.h"
 #include <array>
 #include <utility>  // For std::pair
 #include <tuple>   // For std::tuple
 
-class FixedTripleExecutor : public AbstractMulTripleExecutor {
+class FixedTripleGenerator : public AbstractMultiplicationTripleGenerator {
 private:
     std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>> getRandomTriple(int idx);
 public:
-    explicit FixedTripleExecutor(int l);
+    explicit FixedTripleGenerator(int l);
     void compute() override;
 protected:
     [[nodiscard]] std::string tag() const override;
@@ -35,4 +35,4 @@ private:
 };
 
 
-#endif //MPC_PACKAGE_FIXEDTRIPLEEXECUTOR_H
+#endif //MPC_PACKAGE_FIXEDTRIPLEGENERATOR_H

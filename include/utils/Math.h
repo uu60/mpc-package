@@ -2,14 +2,14 @@
 // Created by 杜建璋 on 2024/7/6.
 //
 
-#ifndef MPC_PACKAGE_MATHUTILS_H
-#define MPC_PACKAGE_MATHUTILS_H
+#ifndef MPC_PACKAGE_MATH_H
+#define MPC_PACKAGE_MATH_H
 
 #include <string>
 #include <openssl/bn.h>
 #include <openssl/evp.h>
 
-class MathUtils {
+class Math {
 public:
     // generate a random
     static int rand32();
@@ -36,4 +36,4 @@ private:
 };
 
 
-#endif //MPC_PACKAGE_MATHUTILS_H
+#endif //MPC_PACKAGE_MATH_H

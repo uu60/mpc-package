@@ -2,11 +2,11 @@
 // Created by 杜建璋 on 2024/7/15.
 //
 
-#ifndef MPC_PACKAGE_MPIUTILS_H
-#define MPC_PACKAGE_MPIUTILS_H
+#ifndef MPC_PACKAGE_MPI_H
+#define MPC_PACKAGE_MPI_H
 #include <string>
 
-class MpiUtils {
+class Mpi {
 private:
     // mpi env init
     static bool _envInited;
@@ -35,4 +35,4 @@ public:
 };
 
 
-#endif //MPC_PACKAGE_MPIUTILS_H
+#endif //MPC_PACKAGE_MPI_H

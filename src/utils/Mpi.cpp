@@ -2,7 +2,7 @@
 // Created by 杜建璋 on 2024/7/15.
 //
 
-#include "utils/MpiUtils.h"
+#include "utils/Mpi.h"
 #include <mpi.h>
 #include <iostream>
 #include <limits>
@@ -11,18 +11,18 @@
 #include "utils/System.h"
 
 // init
-bool MpiUtils::_envInited = false;
-int MpiUtils::_mpiRank = 0;
-int MpiUtils::_mpiSize = 0;
+bool Mpi::_envInited = false;
+int Mpi::_mpiRank = 0;
+int Mpi::_mpiSize = 0;
 
-void MpiUtils::finalize() {
+void Mpi::finalize() {
     if (_envInited) {
         MPI_Finalize();
         _envInited = false;
     }
 }
 
-void MpiUtils::init(int argc, char **argv) {
+void Mpi::init(int argc, char **argv) {
     if (!_envInited) {
         // init MPI env
         MPI_Init(&argc, &argv);
@@ -36,16 +36,16 @@ void MpiUtils::init(int argc, char **argv) {
     }
 }
 
-void MpiUtils::exchange(const int64_t *data, int64_t *target) {
+void Mpi::exchange(const int64_t *data, int64_t *target) {
     send(data);
     recv(target);
 }
 
-void MpiUtils::send(const int64_t *data) {
+void Mpi::send(const int64_t *data) {
     MPI_Send(data, 1, MPI_INT64_T, 1 - _mpiRank, 0, MPI_COMM_WORLD);
 }
 
-void MpiUtils::send(const std::string *data) {
+void Mpi::send(const std::string *data) {
     if (data->length() > static_cast<size_t>(std::numeric_limits<int>::max())) {
         std::cerr << "String size exceeds MPI_Send limit." << std::endl;
         MPI_Abort(MPI_COMM_WORLD, 1);
@@ -54,11 +54,11 @@ void MpiUtils::send(const std::string *data) {
 //    Log::d("send:  " + *data);
 }
 
-void MpiUtils::recv(int64_t *target) {
+void Mpi::recv(int64_t *target) {
     MPI_Recv(target, 1, MPI_INT64_T, 1 - _mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
 
-void MpiUtils::recv(std::string *target) {
+void Mpi::recv(std::string *target) {
     MPI_Status status;
     MPI_Probe(1 - _mpiRank, 0, MPI_COMM_WORLD, &status);
 
@@ -71,47 +71,47 @@ void MpiUtils::recv(std::string *target) {
 //    Log::d("recv: " + *target);
 }
 
-bool MpiUtils::inited() {
+bool Mpi::inited() {
     return _envInited;
 }
 
-int MpiUtils::size() {
+int Mpi::size() {
     return _mpiSize;
 }
 
-int MpiUtils::rank() {
+int Mpi::rank() {
     return _mpiRank;
 }
 
-void MpiUtils::exchange(const int64_t *data, int64_t *target, int64_t &mpiTime) {
+void Mpi::exchange(const int64_t *data, int64_t *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
     exchange(data, target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void MpiUtils::send(const int64_t *data, int64_t &mpiTime) {
+void Mpi::send(const int64_t *data, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
     send(data);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void MpiUtils::recv(int64_t *target, int64_t &mpiTime) {
+void Mpi::recv(int64_t *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
     recv(target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void MpiUtils::send(const std::string *data, int64_t &mpiTime) {
+void Mpi::send(const std::string *data, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
     send(data);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void MpiUtils::recv(std::string *target, int64_t &mpiTime) {
+void Mpi::recv(std::string *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
     recv(target);
     int64_t end = System::currentTimeMillis();

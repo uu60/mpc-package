@@ -2,26 +2,26 @@
 // Created by 杜建璋 on 2024/8/30.
 //
 
-#include "executor/bmt/FixedTripleExecutor.h"
-#include "utils/MpiUtils.h"
-#include "utils/MathUtils.h"
+#include "executor/bmt/FixedTripleGenerator.h"
+#include "utils/Mpi.h"
+#include "utils/Math.h"
 
-FixedTripleExecutor::FixedTripleExecutor(int l) {
+FixedTripleGenerator::FixedTripleGenerator(int l) {
     _l = l;
 }
 
 
-void FixedTripleExecutor::compute() {
+void FixedTripleGenerator::compute() {
     int64_t idx = 0;
-    if (MpiUtils::rank() == 0) {
-        idx = MathUtils::rand64(0, 99);
-        MpiUtils::send(&idx);
+    if (Mpi::rank() == 0) {
+        idx = Math::rand64(0, 99);
+        Mpi::send(&idx);
     } else {
-        MpiUtils::recv(&idx);
+        Mpi::recv(&idx);
     }
     std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>> triple = getRandomTriple(
             (int) idx);
-    if (MpiUtils::rank() == 0) {
+    if (Mpi::rank() == 0) {
         _a0 = (int64_t) std::get<0>(triple).first;
         _b0 = (int64_t) std::get<1>(triple).first;
         _c0 = (int64_t) std::get<2>(triple).first;
@@ -32,12 +32,12 @@ void FixedTripleExecutor::compute() {
     }
 }
 
-std::string FixedTripleExecutor::tag() const {
+std::string FixedTripleGenerator::tag() const {
     return "[Fixed BMT Generator]";
 }
 
 std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>
-FixedTripleExecutor::getRandomTriple(int idx) {
+FixedTripleGenerator::getRandomTriple(int idx) {
     const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> *triple =
             _l == 64 ? &TRIPLES_64 :
             (_l == 32 ? &TRIPLES_32 :
@@ -48,7 +48,7 @@ FixedTripleExecutor::getRandomTriple(int idx) {
 }
 
 const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t,
-        uint64_t>>, 100> FixedTripleExecutor::TRIPLES_1 = {
+        uint64_t>>, 100> FixedTripleGenerator::TRIPLES_1 = {
         {{{0u, 1u}, {0u, 1u}, {1u, 0u}}, {{1u, 0u}, {0u, 0u}, {0u, 0u}}, {{0u, 0u}, {1u, 0u}, {0u, 0u}},
          {{0u, 1u}, {1u, 0u}, {1u, 0u}}, {{0u, 0u}, {0u, 0u}, {0u, 0u}}, {{0u, 1u}, {0u, 0u}, {0u, 0u}},
          {{1u, 0u}, {0u, 0u}, {0u, 0u}}, {{0u, 0u}, {0u, 1u}, {0u, 0u}}, {{0u, 0u}, {1u, 0u}, {0u, 0u}},
@@ -84,7 +84,7 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
          {{1u, 0u}, {0u, 1u}, {0u, 1u}}, {{0u, 1u}, {0u, 0u}, {0u, 0u}}, {{0u, 0u}, {0u, 1u}, {0u, 0u}},
          {{0u, 0u}, {0u, 1u}, {0u, 0u}}}};
 const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t,
-        uint64_t>>, 100> FixedTripleExecutor::TRIPLES_4 = {
+        uint64_t>>, 100> FixedTripleGenerator::TRIPLES_4 = {
         {{{6u, 5u}, {1u, 12u}, {10u, 5u}}, {{0u, 3u}, {3u, 0u}, {4u, 5u}}, {{2u, 9u}, {7u, 8u}, {5u, 0u}},
          {{1u, 2u}, {0u, 11u}, {0u, 1u}}, {{10u, 4u}, {10u, 4u}, {3u, 1u}}, {{8u, 4u}, {8u, 1u}, {2u, 10u}},
          {{4u, 7u}, {0u, 0u}, {0u, 0u}}, {{0u, 0u}, {3u, 1u}, {0u, 0u}}, {{2u, 6u}, {5u, 0u}, {3u, 5u}},
@@ -120,7 +120,7 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
          {{10u, 4u}, {8u, 1u}, {7u, 7u}}, {{2u, 5u}, {0u, 6u}, {8u, 2u}}, {{3u, 0u}, {1u, 0u}, {2u, 1u}},
          {{5u, 6u}, {8u, 5u}, {9u, 6u}}}};
 
-const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedTripleExecutor::TRIPLES_8 = {
+const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedTripleGenerator::TRIPLES_8 = {
         {{{27u, 131u}, {72u, 49u}, {2u, 172u}}, {{51u, 22u}, {51u, 113u}, {95u, 101u}},
          {{79u, 11u}, {12u, 0u}, {42u, 14u}}, {{120u, 70u}, {111u, 61u}, {60u, 108u}},
          {{6u, 5u}, {28u, 60u}, {8u, 192u}}, {{49u, 114u}, {180u, 9u}, {30u, 57u}},
@@ -172,7 +172,7 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
          {{35u, 146u}, {72u, 55u}, {190u, 13u}}, {{46u, 62u}, {14u, 211u}, {226u, 10u}},
          {{123u, 125u}, {63u, 127u}, {5u, 11u}}, {{1u, 0u}, {89u, 26u}, {74u, 41u}}}};
 
-const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedTripleExecutor::TRIPLES_16 = {
+const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedTripleGenerator::TRIPLES_16 = {
         {{{1627u, 42520u}, {124u, 914u}, {3974u, 10948u}}, {{4157u, 3251u}, {54660u, 8723u}, {33723u, 7637u}},
          {{26437u, 15374u}, {15207u, 632u}, {2476u, 673u}}, {{7637u, 7713u}, {1372u, 3179u}, {45092u, 16918u}},
          {{8585u, 19072u}, {41227u, 4768u}, {3159u, 26796u}}, {{17686u, 10435u}, {1737u, 5934u}, {17381u, 19834u}},
@@ -228,7 +228,7 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
          {{6831u, 27963u}, {39791u, 22542u}, {9984u, 21570u}},
          {{15769u, 43576u}, {18817u, 7988u}, {17519u, 35414u}}}};
 
-const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedTripleExecutor::TRIPLES_32 = {
+const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedTripleGenerator::TRIPLES_32 = {
         {{{115612348u, 2907095997u}, {2379506638u, 891492028u}, {2948221942u, 908479300u}},
          {{1002030950u, 1718976374u}, {1984420463u, 1841230052u}, {495006711u, 2385197405u}},
          {{1120668244u, 2920252713u}, {491004948u, 3128934657u}, {228756719u, 1660029266u}},
@@ -330,7 +330,7 @@ const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, u
          {{1059501180u, 3139459735u}, {43280996u, 2094822292u}, {236428113u, 3289540119u}},
          {{211215035u, 171178733u}, {2931730081u, 968593108u}, {786254661u, 500025987u}}}};
 
-const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedTripleExecutor::TRIPLES_64 = {
+const std::array<std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>>, 100> FixedTripleGenerator::TRIPLES_64 = {
         {{{3455707844174023398u, 368045344155006198u}, {1866817021635233342u, 2487611821973018856u},
           {66706130139586905u, 561170915510123855u}},
          {{10225935505306935750u, 7482612950540436966u}, {9564567009777799347u, 1831960930116096677u},

@@ -2,11 +2,11 @@
 // Created by 杜建璋 on 2024/8/30.
 //
 
-#ifndef MPC_PACKAGE_ABSTRACTMULTRIPLEEXECUTOR_H
-#define MPC_PACKAGE_ABSTRACTMULTRIPLEEXECUTOR_H
+#ifndef MPC_PACKAGE_ABSTRACTMULTIPLICATIONTRIPLEGENERATOR_H
+#define MPC_PACKAGE_ABSTRACTMULTIPLICATIONTRIPLEGENERATOR_H
 #include "../Executor.h"
 
-class AbstractMulTripleExecutor : public Executor {
+class AbstractMultiplicationTripleGenerator : public Executor {
 protected:
     int _l{};
     int64_t _a0{};
@@ -21,4 +21,4 @@ public:
 };
 
 
-#endif //MPC_PACKAGE_ABSTRACTMULTRIPLEEXECUTOR_H
+#endif //MPC_PACKAGE_ABSTRACTMULTIPLICATIONTRIPLEGENERATOR_H

@@ -7,40 +7,44 @@ find_package(MPI REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED
-        src/utils/MathUtils.cpp
-        include/utils/MathUtils.h
+        src/utils/Math.cpp
+        include/utils/Math.h
         src/executor/Executor.cpp
         include/executor/Executor.h
-        src/executor/share/arithmetic/addition/PartialAddShareExecutor.cpp
-        include/executor/share/arithmetic/addition/PartialAddShareExecutor.h
+        src/executor/share/arithmetic/addition/PartialAdditionShareExecutor.cpp
+        include/executor/share/arithmetic/addition/PartialAdditionShareExecutor.h
         src/utils/Log.cpp
         include/utils/Log.h
-        src/executor/share/arithmetic/multiplication/AbstractMulShareExecutor.cpp
-        include/executor/share/arithmetic/multiplication/AbstractMulShareExecutor.h
-        src/executor/share/arithmetic/addition/AddShareExecutor.cpp
-        include/executor/share/arithmetic/addition/AddShareExecutor.h
+        src/executor/share/arithmetic/multiplication/AbstractMultiplicationShareExecutor.cpp
+        include/executor/share/arithmetic/multiplication/AbstractMultiplicationShareExecutor.h
+        src/executor/share/arithmetic/addition/AdditionShareExecutor.cpp
+        include/executor/share/arithmetic/addition/AdditionShareExecutor.h
         src/executor/ot/RsaOtExecutor.cpp
         include/executor/ot/RsaOtExecutor.h
-        src/utils/MpiUtils.cpp
-        include/utils/MpiUtils.h
-        src/utils/CryptUtils.cpp
-        include/utils/CryptUtils.h
+        src/utils/Mpi.cpp
+        include/utils/Mpi.h
+        src/utils/Crypt.cpp
+        include/utils/Crypt.h
         src/utils/System.cpp
         include/utils/System.h
-        src/executor/share/arithmetic/multiplication/RsaOtMulShareExecutor.cpp
-        include/executor/share/arithmetic/multiplication/RsaOtMulShareExecutor.h
-        include/executor/share/arithmetic/multiplication/FixedMulShareExecutor.h
-        src/executor/share/arithmetic/multiplication/FixedMulShareExecutor.cpp
-        src/executor/share/boolean/xor/XorBoolShareExecutor.cpp
-        include/executor/share/boolean/xor/XorBoolShareExecutor.h
-        src/executor/share/boolean/and/AndBoolShareExecutor.cpp
-        include/executor/share/boolean/and/AndBoolShareExecutor.h
-        src/executor/bmt/RsaOtTripleExecutor.cpp
-        include/executor/bmt/RsaOtTripleExecutor.h
-        src/executor/bmt/AbstractMulTripleExecutor.cpp
-        include/executor/bmt/AbstractMulTripleExecutor.h
-        src/executor/bmt/FixedTripleExecutor.cpp
-        include/executor/bmt/FixedTripleExecutor.h
+        src/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.cpp
+        include/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
+        include/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.h
+        src/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.cpp
+        src/executor/share/boolean/xor/XorShareExecutor.cpp
+        include/executor/share/boolean/xor/XorShareExecutor.h
+        src/executor/share/boolean/and/AbstractAndShareExecutor.cpp
+        include/executor/share/boolean/and/AbstractAndShareExecutor.h
+        src/executor/bmt/RsaOtTripleGenerator.cpp
+        include/executor/bmt/RsaOtTripleGenerator.h
+        src/executor/bmt/AbstractMultiplicationTripleGenerator.cpp
+        include/executor/bmt/AbstractMultiplicationTripleGenerator.h
+        src/executor/bmt/FixedTripleGenerator.cpp
+        include/executor/bmt/FixedTripleGenerator.h
+        src/executor/share/boolean/and/RsaOtAndShareExecutor.cpp
+        include/executor/share/boolean/and/RsaOtAndShareExecutor.h
+        src/executor/share/boolean/and/FixedAndShareExecutor.cpp
+        include/executor/share/boolean/and/FixedAndShareExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

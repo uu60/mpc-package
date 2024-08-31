@@ -2,11 +2,11 @@
 // Created by 杜建璋 on 2024/8/29.
 //
 
-#ifndef MPC_PACKAGE_XORBOOLSHAREEXECUTOR_H
-#define MPC_PACKAGE_XORBOOLSHAREEXECUTOR_H
+#ifndef MPC_PACKAGE_XORSHAREEXECUTOR_H
+#define MPC_PACKAGE_XORSHAREEXECUTOR_H
 
 #include "../../../Executor.h"
-class XorBoolShareExecutor : public Executor {
+class XorShareExecutor : public Executor {
 private:
     // secret
     int64_t _x{};
@@ -18,11 +18,11 @@ private:
     int64_t _z0{};
     int64_t _z1{};
 public:
-    explicit XorBoolShareExecutor(bool x);
+    explicit XorShareExecutor(bool x);
     void compute() override;
 protected:
     [[nodiscard]] std::string tag() const override;
 };
 
 
-#endif //MPC_PACKAGE_XORBOOLSHAREEXECUTOR_H
+#endif //MPC_PACKAGE_XORSHAREEXECUTOR_H

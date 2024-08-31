@@ -2,12 +2,12 @@
 // Created by 杜建璋 on 2024/7/12.
 //
 
-#ifndef MPC_PACKAGE_PARTIALADDSHAREEXECUTOR_H
-#define MPC_PACKAGE_PARTIALADDSHAREEXECUTOR_H
+#ifndef MPC_PACKAGE_PARTIALADDITIONSHAREEXECUTOR_H
+#define MPC_PACKAGE_PARTIALADDITIONSHAREEXECUTOR_H
 
 #include "../../../Executor.h"
 
-class PartialAddShareExecutor : public Executor {
+class PartialAdditionShareExecutor : public Executor {
 protected:
     /*
      * Alice holds _x0 and _y0
@@ -23,7 +23,7 @@ protected:
     int64_t _z1{};
 
 public:
-    PartialAddShareExecutor(int64_t x0, int64_t y0);
+    PartialAdditionShareExecutor(int64_t x0, int64_t y0);
     // compute process
     void compute() override;
 protected:
@@ -31,4 +31,4 @@ protected:
 };
 
 
-#endif //MPC_PACKAGE_PARTIALADDSHAREEXECUTOR_H
+#endif //MPC_PACKAGE_PARTIALADDITIONSHAREEXECUTOR_H

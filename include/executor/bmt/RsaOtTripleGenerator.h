@@ -2,13 +2,13 @@
 // Created by 杜建璋 on 2024/8/30.
 //
 
-#ifndef MPC_PACKAGE_RSAOTTRIPLEEXECUTOR_H
-#define MPC_PACKAGE_RSAOTTRIPLEEXECUTOR_H
+#ifndef MPC_PACKAGE_RSAOTTRIPLEGENERATOR_H
+#define MPC_PACKAGE_RSAOTTRIPLEGENERATOR_H
 #include "../Executor.h"
-#include "AbstractMulTripleExecutor.h"
+#include "AbstractMultiplicationTripleGenerator.h"
 #include <iostream>
 
-class RsaOtTripleExecutor : public AbstractMulTripleExecutor {
+class RsaOtTripleGenerator : public AbstractMultiplicationTripleGenerator {
 private:
     // benchmark
     int64_t _otRsaGenerationTime{};
@@ -17,7 +17,7 @@ private:
     int64_t _otMpiTime{};
     int64_t _otEntireComputationTime{};
 public:
-    explicit RsaOtTripleExecutor(int l);
+    explicit RsaOtTripleGenerator(int l);
     void compute() override;
 private:
     void generateRandomAB();
@@ -38,4 +38,4 @@ protected:
 };
 
 
-#endif //MPC_PACKAGE_RSAOTTRIPLEEXECUTOR_H
+#endif //MPC_PACKAGE_RSAOTTRIPLEGENERATOR_H
