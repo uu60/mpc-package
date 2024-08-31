@@ -5,8 +5,8 @@
 #ifndef MPC_PACKAGE_XORSHAREEXECUTOR_H
 #define MPC_PACKAGE_XORSHAREEXECUTOR_H
 
-#include "../../../Executor.h"
-class XorShareExecutor : public Executor {
+#include "../../../AbstractExecutor.h"
+class XorShareExecutor : public AbstractExecutor {
 private:
     // secret
     int64_t _x{};
@@ -14,7 +14,7 @@ private:
     int64_t _x0{};
     int64_t _x1{};
     int64_t _y0{};
-    // temp result
+    // temp getResult
     int64_t _z0{};
     int64_t _z1{};
 public:

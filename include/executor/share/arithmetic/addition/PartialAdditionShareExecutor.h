@@ -5,9 +5,9 @@
 #ifndef MPC_PACKAGE_PARTIALADDITIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_PARTIALADDITIONSHAREEXECUTOR_H
 
-#include "../../../Executor.h"
+#include "../../../AbstractExecutor.h"
 
-class PartialAdditionShareExecutor : public Executor {
+class PartialAdditionShareExecutor : public AbstractExecutor {
 protected:
     /*
      * Alice holds _x0 and _y0

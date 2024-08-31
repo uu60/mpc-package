@@ -4,9 +4,9 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTMULTIPLICATIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTMULTIPLICATIONSHAREEXECUTOR_H
-#include "../../../Executor.h"
+#include "../../../AbstractExecutor.h"
 
-class AbstractMultiplicationShareExecutor : public Executor {
+class AbstractMultiplicationShareExecutor : public AbstractExecutor {
 protected:
     // hold
     int64_t _x{};

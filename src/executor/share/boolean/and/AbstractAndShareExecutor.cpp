@@ -48,7 +48,7 @@ void AbstractAndShareExecutor::compute() {
     int64_t z0 = Mpi::rank() * e * f xor f * _a0 xor e * _b0 xor _c0;
     int64_t z1;
     Mpi::exchange(&z0, &z1);
-    _res = z0 xor z1;
+    _result = z0 xor z1;
 }
 
 std::string AbstractAndShareExecutor::tag() const {

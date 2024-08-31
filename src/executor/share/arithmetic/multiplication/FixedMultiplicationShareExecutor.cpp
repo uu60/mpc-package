@@ -8,13 +8,13 @@
 
 void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
     FixedTripleGenerator e(_l);
-    e.benchmark(_benchmarkLevel);
-    e.logBenchmark(false);
+    e.setBenchmark(_benchmarkLevel);
+    e.setLogBenchmark(false);
     e.compute();
 
-    _a0 = e.a0();
-    _b0 = e.b0();
-    _c0 = e.c0();
+    _a0 = e.getA0();
+    _b0 = e.getB0();
+    _c0 = e.getC0();
 }
 
 std::string FixedMultiplicationShareExecutor::tag() const {

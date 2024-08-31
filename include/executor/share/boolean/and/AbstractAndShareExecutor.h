@@ -4,9 +4,9 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTANDSHAREEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTANDSHAREEXECUTOR_H
-#include "../../../Executor.h"
+#include "../../../AbstractExecutor.h"
 
-class AbstractAndShareExecutor : public Executor {
+class AbstractAndShareExecutor : public AbstractExecutor {
 protected:
     // secret
     int64_t _x{};

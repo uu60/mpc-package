@@ -2,8 +2,8 @@
 // Created by 杜建璋 on 2024/7/7.
 //
 
-#ifndef MPC_PACKAGE_EXECUTOR_H
-#define MPC_PACKAGE_EXECUTOR_H
+#ifndef MPC_PACKAGE_ABSTRACTEXECUTOR_H
+#define MPC_PACKAGE_ABSTRACTEXECUTOR_H
 
 #include <cstdint>
 #include <string>
@@ -14,12 +14,12 @@ enum class BenchmarkLevel {
     NONE, GENERAL, DETAILED
 };
 
-class Executor {
+class AbstractExecutor {
 protected:
-    // result
-    int64_t _res{};
+    // getResult
+    int64_t _result{};
 
-    // for benchmark
+    // for setBenchmark
     BenchmarkLevel _benchmarkLevel = BenchmarkLevel::NONE;
     bool _isLogBenchmark = false;
     int64_t _mpiTime{};
@@ -27,15 +27,15 @@ protected:
 public:
     // secret sharing process
     virtual void compute() = 0;
-    // get calculated result
-    [[nodiscard]] int64_t result() const;
-    void benchmark(BenchmarkLevel lv);
-    void logBenchmark(bool isLogBenchmark);
-    [[nodiscard]] int64_t mpiTime() const;
-    [[nodiscard]] int64_t entireComputationTime() const;
+    // get calculated getResult
+    [[nodiscard]] int64_t getResult() const;
+    void setBenchmark(BenchmarkLevel lv);
+    void setLogBenchmark(bool isLogBenchmark);
+    [[nodiscard]] int64_t getMpiTime() const;
+    [[nodiscard]] int64_t getEntireComputationTime() const;
 protected:
     [[nodiscard]] virtual std::string tag() const = 0;
     virtual void finalize();
 };
 
-#endif //MPC_PACKAGE_EXECUTOR_H
+#endif //MPC_PACKAGE_ABSTRACTEXECUTOR_H

@@ -16,7 +16,7 @@ void XorShareExecutor::compute() {
     Mpi::exchange(&_x1, &_y0);
     _z0 = _x0 xor _y0;
     Mpi::exchange(&_z0, &_z1);
-    _res = _z0 xor _z1;
+    _result = _z0 xor _z1;
 }
 
 std::string XorShareExecutor::tag() const {

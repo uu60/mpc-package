@@ -5,9 +5,9 @@
 #ifndef MPC_PACKAGE_ADDITIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_ADDITIONSHAREEXECUTOR_H
 
-#include "../../../Executor.h"
+#include "../../../AbstractExecutor.h"
 
-class AdditionShareExecutor : public Executor {
+class AdditionShareExecutor : public AbstractExecutor {
 protected:
     /*
      * Alice holds _x = _x0 + _x1

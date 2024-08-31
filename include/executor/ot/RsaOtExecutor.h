@@ -9,12 +9,12 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <openssl/sha.h>
-#include "../Executor.h"
+#include "../AbstractExecutor.h"
 
 // according to https://blog.csdn.net/qq_16763983/article/details/128055146
-class RsaOtExecutor : public Executor {
+class RsaOtExecutor : public AbstractExecutor {
 private:
-    // for benchmark
+    // for setBenchmark
     int64_t _rsaGenerationTime{};
     int64_t _rsaEncryptionTime{};
     int64_t _rsaDecryptionTime{};
@@ -53,9 +53,6 @@ private:
     // methods for sender
     void generateAndShareRsaKeys();
     void generateAndShareRandoms();
-
-    // methods for receiver
-
     // methods for both
     void process();
 };

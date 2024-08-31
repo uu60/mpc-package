@@ -9,8 +9,8 @@ find_package(OpenSSL REQUIRED)
 add_library(${PROJECT_NAME} SHARED
         src/utils/Math.cpp
         include/utils/Math.h
-        src/executor/Executor.cpp
-        include/executor/Executor.h
+        src/executor/AbstractExecutor.cpp
+        include/executor/AbstractExecutor.h
         src/executor/share/arithmetic/addition/PartialAdditionShareExecutor.cpp
         include/executor/share/arithmetic/addition/PartialAdditionShareExecutor.h
         src/utils/Log.cpp
@@ -23,8 +23,8 @@ add_library(${PROJECT_NAME} SHARED
         include/executor/ot/RsaOtExecutor.h
         src/utils/Mpi.cpp
         include/utils/Mpi.h
-        src/utils/Crypt.cpp
-        include/utils/Crypt.h
+        src/utils/Crypto.cpp
+        include/utils/Crypto.h
         src/utils/System.cpp
         include/utils/System.h
         src/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.cpp
@@ -49,7 +49,7 @@ add_library(${PROJECT_NAME} SHARED
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
-#set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/executor/arithmetic/AbstractAdditionShareExecutor.h;include/executor/Executor.h")
+#set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "include/executor/arithmetic/AbstractAdditionShareExecutor.h;include/executor/AbstractExecutor.h")
 
 # install libxx.so to ${CMAKE_INSTALL_PREFIX}/lib
 install(

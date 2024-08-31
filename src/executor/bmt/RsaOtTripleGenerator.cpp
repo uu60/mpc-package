@@ -41,26 +41,26 @@ void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
             choice = (int)((_b0 >> i) & 1);
         }
         RsaOtExecutor r(sender, s0, s1, choice);
-        r.logBenchmark(false);
+        r.setLogBenchmark(false);
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            r.benchmark(BenchmarkLevel::DETAILED);
+            r.setBenchmark(BenchmarkLevel::DETAILED);
         }
         r.compute();
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             // add mpi time
-            _mpiTime += r.mpiTime();
-            _otMpiTime += r.mpiTime();
+            _mpiTime += r.getMpiTime();
+            _otMpiTime += r.getMpiTime();
             _otRsaGenerationTime += r.getRsaGenerationTime();
             _otRsaEncryptionTime += r.getRsaEncryptionTime();
             _otRsaDecryptionTime += r.getRsaDecryptionTime();
-            _otEntireComputationTime += r.entireComputationTime();
+            _otEntireComputationTime += r.getEntireComputationTime();
         }
         if (isSender) {
             sum += s0;
         } else {
-            int64_t temp = r.result();
+            int64_t temp = r.getResult();
             if (choice == 0) {
-                temp = Math::ringMod(-r.result(), _l);
+                temp = Math::ringMod(-r.getResult(), _l);
             }
             sum += temp;
         }
@@ -80,23 +80,23 @@ void RsaOtTripleGenerator::compute() {
     computeC();
 }
 
-int64_t RsaOtTripleGenerator::otRsaGenerationTime() const {
+int64_t RsaOtTripleGenerator::getOtRsaGenerationTime() const {
     return _otRsaGenerationTime;
 }
 
-int64_t RsaOtTripleGenerator::otRsaEncryptionTime() const {
+int64_t RsaOtTripleGenerator::getOtRsaEncryptionTime() const {
     return _otRsaEncryptionTime;
 }
 
-int64_t RsaOtTripleGenerator::otRsaDecryptionTime() const {
+int64_t RsaOtTripleGenerator::getOtRsaDecryptionTime() const {
     return _otRsaDecryptionTime;
 }
 
-int64_t RsaOtTripleGenerator::otMpiTime() const {
+int64_t RsaOtTripleGenerator::getOtMpiTime() const {
     return _otMpiTime;
 }
 
-int64_t RsaOtTripleGenerator::otEntireComputationTime() const {
+int64_t RsaOtTripleGenerator::getOtEntireComputationTime() const {
     return _otEntireComputationTime;
 }
 

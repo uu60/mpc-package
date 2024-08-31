@@ -5,7 +5,7 @@
 #include "executor/ot/RsaOtExecutor.h"
 #include "utils/Mpi.h"
 #include "utils/Math.h"
-#include "utils/Crypt.h"
+#include "utils/Crypto.h"
 
 RsaOtExecutor::RsaOtExecutor(int sender, int64_t m0, int64_t m1, int i)
         : RsaOtExecutor(2048, sender, m0, m1, i) {
@@ -49,7 +49,7 @@ void RsaOtExecutor::generateAndShareRsaKeys() {
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             start = System::currentTimeMillis();
         }
-        Crypt::generateRsaKeys(_bits, _pub, _pri);
+        Crypto::generateRsaKeys(_bits, _pub, _pri);
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             end = System::currentTimeMillis();
             if (_isLogBenchmark) {
@@ -101,7 +101,7 @@ void RsaOtExecutor::process() {
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             start = System::currentTimeMillis();
         }
-        std::string ek = Crypt::rsaEncrypt(_randK, _pub);
+        std::string ek = Crypto::rsaEncrypt(_randK, _pub);
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             end = System::currentTimeMillis();
             if (_isLogBenchmark) {
@@ -125,7 +125,7 @@ void RsaOtExecutor::process() {
             Mpi::recv(&m1, _mpiTime);
         }
 
-        _res = std::stoll(Math::minus(_i == 0 ? m0 : m1, _randK));
+        _result = std::stoll(Math::minus(_i == 0 ? m0 : m1, _randK));
     } else {
         std::string sumStr;
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
@@ -137,10 +137,10 @@ void RsaOtExecutor::process() {
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             start = System::currentTimeMillis();
         }
-        std::string k0 = Crypt::rsaDecrypt(
+        std::string k0 = Crypto::rsaDecrypt(
                 Math::minus(sumStr, _rand0), _pri
         );
-        std::string k1 = Crypt::rsaDecrypt(
+        std::string k1 = Crypto::rsaDecrypt(
                 Math::minus(sumStr, _rand1), _pri
         );
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {

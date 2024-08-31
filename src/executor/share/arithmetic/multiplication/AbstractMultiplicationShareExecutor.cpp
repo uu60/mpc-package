@@ -72,5 +72,5 @@ void AbstractMultiplicationShareExecutor::process() {
     } else {
         Mpi::exchange(&z0, &z1);
     }
-    _res = Math::ringMod(z0 + z1, _l);
+    _result = Math::ringMod(z0 + z1, _l);
 }

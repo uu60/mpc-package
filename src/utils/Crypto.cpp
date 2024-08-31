@@ -2,14 +2,14 @@
 // Created by 杜建璋 on 2024/7/18.
 //
 
-#include "utils/Crypt.h"
+#include "utils/Crypto.h"
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 #include <vector>
 #include <string>
 
 // copilot
-void Crypt::generateRsaKeys(int bits, std::string &publicKey, std::string &privateKey) {
+void Crypto::generateRsaKeys(int bits, std::string &publicKey, std::string &privateKey) {
     EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr);
     EVP_PKEY *pkey = nullptr;
 
@@ -48,7 +48,7 @@ void Crypt::generateRsaKeys(int bits, std::string &publicKey, std::string &priva
 }
 
 // copilot
-std::string Crypt::rsaEncrypt(const std::string &data, const std::string &publicKey) {
+std::string Crypto::rsaEncrypt(const std::string &data, const std::string &publicKey) {
     EVP_PKEY *pkey = nullptr;
     EVP_PKEY_CTX *ctx = nullptr;
     BIO *keybio = BIO_new_mem_buf((void *)publicKey.c_str(), -1);
@@ -97,7 +97,7 @@ std::string Crypt::rsaEncrypt(const std::string &data, const std::string &public
 }
 
 // copilot
-std::string Crypt::rsaDecrypt(const std::string &encryptedData, const std::string &privateKey) {
+std::string Crypto::rsaDecrypt(const std::string &encryptedData, const std::string &privateKey) {
     EVP_PKEY *pkey = nullptr;
     EVP_PKEY_CTX *ctx = nullptr;
     BIO *keybio = BIO_new_mem_buf((void *)privateKey.c_str(), -1);

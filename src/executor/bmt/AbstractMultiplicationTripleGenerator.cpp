@@ -4,14 +4,14 @@
 
 #include "executor/bmt/AbstractMultiplicationTripleGenerator.h"
 
-int64_t AbstractMultiplicationTripleGenerator::a0() const {
+int64_t AbstractMultiplicationTripleGenerator::getA0() const {
     return _a0;
 }
 
-int64_t AbstractMultiplicationTripleGenerator::b0() const {
+int64_t AbstractMultiplicationTripleGenerator::getB0() const {
     return _b0;
 }
 
-int64_t AbstractMultiplicationTripleGenerator::c0() const {
+int64_t AbstractMultiplicationTripleGenerator::getC0() const {
     return _c0;
 }

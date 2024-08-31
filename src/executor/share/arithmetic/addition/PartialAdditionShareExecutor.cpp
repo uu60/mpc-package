@@ -13,7 +13,7 @@ PartialAdditionShareExecutor::PartialAdditionShareExecutor(int64_t x0, int64_t y
 void PartialAdditionShareExecutor::compute() {
     _z0 = _x0 + _y0;
     Mpi::exchange(&_z0, &_z1);
-    _res = _z0 + _z1;
+    _result = _z0 + _z1;
 }
 
 std::string PartialAdditionShareExecutor::tag() const {
