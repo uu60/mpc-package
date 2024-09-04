@@ -11,6 +11,9 @@ void RsaOtMultiplicationShareExecutor::obtainMultiplicationTriple() {
     e.setBenchmark(_benchmarkLevel);
     e.setLogBenchmark(false);
     e.compute();
+    if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
+        _mpiTime += e.getMpiTime();
+    }
     _a0 = e.getA0();
     _b0 = e.getB0();
     _c0 = e.getC0();
