@@ -27,6 +27,8 @@ public:
     // init env
     static void init(int argc, char **argv);
     static void finalize();
+    // judge identity
+    static bool isPublisher();
     // exchange data (for rank of 0 and 1)
     static void exchange(const int64_t *data, int64_t *target);
     static void exchange(const int64_t *data, int64_t *target, int64_t &mpiTime);
@@ -39,14 +41,14 @@ public:
     static void recv(std::string *target);
     static void recv(std::string *target, int64_t &mpiTime);
     // reconstruct (for transmission between <0 and 2> or <1 and 2>)
-    static void send2(const int64_t *data);
-    static void send2(const int64_t *data, int64_t &mpiTime);
-    static void send2(const std::string *data);
-    static void send2(const std::string *data, int64_t &mpiTime);
-    static void recv2(int64_t *target, int senderRank);
-    static void recv2(int64_t *target, int senderRank, int64_t &mpiTime);
-    static void recv2(std::string *target, int senderRank);
-    static void recv2(std::string *target, int senderRank, int64_t &mpiTime);
+    static void sendTo(const int64_t *data, int receiverRank);
+    static void sendTo(const int64_t *data, int receiverRank, int64_t &mpiTime);
+    static void sendTo(const std::string *data, int receiverRank);
+    static void sendTo(const std::string *data, int receiverRank, int64_t &mpiTime);
+    static void recvFrom(int64_t *target, int senderRank);
+    static void recvFrom(int64_t *target, int senderRank, int64_t &mpiTime);
+    static void recvFrom(std::string *target, int senderRank);
+    static void recvFrom(std::string *target, int senderRank, int64_t &mpiTime);
 };
 
 

@@ -43,33 +43,19 @@ void Mpi::exchange(const int64_t *data, int64_t *target) {
 }
 
 void Mpi::send(const int64_t *data) {
-    MPI_Send(data, 1, MPI_INT64_T, 1 - _mpiRank, 0, MPI_COMM_WORLD);
+    sendTo(data, 1 - _mpiRank);
 }
 
 void Mpi::send(const std::string *data) {
-    if (data->length() > static_cast<size_t>(std::numeric_limits<int>::max())) {
-        std::cerr << "String size exceeds MPI_Send limit." << std::endl;
-        MPI_Abort(MPI_COMM_WORLD, 1);
-    }
-    MPI_Send(data->data(), static_cast<int>(data->length()), MPI_CHAR, 1 - _mpiRank, 0, MPI_COMM_WORLD);
-//    Log::d("send:  " + *data);
+    sendTo(data, 1 - _mpiRank);
 }
 
 void Mpi::recv(int64_t *target) {
-    MPI_Recv(target, 1, MPI_INT64_T, 1 - _mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    recvFrom(target, 1 - _mpiRank);
 }
 
 void Mpi::recv(std::string *target) {
-    MPI_Status status;
-    MPI_Probe(1 - _mpiRank, 0, MPI_COMM_WORLD, &status);
-
-    int count;
-    MPI_Get_count(&status, MPI_CHAR, &count);
-
-    std::vector<char> buffer(count);
-    MPI_Recv( buffer.data(), count, MPI_CHAR, 1 - _mpiRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    *target = std::string(buffer.data(), count);
-//    Log::d("recv: " + *target);
+    recvFrom(target, 1 - _mpiRank);
 }
 
 bool Mpi::inited() {
@@ -92,71 +78,59 @@ void Mpi::exchange(const int64_t *data, int64_t *target, int64_t &mpiTime) {
 }
 
 void Mpi::send(const int64_t *data, int64_t &mpiTime) {
-    int64_t start = System::currentTimeMillis();
-    send(data);
-    int64_t end = System::currentTimeMillis();
-    mpiTime += end - start;
+    sendTo(data, 1 - _mpiRank, mpiTime);
 }
 
 void Mpi::recv(int64_t *target, int64_t &mpiTime) {
-    int64_t start = System::currentTimeMillis();
-    recv(target);
-    int64_t end = System::currentTimeMillis();
-    mpiTime += end - start;
+    recvFrom(target, 1 - _mpiRank, mpiTime);
 }
 
 void Mpi::send(const std::string *data, int64_t &mpiTime) {
-    int64_t start = System::currentTimeMillis();
-    send(data);
-    int64_t end = System::currentTimeMillis();
-    mpiTime += end - start;
+    sendTo(data, 1 - _mpiRank, mpiTime);
 }
 
 void Mpi::recv(std::string *target, int64_t &mpiTime) {
+    recvFrom(target, 1 - _mpiRank, mpiTime);
+}
+
+void Mpi::sendTo(const int64_t *data, int receiverRank) {
+    MPI_Send(data, 1, MPI_INT64_T, receiverRank, 0, MPI_COMM_WORLD);
+}
+
+void Mpi::sendTo(const int64_t *data, int receiverRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recv(target);
+    sendTo(data, receiverRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::send2(const int64_t *data) {
-    MPI_Send(data, 1, MPI_INT64_T, TASK_PUBLISHER_RANK, 0, MPI_COMM_WORLD);
-}
-
-void Mpi::send2(const int64_t *data, int64_t &mpiTime) {
-    int64_t start = System::currentTimeMillis();
-    send2(data);
-    int64_t end = System::currentTimeMillis();
-    mpiTime += end - start;
-}
-
-void Mpi::send2(const std::string *data) {
+void Mpi::sendTo(const std::string *data, int receiverRank) {
     if (data->length() > static_cast<size_t>(std::numeric_limits<int>::max())) {
         std::cerr << "String size exceeds MPI_Send limit." << std::endl;
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
-    MPI_Send(data->data(), static_cast<int>(data->length()), MPI_CHAR, TASK_PUBLISHER_RANK, 0, MPI_COMM_WORLD);
+    MPI_Send(data->data(), static_cast<int>(data->length()), MPI_CHAR, receiverRank, 0, MPI_COMM_WORLD);
 }
 
-void Mpi::send2(const std::string *data, int64_t &mpiTime) {
+void Mpi::sendTo(const std::string *data, int receiverRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    send2(data);
+    sendTo(data, receiverRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recv2(int64_t *target, int senderRank) {
+void Mpi::recvFrom(int64_t *target, int senderRank) {
     MPI_Recv(target, 1, MPI_INT64_T, senderRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
 
-void Mpi::recv2(int64_t *target, int senderRank, int64_t &mpiTime) {
+void Mpi::recvFrom(int64_t *target, int senderRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recv2(target, senderRank);
+    recvFrom(target, senderRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recv2(std::string *target, int senderRank) {
+void Mpi::recvFrom(std::string *target, int senderRank) {
     MPI_Status status;
     MPI_Probe(senderRank, 0, MPI_COMM_WORLD, &status);
 
@@ -168,11 +142,15 @@ void Mpi::recv2(std::string *target, int senderRank) {
     *target = std::string(buffer.data(), count);
 }
 
-void Mpi::recv2(std::string *target, int senderRank, int64_t &mpiTime) {
+void Mpi::recvFrom(std::string *target, int senderRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recv2(target, senderRank);
+    recvFrom(target, senderRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
+}
+
+bool Mpi::isPublisher() {
+    return _mpiRank == TASK_PUBLISHER_RANK;
 }
 
 
