@@ -45,6 +45,8 @@ add_library(${PROJECT_NAME} SHARED
         include/executor/share/boolean/and/FixedAndShareExecutor.h
         src/executor/share/comparison/ComparisonExecutor.cpp
         include/executor/share/comparison/ComparisonExecutor.h
+        ../../../../usr/local/include/mpc_package/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
+        ../../../../usr/local/include/mpc_package/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

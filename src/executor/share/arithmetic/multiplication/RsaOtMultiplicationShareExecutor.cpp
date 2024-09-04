@@ -6,7 +6,7 @@
 #include "utils/Mpi.h"
 #include "executor/bmt/RsaOtTripleGenerator.h"
 
-void RsaOtMulShareExecutor::obtainMultiplicationTriple() {
+void RsaOtMultiplicationShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator e(_l);
     e.setBenchmark(_benchmarkLevel);
     e.setLogBenchmark(false);
@@ -24,6 +24,6 @@ void RsaOtMulShareExecutor::obtainMultiplicationTriple() {
     }
 }
 
-std::string RsaOtMulShareExecutor::tag() const {
+std::string RsaOtMultiplicationShareExecutor::tag() const {
     return "[RSA OT Multiplication Share]";
 }

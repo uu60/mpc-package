@@ -38,7 +38,7 @@ void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
             s0 = Math::rand64(0, (1LL << _l) - 1);
             s1 = corr(i, s0);
         } else {
-            choice = (int)((_b0 >> i) & 1);
+            choice = (int) ((_b0 >> i) & 1);
         }
         RsaOtExecutor r(sender, s0, s1, choice);
         r.setLogBenchmark(false);

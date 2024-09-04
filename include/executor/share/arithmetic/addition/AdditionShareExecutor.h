@@ -17,9 +17,6 @@ protected:
     int64_t _x{};
     int64_t _x0{};
     int64_t _x1{};
-    int64_t _y0{};
-    int64_t _z0{};
-    int64_t _z1{};
 public:
     explicit AdditionShareExecutor(int64_t x);
     void compute() override;

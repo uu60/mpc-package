@@ -21,14 +21,17 @@ void AbstractMultiplicationShareExecutor::compute() {
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         start = System::currentTimeMillis();
     }
-    // MT
-    obtainMultiplicationTriple();
-    if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-        end = System::currentTimeMillis();
-        if (_isLogBenchmark) {
-            Log::i(tag() + " Triple computation time: " + std::to_string(end - start) + " ms.");
+    if (Mpi::isCalculator()) {
+        // MT
+        obtainMultiplicationTriple();
+        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+            end = System::currentTimeMillis();
+            if (_isLogBenchmark) {
+                Log::i(tag() + " Triple computation time: " + std::to_string(end - start) + " ms.");
+            }
         }
     }
+
     // process
     process();
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
@@ -44,43 +47,64 @@ void AbstractMultiplicationShareExecutor::compute() {
 }
 
 void AbstractMultiplicationShareExecutor::process() {
-    /*
-     * For member variables, x represents part of own secret,
-     * which means that for party[0], x represents x in paper,
-     * for party[1], that is y in paper.
-     *
-     * For all the variables in this project, subscript of a
-     * variable represents the party who will use that to
-     * compute. For example, x0 is used by executor itself
-     * while x1 is used by the other one.
-     * */
-    int64_t x0, y0, *self, *other;
-    self = Mpi::rank() == 0 ? &x0 : &y0;
-    other = Mpi::rank() == 0 ? &y0 : &x0;
-    *self = _x0;
-    if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-        Mpi::exchange(&_x1, other, _mpiTime);
+    if (Mpi::isCalculator()) {
+        /*
+         * For member variables, x represents part of own secret,
+         * which means that for party[0], x represents x in paper,
+         * for party[1], that is y in paper.
+         *
+         * For all the variables in this project, subscript of a
+         * variable represents the party who will use that to
+         * compute. For example, x0 is used by executor itself
+         * while x1 is used by the other one.
+         * */
+        int64_t x0, y0, *self, *other;
+        self = Mpi::rank() == 0 ? &x0 : &y0;
+        other = Mpi::rank() == 0 ? &y0 : &x0;
+        *self = _x0;
+        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+            Mpi::exchange(&_x1, other, _mpiTime);
+        } else {
+            Mpi::exchange(&_x1, other);
+        }
+        int64_t e0 = x0 - _a0;
+        int64_t f0 = y0 - _b0;
+        int64_t e1, f1;
+        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+            Mpi::exchange(&e0, &e1, _mpiTime);
+            Mpi::exchange(&f0, &f1, _mpiTime);
+        } else {
+            Mpi::exchange(&e0, &e1);
+            Mpi::exchange(&f0, &f1);
+        }
+        int64_t e = e0 + e1;
+        int64_t f = f0 + f1;
+        int64_t z0 = Mpi::rank() * e * f + f * _a0 + e * _b0 + _c0;
+
+        if (Mpi::size() == 2) {
+            int64_t z1;
+            if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+                Mpi::exchange(&z0, &z1, _mpiTime);
+            } else {
+                Mpi::exchange(&z0, &z1);
+            }
+            _result = Math::ringMod(z0 + z1, _l);
+        } else {
+            if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+                Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK, _mpiTime);
+            } else {
+                Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK);
+            }
+        }
     } else {
-        Mpi::exchange(&_x1, other);
+        int64_t z0, z1;
+        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+            Mpi::recvFrom(&z0, 0);
+            Mpi::recvFrom(&z1, 1);
+        } else {
+            Mpi::recvFrom(&z0, 0, _mpiTime);
+            Mpi::recvFrom(&z1, 0, _mpiTime);
+        }
+        _result = Math::ringMod(z0 + z1, _l);
     }
-    int64_t e0 = x0 - _a0;
-    int64_t f0 = y0 - _b0;
-    int64_t e1, f1;
-    if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-        Mpi::exchange(&e0, &e1, _mpiTime);
-        Mpi::exchange(&f0, &f1, _mpiTime);
-    } else {
-        Mpi::exchange(&e0, &e1);
-        Mpi::exchange(&f0, &f1);
-    }
-    int64_t e = e0 + e1;
-    int64_t f = f0 + f1;
-    int64_t z0 = Mpi::rank() * e * f + f * _a0 + e * _b0 + _c0;
-    int64_t z1;
-    if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-        Mpi::exchange(&z0, &z1, _mpiTime);
-    } else {
-        Mpi::exchange(&z0, &z1);
-    }
-    _result = Math::ringMod(z0 + z1, _l);
 }

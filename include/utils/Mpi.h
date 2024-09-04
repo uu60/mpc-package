@@ -12,8 +12,9 @@
  * Attention: Currently, there is no restriction in this util class.
  */
 class Mpi {
-private:
+public:
     static const int TASK_PUBLISHER_RANK;
+private:
     // mpi env init
     static bool _envInited;
     // joined party number
@@ -28,7 +29,7 @@ public:
     static void init(int argc, char **argv);
     static void finalize();
     // judge identity
-    static bool isPublisher();
+    static bool isCalculator();
     // exchange data (for rank of 0 and 1)
     static void exchange(const int64_t *data, int64_t *target);
     static void exchange(const int64_t *data, int64_t *target, int64_t &mpiTime);

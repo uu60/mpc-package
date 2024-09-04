@@ -7,9 +7,9 @@
 #include "AbstractMultiplicationShareExecutor.h"
 
 
-class RsaOtMulShareExecutor : public AbstractMultiplicationShareExecutor {
+class RsaOtMultiplicationShareExecutor : public AbstractMultiplicationShareExecutor {
 public:
-    RsaOtMulShareExecutor(int64_t x, int l) : AbstractMultiplicationShareExecutor(x, l) {}
+    RsaOtMultiplicationShareExecutor(int64_t x, int l) : AbstractMultiplicationShareExecutor(x, l) {}
 protected:
     void obtainMultiplicationTriple() override;
     [[nodiscard]] std::string tag() const override;
