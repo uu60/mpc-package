@@ -44,6 +44,16 @@ void AbstractMultiplicationShareExecutor::compute() {
 }
 
 void AbstractMultiplicationShareExecutor::process() {
+    /*
+     * For member variables, x represents part of own secret,
+     * which means that for party[0], x represents x in paper,
+     * for party[1], that is y in paper.
+     *
+     * For all the variables in this project, subscript of a
+     * variable represents the party who will use that to
+     * compute. For example, x0 is used by executor itself
+     * while x1 is used by the other one.
+     * */
     int64_t x0, y0, *self, *other;
     self = Mpi::rank() == 0 ? &x0 : &y0;
     other = Mpi::rank() == 0 ? &y0 : &x0;

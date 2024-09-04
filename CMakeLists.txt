@@ -11,8 +11,6 @@ add_library(${PROJECT_NAME} SHARED
         include/utils/Math.h
         src/executor/AbstractExecutor.cpp
         include/executor/AbstractExecutor.h
-        src/executor/share/arithmetic/addition/PartialAdditionShareExecutor.cpp
-        include/executor/share/arithmetic/addition/PartialAdditionShareExecutor.h
         src/utils/Log.cpp
         include/utils/Log.h
         src/executor/share/arithmetic/multiplication/AbstractMultiplicationShareExecutor.cpp
@@ -45,6 +43,8 @@ add_library(${PROJECT_NAME} SHARED
         include/executor/share/boolean/and/RsaOtAndShareExecutor.h
         src/executor/share/boolean/and/FixedAndShareExecutor.cpp
         include/executor/share/boolean/and/FixedAndShareExecutor.h
+        src/executor/share/comparison/ComparisonExecutor.cpp
+        include/executor/share/comparison/ComparisonExecutor.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
