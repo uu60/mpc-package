@@ -9,14 +9,14 @@
 class AbstractAndShareExecutor : public AbstractExecutor {
 protected:
     // secret
-    int64_t _x{};
+    bool _x{};
     // share
-    int64_t _x0{};
-    int64_t _x1{};
+    bool _x0{};
+    bool _x1{};
     // triple
-    int64_t _a0{};
-    int64_t _b0{};
-    int64_t _c0{};
+    bool _a0{};
+    bool _b0{};
+    bool _c0{};
 
 public:
     explicit AbstractAndShareExecutor(bool x);
@@ -24,6 +24,8 @@ public:
 protected:
     virtual void obtainMultiplicationTriple() = 0;
     [[nodiscard]] std::string tag() const override;
+private:
+    void process();
 };
 
 

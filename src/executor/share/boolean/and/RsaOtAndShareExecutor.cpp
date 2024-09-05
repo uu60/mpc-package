@@ -8,6 +8,9 @@ void RsaOtAndShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator m(1);
     m.setBenchmark(_benchmarkLevel);
     m.compute();
+    if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+
+    }
     _a0 = m.getA0();
     _b0 = m.getB0();
     _c0 = m.getC0();

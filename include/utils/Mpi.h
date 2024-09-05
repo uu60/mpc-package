@@ -30,24 +30,34 @@ public:
     static void finalize();
     // judge identity
     static bool isCalculator();
-    // exchange data (for rank of 0 and 1)
-    static void exchange(const int64_t *data, int64_t *target);
-    static void exchange(const int64_t *data, int64_t *target, int64_t &mpiTime);
-    static void send(const int64_t *data);
-    static void send(const int64_t *data, int64_t &mpiTime);
-    static void send(const std::string *data);
-    static void send(const std::string *data, int64_t &mpiTime);
+    // exchange source (for rank of 0 and 1)
+    static void exchange(const int64_t *source, int64_t *target);
+    static void exchange(const int64_t *source, int64_t *target, int64_t &mpiTime);
+    static void exchange(const bool *source, bool *target);
+    static void exchange(const bool *source, bool *target, int64_t &mpiTime);
+    static void send(const int64_t *source);
+    static void send(const int64_t *source, int64_t &mpiTime);
+    static void send(const bool *source);
+    static void send(const bool *source, int64_t &mpiTime);
+    static void send(const std::string *source);
+    static void send(const std::string *source, int64_t &mpiTime);
     static void recv(int64_t *target);
     static void recv(int64_t *target, int64_t &mpiTime);
+    static void recv(bool *target);
+    static void recv(bool *target, int64_t &mpiTime);
     static void recv(std::string *target);
     static void recv(std::string *target, int64_t &mpiTime);
     // reconstruct (for transmission between <0 and 2> or <1 and 2>)
-    static void sendTo(const int64_t *data, int receiverRank);
-    static void sendTo(const int64_t *data, int receiverRank, int64_t &mpiTime);
-    static void sendTo(const std::string *data, int receiverRank);
-    static void sendTo(const std::string *data, int receiverRank, int64_t &mpiTime);
+    static void sendTo(const int64_t *source, int receiverRank);
+    static void sendTo(const int64_t *source, int receiverRank, int64_t &mpiTime);
+    static void sendTo(const bool *source, int receiverRank);
+    static void sendTo(const bool *source, int receiverRank, int64_t &mpiTime);
+    static void sendTo(const std::string *source, int receiverRank);
+    static void sendTo(const std::string *source, int receiverRank, int64_t &mpiTime);
     static void recvFrom(int64_t *target, int senderRank);
     static void recvFrom(int64_t *target, int senderRank, int64_t &mpiTime);
+    static void recvFrom(bool *target, int senderRank);
+    static void recvFrom(bool *target, int senderRank, int64_t &mpiTime);
     static void recvFrom(std::string *target, int senderRank);
     static void recvFrom(std::string *target, int senderRank, int64_t &mpiTime);
 };
