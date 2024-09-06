@@ -57,53 +57,32 @@ void AbstractAndShareExecutor::process() {
      * For variable name description, please refer to
      * RsaOtMultiplicationShareExecution.cpp
      * */
+    bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         bool x0, y0, *self, *other;
         self = Mpi::rank() == 0 ? &x0 : &y0;
         other = Mpi::rank() == 0 ? &y0 : &x0;
         *self = _x0;
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::exchange(&_x1, other, _mpiTime);
-        } else {
-            Mpi::exchange(&_x1, other);
-        }
+        Mpi::exchange(&_x1, other, _mpiTime, bm);
         bool e0 = _a0 xor x0;
         bool f0 = _b0 xor y0;
         bool e1, f1;
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::exchange(&e0, &e1, _mpiTime);
-            Mpi::exchange(&f0, &f1, _mpiTime);
-        } else {
-            Mpi::exchange(&e0, &e1);
-            Mpi::exchange(&f0, &f1);
-        }
+        Mpi::exchange(&e0, &e1, _mpiTime, bm);
+        Mpi::exchange(&f0, &f1, _mpiTime, bm);
         bool e = e0 xor e1;
         bool f = f0 xor f1;
         bool z0 = Mpi::rank() * e * f xor f * _a0 xor e * _b0 xor _c0;
         if (Mpi::size() == 2) {
             bool z1;
-            if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-                Mpi::exchange(&z0, &z1, _mpiTime);
-            } else {
-                Mpi::exchange(&z0, &z1);
-            }
+            Mpi::exchange(&z0, &z1, _mpiTime, bm);
             _result = z0 xor z1;
         } else {
-            if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-                Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK, _mpiTime);
-            } else {
-                Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK);
-            }
+            Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
         }
     } else {
         bool z0, z1;
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::recvFrom(&z0, 0, _mpiTime);
-            Mpi::recvFrom(&z1, 1, _mpiTime);
-        } else {
-            Mpi::recvFrom(&z0, 0);
-            Mpi::recvFrom(&z1, 1);
-        }
+        Mpi::recvFrom(&z0, 0, _mpiTime, bm);
+        Mpi::recvFrom(&z1, 1, _mpiTime, bm);
         _result = z0 xor z1;
     }
 }

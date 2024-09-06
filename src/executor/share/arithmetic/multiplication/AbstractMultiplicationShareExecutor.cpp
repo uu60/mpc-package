@@ -47,6 +47,7 @@ void AbstractMultiplicationShareExecutor::compute() {
 }
 
 void AbstractMultiplicationShareExecutor::process() {
+    bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         /*
          * For member variables, x represents part of own secret,
@@ -62,49 +63,27 @@ void AbstractMultiplicationShareExecutor::process() {
         self = Mpi::rank() == 0 ? &x0 : &y0;
         other = Mpi::rank() == 0 ? &y0 : &x0;
         *self = _x0;
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::exchange(&_x1, other, _mpiTime);
-        } else {
-            Mpi::exchange(&_x1, other);
-        }
+        Mpi::exchange(&_x1, other, _mpiTime, bm);
         int64_t e0 = x0 - _a0;
         int64_t f0 = y0 - _b0;
         int64_t e1, f1;
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::exchange(&e0, &e1, _mpiTime);
-            Mpi::exchange(&f0, &f1, _mpiTime);
-        } else {
-            Mpi::exchange(&e0, &e1);
-            Mpi::exchange(&f0, &f1);
-        }
+        Mpi::exchange(&e0, &e1, _mpiTime, bm);
+        Mpi::exchange(&f0, &f1, _mpiTime, bm);
         int64_t e = e0 + e1;
         int64_t f = f0 + f1;
         int64_t z0 = Mpi::rank() * e * f + f * _a0 + e * _b0 + _c0;
 
         if (Mpi::size() == 2) {
             int64_t z1;
-            if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-                Mpi::exchange(&z0, &z1, _mpiTime);
-            } else {
-                Mpi::exchange(&z0, &z1);
-            }
+            Mpi::exchange(&z0, &z1, _mpiTime, bm);
             _result = Math::ringMod(z0 + z1, _l);
         } else {
-            if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-                Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK, _mpiTime);
-            } else {
-                Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK);
-            }
+            Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
         }
     } else {
         int64_t z0, z1;
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::recvFrom(&z0, 0);
-            Mpi::recvFrom(&z1, 1);
-        } else {
-            Mpi::recvFrom(&z0, 0, _mpiTime);
-            Mpi::recvFrom(&z1, 0, _mpiTime);
-        }
+        Mpi::recvFrom(&z0, 0, _mpiTime, bm);
+        Mpi::recvFrom(&z1, 0, _mpiTime, bm);
         _result = Math::ringMod(z0 + z1, _l);
     }
 }
