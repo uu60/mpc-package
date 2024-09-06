@@ -8,7 +8,7 @@
 
 class FixedAndShareExecutor : public AbstractAndShareExecutor {
 public:
-    explicit FixedAndShareExecutor(bool x) : AbstractAndShareExecutor(x) {};
+    explicit FixedAndShareExecutor(bool x, bool y) : AbstractAndShareExecutor(x, y) {};
 
 protected:
     void obtainMultiplicationTriple() override;

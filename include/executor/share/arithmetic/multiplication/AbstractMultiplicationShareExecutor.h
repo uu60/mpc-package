@@ -8,23 +8,21 @@
 
 class AbstractMultiplicationShareExecutor : public AbstractExecutor {
 protected:
-    // hold
-    int64_t _x{};
-    // parts
-    // _x = _x0 + _x1
-    // y = _y0 + yb
-    int64_t _x0{};
-    int64_t _x1{};
+    // hold parts
+    // _x = _xi + _x1
+    // y = _yi + y1
+    int64_t _xi{};
+    int64_t _yi{};
     // MT
-    // _a0, _b0, _c0 belongs to Alice
-    // c = (_c0 + c1) = a * b = (_a0 + a1) * (_b0 + b1)
+    // _ai, _bi, _ci belongs to Alice
+    // c = (_ci + c1) = a * b = (_ai + a1) * (_bi + b1)
     int _l{};
-    int64_t _a0{};
-    int64_t _b0{};
-    int64_t _c0{};
+    int64_t _ai{};
+    int64_t _bi{};
+    int64_t _ci{};
 
 public:
-    AbstractMultiplicationShareExecutor(int64_t x, int l);
+    AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l);
     void compute() override;
 
 protected:

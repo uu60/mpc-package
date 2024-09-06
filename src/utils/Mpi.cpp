@@ -30,9 +30,9 @@ void Mpi::init(int argc, char **argv) {
         // process _mpiRank and sum
         MPI_Comm_rank(MPI_COMM_WORLD, &_mpiRank);
         MPI_Comm_size(MPI_COMM_WORLD, &_mpiSize);
-//        if (_mpiSize != 3) {
-//            throw std::runtime_error("3 processes restricted.");
-//        }
+        if (_mpiSize != 3) {
+            throw std::runtime_error("3 parties restricted.");
+        }
         _envInited = true;
     }
 }

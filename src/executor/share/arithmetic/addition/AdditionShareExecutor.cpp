@@ -7,29 +7,33 @@
 #include "utils/Mpi.h"
 #include <limits>
 
-AdditionShareExecutor::AdditionShareExecutor(int64_t x) {
-    _x = x;
-    _x1 = Math::rand64();
-    _x0 = _x - _x1;
+AdditionShareExecutor::AdditionShareExecutor(int64_t x, int64_t y) {
+    bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
+    if (!Mpi::isCalculator()) {
+        int64_t x1 = Math::rand64();
+        int64_t x0 = x - x1;
+        int64_t y1 = Math::rand64();
+        int64_t y0 = y - y1;
+        Mpi::sendTo(&x0, 0, _mpiTime, bm);
+        Mpi::sendTo(&y0, 0, _mpiTime, bm);
+        Mpi::sendTo(&x1, 1, _mpiTime, bm);
+        Mpi::sendTo(&y1, 1, _mpiTime, bm);
+    } else {
+        Mpi::recvFrom(&_xi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
+        Mpi::recvFrom(&_yi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
+    }
 }
 
 void AdditionShareExecutor::compute() {
-    int64_t y0, z0, z1;
-    if (Mpi::size() == 2) {
-        Mpi::exchange(&_x1, &y0);
-        z0 = _x0 + y0;
-        Mpi::exchange(&z0, &z1);
-        _result = z0 + z1;
+    bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
+    if (Mpi::isCalculator()) {
+        int64_t zi = _xi + _yi;
+        Mpi::sendTo(&zi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
     } else {
-        if (Mpi::isCalculator()) {
-            Mpi::exchange(&_x1, &y0);
-            z0 = _x0 + y0;
-            Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK);
-        } else {
-            Mpi::recvFrom(&z0, 0);
-            Mpi::recvFrom(&z1, 1);
-            _result = z0 + z1;
-        }
+        int64_t z0, z1;
+        Mpi::recvFrom(&z0, 0, _mpiTime, bm);
+        Mpi::recvFrom(&z1, 1, _mpiTime, bm);
+        _result = z0 + z1;
     }
 }
 

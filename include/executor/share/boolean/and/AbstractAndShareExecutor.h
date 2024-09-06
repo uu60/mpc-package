@@ -8,18 +8,16 @@
 
 class AbstractAndShareExecutor : public AbstractExecutor {
 protected:
-    // secret
-    bool _x{};
-    // share
-    bool _x0{};
-    bool _x1{};
+    // secret share
+    bool _xi{};
+    bool _yi{};
     // triple
-    bool _a0{};
-    bool _b0{};
-    bool _c0{};
+    bool _ai{};
+    bool _bi{};
+    bool _ci{};
 
 public:
-    explicit AbstractAndShareExecutor(bool x);
+    explicit AbstractAndShareExecutor(bool x, bool y);
     void compute() override;
 protected:
     virtual void obtainMultiplicationTriple() = 0;

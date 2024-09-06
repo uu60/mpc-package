@@ -8,7 +8,12 @@
 
 class ComparisonExecutor : public AbstractExecutor {
 private:
-    int64_t x{};
+    // compare x and y
+    // x = x0 + x1
+    // y = y0 + y1
+    int64_t x0{};
+    int64_t y0{};
+
 public:
     void compute() override;
 };

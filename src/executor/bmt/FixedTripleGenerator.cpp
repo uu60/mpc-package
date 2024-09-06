@@ -22,13 +22,13 @@ void FixedTripleGenerator::compute() {
     std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>> triple = getRandomTriple(
             (int) idx);
     if (Mpi::rank() == 0) {
-        _a0 = (int64_t) std::get<0>(triple).first;
-        _b0 = (int64_t) std::get<1>(triple).first;
-        _c0 = (int64_t) std::get<2>(triple).first;
+        _ai = (int64_t) std::get<0>(triple).first;
+        _bi = (int64_t) std::get<1>(triple).first;
+        _ci = (int64_t) std::get<2>(triple).first;
     } else {
-        _a0 = (int64_t) std::get<0>(triple).second;
-        _b0 = (int64_t) std::get<1>(triple).second;
-        _c0 = (int64_t) std::get<2>(triple).second;
+        _ai = (int64_t) std::get<0>(triple).second;
+        _bi = (int64_t) std::get<1>(triple).second;
+        _ci = (int64_t) std::get<2>(triple).second;
     }
 }
 

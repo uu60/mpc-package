@@ -8,7 +8,7 @@
 
 class FixedMultiplicationShareExecutor : public AbstractMultiplicationShareExecutor {
 public:
-    FixedMultiplicationShareExecutor(int64_t x, int l) : AbstractMultiplicationShareExecutor(x, l) {}
+    FixedMultiplicationShareExecutor(int64_t x, int64_t y, int l) : AbstractMultiplicationShareExecutor(x, y, l) {}
 
 protected:
     [[nodiscard]] std::string tag() const override;

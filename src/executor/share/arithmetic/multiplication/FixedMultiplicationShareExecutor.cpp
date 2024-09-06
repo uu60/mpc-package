@@ -12,9 +12,9 @@ void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
     e.setLogBenchmark(false);
     e.compute();
 
-    _a0 = e.getA0();
-    _b0 = e.getB0();
-    _c0 = e.getC0();
+    _ai = e.getAi();
+    _bi = e.getBi();
+    _ci = e.getCi();
 }
 
 std::string FixedMultiplicationShareExecutor::tag() const {

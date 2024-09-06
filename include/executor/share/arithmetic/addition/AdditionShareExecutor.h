@@ -10,15 +10,15 @@
 class AdditionShareExecutor : public AbstractExecutor {
 protected:
     /*
-     * Alice holds _x = _x0 + _x1
-     * Bob holds y = _y0 + y1
-     * compute _x + y => _z0 + _z1 = (_x0 + _y0) + (y1 + _x1)
+     * Alice holds _x = _xi + _x1
+     * Bob holds y = _yi + y1
+     * compute _x + y => _z0 + _z1 = (_xi + _yi) + (y1 + _x1)
      */
-    int64_t _x{};
-    int64_t _x0{};
-    int64_t _x1{};
+    int64_t _xi{};
+    int64_t _yi{};
+
 public:
-    explicit AdditionShareExecutor(int64_t x);
+    explicit AdditionShareExecutor(int64_t x, int64_t y);
     void compute() override;
 protected:
     [[nodiscard]] std::string tag() const override;

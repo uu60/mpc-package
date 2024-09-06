@@ -12,20 +12,20 @@ RsaOtTripleGenerator::RsaOtTripleGenerator(int l) {
 }
 
 void RsaOtTripleGenerator::generateRandomAB() {
-    _a0 = Math::rand64(0, (1LL << _l) - 1);
-    _b0 = Math::rand64(0, (1LL << _l) - 1);
+    _ai = Math::rand64(0, (1LL << _l) - 1);
+    _bi = Math::rand64(0, (1LL << _l) - 1);
 }
 
 void RsaOtTripleGenerator::computeU() {
-    computeMix(0, _u0);
+    computeMix(0, _ui);
 }
 
 void RsaOtTripleGenerator::computeV() {
-    computeMix(1, _v0);
+    computeMix(1, _vi);
 }
 
 int64_t RsaOtTripleGenerator::corr(int i, int64_t x) const {
-    return Math::ringMod((_a0 << i) - x, _l);
+    return Math::ringMod((_ai << i) - x, _l);
 }
 
 void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
@@ -38,7 +38,7 @@ void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
             s0 = Math::rand64(0, (1LL << _l) - 1);
             s1 = corr(i, s0);
         } else {
-            choice = (int) ((_b0 >> i) & 1);
+            choice = (int) ((_bi >> i) & 1);
         }
         RsaOtExecutor r(sender, s0, s1, choice);
         r.setLogBenchmark(false);
@@ -69,7 +69,7 @@ void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
 }
 
 void RsaOtTripleGenerator::computeC() {
-    _c0 = Math::ringMod(_a0 * _b0 + _u0 + _v0, _l);
+    _ci = Math::ringMod(_ai * _bi + _ui + _vi, _l);
 }
 
 void RsaOtTripleGenerator::compute() {
