@@ -6,6 +6,8 @@
 #include "executor/bmt/FixedTripleGenerator.h"
 #include "utils/Mpi.h"
 
+FixedMultiplicationShareExecutor::FixedMultiplicationShareExecutor(int64_t x, int64_t y, int l) : AbstractMultiplicationShareExecutor(x, y, l) {}
+
 void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
     FixedTripleGenerator e(_l);
     e.setBenchmark(_benchmarkLevel);
@@ -20,4 +22,6 @@ void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
 std::string FixedMultiplicationShareExecutor::tag() const {
     return "[Fixed Multiplication Share]";
 }
+
+
 

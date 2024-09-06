@@ -6,6 +6,8 @@
 #include "utils/Mpi.h"
 #include "executor/bmt/RsaOtTripleGenerator.h"
 
+RsaOtMultiplicationShareExecutor::RsaOtMultiplicationShareExecutor(int64_t x, int64_t y, int l): AbstractMultiplicationShareExecutor(x, y, l) {}
+
 void RsaOtMultiplicationShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator e(_l);
     e.setBenchmark(_benchmarkLevel);

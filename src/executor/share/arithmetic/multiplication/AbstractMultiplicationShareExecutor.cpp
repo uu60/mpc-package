@@ -7,25 +7,9 @@
 #include "utils/Math.h"
 #include "utils/Log.h"
 
-AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l) {
-    bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
-    // distribute data
-    if (!Mpi::isCalculator()) {
-        int64_t x1 = Math::rand64();
-        int64_t x0 = x - x1;
-        int64_t y1 = Math::rand64();
-        int64_t y0 = y - y1;
-        Mpi::sendTo(&x0, 0, _mpiTime, bm);
-        Mpi::sendTo(&y0, 0, _mpiTime, bm);
-        Mpi::sendTo(&x1, 1, _mpiTime, bm);
-        Mpi::sendTo(&y1, 1, _mpiTime, bm);
-    } else {
-        // data
-        Mpi::recvFrom(&_xi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
-        Mpi::recvFrom(&_yi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
-
-        _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
-    }
+AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l)
+        : AbstractIntegerShareExecutor(x, y) {
+    _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
 }
 
 void AbstractMultiplicationShareExecutor::compute() {

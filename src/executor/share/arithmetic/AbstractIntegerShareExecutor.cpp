@@ -1,13 +1,14 @@
 //
-// Created by 杜建璋 on 2024/9/2.
+// Created by 杜建璋 on 2024/9/6.
 //
 
-#include "executor/share/comparison/ComparisonExecutor.h"
+#include "executor/share/arithmetic/AbstractIntegerShareExecutor.h"
 #include "utils/Mpi.h"
 #include "utils/Math.h"
 
-ComparisonExecutor::ComparisonExecutor(int64_t x, int64_t y) {
+AbstractIntegerShareExecutor::AbstractIntegerShareExecutor(int64_t x, int64_t y) {
     bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
+    // distribute data
     if (!Mpi::isCalculator()) {
         int64_t x1 = Math::rand64();
         int64_t x0 = x - x1;
@@ -17,10 +18,9 @@ ComparisonExecutor::ComparisonExecutor(int64_t x, int64_t y) {
         Mpi::sendTo(&y0, 0, _mpiTime, bm);
         Mpi::sendTo(&x1, 1, _mpiTime, bm);
         Mpi::sendTo(&y1, 1, _mpiTime, bm);
+    } else {
+        // data
+        Mpi::recvFrom(&_xi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
+        Mpi::recvFrom(&_yi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
     }
 }
-
-void ComparisonExecutor::compute() {
-
-}
-

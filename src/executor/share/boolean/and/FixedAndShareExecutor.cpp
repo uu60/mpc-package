@@ -5,6 +5,8 @@
 #include "executor/share/boolean/and/FixedAndShareExecutor.h"
 #include "executor/bmt/FixedTripleGenerator.h"
 
+FixedAndShareExecutor::FixedAndShareExecutor(bool x, bool y) : AbstractAndShareExecutor(x, y) {}
+
 void FixedAndShareExecutor::obtainMultiplicationTriple() {
     FixedTripleGenerator e(1);
     e.setBenchmark(_benchmarkLevel);

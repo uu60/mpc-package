@@ -4,15 +4,10 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTMULTIPLICATIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTMULTIPLICATIONSHAREEXECUTOR_H
-#include "../../../AbstractExecutor.h"
+#include "../AbstractIntegerShareExecutor.h"
 
-class AbstractMultiplicationShareExecutor : public AbstractExecutor {
+class AbstractMultiplicationShareExecutor : public AbstractIntegerShareExecutor {
 protected:
-    // hold parts
-    // _x = _xi + _x1
-    // y = _yi + y1
-    int64_t _xi{};
-    int64_t _yi{};
     // MT
     // _ai, _bi, _ci belongs to Alice
     // c = (_ci + c1) = a * b = (_ai + a1) * (_bi + b1)

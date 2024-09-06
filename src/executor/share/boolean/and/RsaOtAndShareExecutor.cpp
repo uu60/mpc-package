@@ -4,6 +4,8 @@
 
 #include "executor/share/boolean/and/RsaOtAndShareExecutor.h"
 
+RsaOtAndShareExecutor::RsaOtAndShareExecutor(bool x, bool y) : AbstractAndShareExecutor(x, y) {}
+
 void RsaOtAndShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator m(1);
     m.setBenchmark(_benchmarkLevel);

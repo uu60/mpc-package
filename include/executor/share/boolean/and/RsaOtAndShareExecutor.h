@@ -9,7 +9,7 @@
 
 class RsaOtAndShareExecutor : public AbstractAndShareExecutor {
 public:
-    explicit RsaOtAndShareExecutor(bool x, bool y) : AbstractAndShareExecutor(x, y) {};
+    RsaOtAndShareExecutor(bool x, bool y);
 protected:
     void obtainMultiplicationTriple() override;
     [[nodiscard]] std::string tag() const override;

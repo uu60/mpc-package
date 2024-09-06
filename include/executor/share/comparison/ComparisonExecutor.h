@@ -15,6 +15,10 @@ private:
     int64_t y0{};
 
 public:
+    // if (x > y) 1
+    // if (x = y) 0
+    // if (x < y) -1
+    ComparisonExecutor(int64_t x, int64_t y);
     void compute() override;
 };
 
