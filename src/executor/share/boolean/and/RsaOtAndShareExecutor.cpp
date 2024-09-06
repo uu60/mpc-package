@@ -6,6 +6,8 @@
 
 RsaOtAndShareExecutor::RsaOtAndShareExecutor(bool x, bool y) : AbstractAndShareExecutor(x, y) {}
 
+RsaOtAndShareExecutor::RsaOtAndShareExecutor(bool x, bool y, bool dummy) : AbstractAndShareExecutor(x, y, dummy) {}
+
 void RsaOtAndShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator m(1);
     m.setBenchmark(_benchmarkLevel);
@@ -29,3 +31,4 @@ void RsaOtAndShareExecutor::obtainMultiplicationTriple() {
 std::string RsaOtAndShareExecutor::tag() const {
     return "[RSA OT And Share]";
 }
+

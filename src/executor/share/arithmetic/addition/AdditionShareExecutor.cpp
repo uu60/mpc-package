@@ -9,6 +9,8 @@
 
 AdditionShareExecutor::AdditionShareExecutor(int64_t x, int64_t y) : AbstractIntegerShareExecutor(x, y) {}
 
+AdditionShareExecutor::AdditionShareExecutor(int64_t xi, int64_t yi, bool dummy) : AbstractIntegerShareExecutor(xi, yi, dummy) {}
+
 void AdditionShareExecutor::compute() {
     bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {

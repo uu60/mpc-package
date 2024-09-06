@@ -7,6 +7,8 @@
 
 AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y) : AbstractBoolShareExecutor(x, y) {}
 
+AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y, bool dummy) : AbstractBoolShareExecutor(x, y, dummy) {}
+
 void AbstractAndShareExecutor::compute() {
     // BMT
     int64_t start, end, end1;

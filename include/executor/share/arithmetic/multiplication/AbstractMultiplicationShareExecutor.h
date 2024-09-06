@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTMULTIPLICATIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTMULTIPLICATIONSHAREEXECUTOR_H
-#include "../AbstractIntegerShareExecutor.h"
+#include "executor/share/AbstractIntegerShareExecutor.h"
 
 class AbstractMultiplicationShareExecutor : public AbstractIntegerShareExecutor {
 protected:
@@ -18,6 +18,7 @@ protected:
 
 public:
     AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l);
+    AbstractMultiplicationShareExecutor(int64_t xi, int64_t yi, int l, bool dummy);
     void compute() override;
 
 protected:

@@ -8,6 +8,9 @@
 
 RsaOtMultiplicationShareExecutor::RsaOtMultiplicationShareExecutor(int64_t x, int64_t y, int l): AbstractMultiplicationShareExecutor(x, y, l) {}
 
+RsaOtMultiplicationShareExecutor::RsaOtMultiplicationShareExecutor(int64_t x, int64_t y, int l, bool dummy)
+        : AbstractMultiplicationShareExecutor(x, y, l, dummy) {}
+
 void RsaOtMultiplicationShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator e(_l);
     e.setBenchmark(_benchmarkLevel);

@@ -8,6 +8,9 @@
 
 FixedMultiplicationShareExecutor::FixedMultiplicationShareExecutor(int64_t x, int64_t y, int l) : AbstractMultiplicationShareExecutor(x, y, l) {}
 
+FixedMultiplicationShareExecutor::FixedMultiplicationShareExecutor(int64_t x, int64_t y, int l, bool dummy)
+        : AbstractMultiplicationShareExecutor(x, y, l, dummy) {}
+
 void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
     FixedTripleGenerator e(_l);
     e.setBenchmark(_benchmarkLevel);

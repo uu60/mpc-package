@@ -12,6 +12,10 @@ AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t
     _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
 }
 
+AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t xi, int64_t yi, int l, bool dummy) : AbstractIntegerShareExecutor(xi, yi, dummy) {
+    _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
+}
+
 void AbstractMultiplicationShareExecutor::compute() {
     int64_t start, end, end1;
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {

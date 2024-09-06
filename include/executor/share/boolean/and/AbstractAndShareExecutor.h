@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTANDSHAREEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTANDSHAREEXECUTOR_H
-#include "../AbstractBoolShareExecutor.h"
+#include "executor/share/AbstractBoolShareExecutor.h"
 
 class AbstractAndShareExecutor : public AbstractBoolShareExecutor {
 protected:
@@ -15,6 +15,7 @@ protected:
 
 public:
     AbstractAndShareExecutor(bool x, bool y);
+    AbstractAndShareExecutor(bool x, bool y, bool dummy);
     void compute() override;
 protected:
     virtual void obtainMultiplicationTriple() = 0;

@@ -7,6 +7,8 @@
 
 FixedAndShareExecutor::FixedAndShareExecutor(bool x, bool y) : AbstractAndShareExecutor(x, y) {}
 
+FixedAndShareExecutor::FixedAndShareExecutor(bool x, bool y, bool dummy) : AbstractAndShareExecutor(x, y, dummy) {}
+
 void FixedAndShareExecutor::obtainMultiplicationTriple() {
     FixedTripleGenerator e(1);
     e.setBenchmark(_benchmarkLevel);

@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTBOOLSHAREEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTBOOLSHAREEXECUTOR_H
-#include "../../AbstractExecutor.h"
+#include "executor/AbstractExecutor.h"
 
 class AbstractBoolShareExecutor : public AbstractExecutor {
 protected:
@@ -12,6 +12,7 @@ protected:
     bool _yi{};
 public:
     AbstractBoolShareExecutor(int64_t x, int64_t y);
+    AbstractBoolShareExecutor(int64_t xi, int64_t yi, bool dummy);
 };
 
 
