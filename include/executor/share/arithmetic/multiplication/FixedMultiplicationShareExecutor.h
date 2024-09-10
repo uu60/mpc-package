@@ -4,7 +4,7 @@
 
 #ifndef DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
 #define DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
-#include "AbstractMultiplicationShareExecutor.h"
+#include "../../arithmetic/multiplication/AbstractMultiplicationShareExecutor.h"
 
 class FixedMultiplicationShareExecutor : public AbstractMultiplicationShareExecutor {
 public:

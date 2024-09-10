@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTINTEGERSHAREEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTINTEGERSHAREEXECUTOR_H
-#include "executor/AbstractExecutor.h"
+#include "../../executor/AbstractExecutor.h"
 
 
 class AbstractIntegerShareExecutor : public AbstractExecutor {

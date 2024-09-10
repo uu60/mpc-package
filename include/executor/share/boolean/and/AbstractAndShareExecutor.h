@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTANDSHAREEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTANDSHAREEXECUTOR_H
-#include "executor/share/AbstractBoolShareExecutor.h"
+#include "../../../../executor/share/AbstractBoolShareExecutor.h"
 
 class AbstractAndShareExecutor : public AbstractBoolShareExecutor {
 protected:

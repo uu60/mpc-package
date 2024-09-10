@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_RSAOTMULTIPLICATIONSHAREEXECUTOR_H
 #define MPC_PACKAGE_RSAOTMULTIPLICATIONSHAREEXECUTOR_H
-#include "AbstractMultiplicationShareExecutor.h"
+#include "../../arithmetic/multiplication/AbstractMultiplicationShareExecutor.h"
 
 
 class RsaOtMultiplicationShareExecutor : public AbstractMultiplicationShareExecutor {

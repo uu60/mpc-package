@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_FIXEDANDSHAREEXECUTOR_H
 #define MPC_PACKAGE_FIXEDANDSHAREEXECUTOR_H
-#include "AbstractAndShareExecutor.h"
+#include "../../boolean/and/AbstractAndShareExecutor.h"
 
 class FixedAndShareExecutor : public AbstractAndShareExecutor {
 public:

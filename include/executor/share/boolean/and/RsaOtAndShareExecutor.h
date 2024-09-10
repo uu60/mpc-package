@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_RSAOTANDSHAREEXECUTOR_H
 #define MPC_PACKAGE_RSAOTANDSHAREEXECUTOR_H
-#include "AbstractAndShareExecutor.h"
+#include "../../boolean/and/AbstractAndShareExecutor.h"
 #include "../../../bmt/RsaOtTripleGenerator.h"
 
 class RsaOtAndShareExecutor : public AbstractAndShareExecutor {

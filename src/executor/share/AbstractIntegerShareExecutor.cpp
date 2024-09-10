@@ -6,8 +6,6 @@
 #include "utils/Mpi.h"
 #include "utils/Math.h"
 
-AbstractIntegerShareExecutor::AbstractIntegerShareExecutor() = default;
-
 AbstractIntegerShareExecutor::AbstractIntegerShareExecutor(int64_t x, int64_t y) {
     bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
     // distribute data
