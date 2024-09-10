@@ -22,7 +22,7 @@ RsaOtExecutor::RsaOtExecutor(int bits, int sender, int64_t m0, int64_t m1, int i
     }
 }
 
-void RsaOtExecutor::compute() {
+RsaOtExecutor* RsaOtExecutor::execute() {
     int64_t start, end;
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         start = System::currentTimeMillis();
@@ -41,6 +41,7 @@ void RsaOtExecutor::compute() {
         }
         _entireComputationTime = end - start;
     }
+    return this;
 }
 
 void RsaOtExecutor::generateAndShareRsaKeys() {
@@ -162,15 +163,15 @@ void RsaOtExecutor::process() {
     }
 }
 
-int64_t RsaOtExecutor::getRsaGenerationTime() const {
+int64_t RsaOtExecutor::rsaGenerationTime() const {
     return _rsaGenerationTime;
 }
 
-int64_t RsaOtExecutor::getRsaEncryptionTime() const {
+int64_t RsaOtExecutor::rsaEncryptionTime() const {
     return _rsaEncryptionTime;
 }
 
-int64_t RsaOtExecutor::getRsaDecryptionTime() const {
+int64_t RsaOtExecutor::rsaDecryptionTime() const {
     return _rsaDecryptionTime;
 }
 

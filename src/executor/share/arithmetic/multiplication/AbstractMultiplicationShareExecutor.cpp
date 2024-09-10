@@ -16,7 +16,7 @@ AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t
     _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
 }
 
-void AbstractMultiplicationShareExecutor::compute() {
+AbstractMultiplicationShareExecutor* AbstractMultiplicationShareExecutor::execute() {
     int64_t start, end, end1;
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         start = System::currentTimeMillis();
@@ -44,6 +44,8 @@ void AbstractMultiplicationShareExecutor::compute() {
         }
         _entireComputationTime = end1 - start;
     }
+
+    return this;
 }
 
 void AbstractMultiplicationShareExecutor::process() {

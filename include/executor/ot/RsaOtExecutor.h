@@ -14,7 +14,7 @@
 // according to https://blog.csdn.net/qq_16763983/article/details/128055146
 class RsaOtExecutor : public AbstractExecutor {
 private:
-    // for setBenchmark
+    // for benchmark
     int64_t _rsaGenerationTime{};
     int64_t _rsaEncryptionTime{};
     int64_t _rsaDecryptionTime{};
@@ -41,10 +41,10 @@ public:
     // i is for receiver (invalid for sender)
     explicit RsaOtExecutor(int sender, int64_t m0, int64_t m1, int i);
     explicit RsaOtExecutor(int bits, int sender, int64_t m0, int64_t m1, int i);
-    void compute() override;
-    [[nodiscard]] int64_t getRsaGenerationTime() const;
-    [[nodiscard]] int64_t getRsaEncryptionTime() const;
-    [[nodiscard]] int64_t getRsaDecryptionTime() const;
+    RsaOtExecutor* execute() override;
+    [[nodiscard]] int64_t rsaGenerationTime() const;
+    [[nodiscard]] int64_t rsaEncryptionTime() const;
+    [[nodiscard]] int64_t rsaDecryptionTime() const;
 
 protected:
     [[nodiscard]] std::string tag() const override;

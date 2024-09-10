@@ -6,10 +6,13 @@
 #define MPC_PACKAGE_XORSHAREEXECUTOR_H
 
 #include "../../../../executor/share/AbstractBoolShareExecutor.h"
+
 class XorShareExecutor : public AbstractBoolShareExecutor {
 public:
-   XorShareExecutor(bool x, bool y);
-    void compute() override;
+    XorShareExecutor(bool x, bool y);
+
+    XorShareExecutor *execute() override;
+
 protected:
     [[nodiscard]] std::string tag() const override;
 };

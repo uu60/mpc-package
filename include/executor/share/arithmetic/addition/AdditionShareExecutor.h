@@ -11,7 +11,7 @@ class AdditionShareExecutor : public AbstractIntegerShareExecutor {
 public:
     AdditionShareExecutor(int64_t x, int64_t y);
     AdditionShareExecutor(int64_t xi, int64_t yi, bool dummy); // dummy just for overload
-    void compute() override;
+    AdditionShareExecutor* execute() override;
 protected:
     [[nodiscard]] std::string tag() const override;
 };

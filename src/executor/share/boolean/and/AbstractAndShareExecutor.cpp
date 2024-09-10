@@ -9,7 +9,7 @@ AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y) : AbstractBoo
 
 AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y, bool dummy) : AbstractBoolShareExecutor(x, y, dummy) {}
 
-void AbstractAndShareExecutor::compute() {
+AbstractAndShareExecutor* AbstractAndShareExecutor::execute() {
     // BMT
     int64_t start, end, end1;
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
@@ -37,6 +37,8 @@ void AbstractAndShareExecutor::compute() {
         }
         _entireComputationTime = end1 - start;
     }
+
+    return this;
 }
 
 std::string AbstractAndShareExecutor::tag() const {

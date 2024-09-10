@@ -11,7 +11,7 @@ AdditionShareExecutor::AdditionShareExecutor(int64_t x, int64_t y) : AbstractInt
 
 AdditionShareExecutor::AdditionShareExecutor(int64_t xi, int64_t yi, bool dummy) : AbstractIntegerShareExecutor(xi, yi, dummy) {}
 
-void AdditionShareExecutor::compute() {
+AdditionShareExecutor* AdditionShareExecutor::execute() {
     bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         int64_t zi = _xi + _yi;
@@ -22,6 +22,7 @@ void AdditionShareExecutor::compute() {
         Mpi::recvFrom(&z1, 1, _mpiTime, bm);
         _result = z0 + z1;
     }
+    return this;
 }
 
 std::string AdditionShareExecutor::tag() const {

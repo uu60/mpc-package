@@ -98,7 +98,7 @@ mpirun -np 2 -hostfile hostfile.txt demo
    [ub2:806961] [2024-07-27 14:50:57.151] [1] [ INFO] Done.             
   ```
   In this case, multipliers are `1649254901` and `-1008493770` which represents binary data.
-  The product should be `1649254901 * -1008493700 = -1663263292800466770`. After leaving out extra bits, it is `4172185774`, the same as computation getResult.
+  The product should be `1649254901 * -1008493700 = -1663263292800466770`. After leaving out extra bits, it is `4172185774`, the same as computation result.
 #### 4.1.2 With fixed MTs
 - Similar to last case, but the MTs are fixed generated from `FixedMultiplicationTripleHolder`.
 - Here is an example output:

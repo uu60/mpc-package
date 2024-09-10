@@ -8,23 +8,25 @@ void AbstractExecutor::finalize() {
     // do nothing by default
 }
 
-int64_t AbstractExecutor::getResult() const {
+int64_t AbstractExecutor::result() const {
     return _result;
 }
 
-void AbstractExecutor::setBenchmark(BenchmarkLevel lv) {
+AbstractExecutor* AbstractExecutor::benchmark(BenchmarkLevel lv) {
     _benchmarkLevel = lv;
+    return this;
 }
 
-int64_t AbstractExecutor::getMpiTime() const {
+int64_t AbstractExecutor::mpiTime() const {
     return _mpiTime;
 }
 
-void AbstractExecutor::setLogBenchmark(bool isLogBenchmark) {
+AbstractExecutor* AbstractExecutor::logBenchmark(bool isLogBenchmark) {
     _isLogBenchmark = isLogBenchmark;
+    return this;
 }
 
-int64_t AbstractExecutor::getEntireComputationTime() const {
+int64_t AbstractExecutor::entireComputationTime() const {
     return _entireComputationTime;
 }
 

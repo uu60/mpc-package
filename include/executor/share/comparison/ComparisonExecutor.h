@@ -13,7 +13,7 @@ public:
     // if (x < y) -1
     ComparisonExecutor(int64_t x, int64_t y);
     ComparisonExecutor(int64_t xi, int64_t yi, bool dummy);
-    void compute() override;
+    ComparisonExecutor* execute() override;
 };
 
 

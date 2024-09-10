@@ -16,7 +16,7 @@ protected:
 public:
     AbstractAndShareExecutor(bool x, bool y);
     AbstractAndShareExecutor(bool x, bool y, bool dummy);
-    void compute() override;
+    AbstractAndShareExecutor* execute() override;
 protected:
     virtual void obtainMultiplicationTriple() = 0;
     [[nodiscard]] std::string tag() const override;

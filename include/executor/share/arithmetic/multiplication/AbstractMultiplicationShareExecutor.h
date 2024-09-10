@@ -19,7 +19,7 @@ protected:
 public:
     AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l);
     AbstractMultiplicationShareExecutor(int64_t xi, int64_t yi, int l, bool dummy);
-    void compute() override;
+    AbstractMultiplicationShareExecutor* execute() override;
 
 protected:
     virtual void obtainMultiplicationTriple() = 0;

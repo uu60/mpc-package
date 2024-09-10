@@ -16,23 +16,23 @@ enum class BenchmarkLevel {
 
 class AbstractExecutor {
 protected:
-    // getResult
+    // result
     int64_t _result{};
 
-    // for setBenchmark
+    // for benchmark
     BenchmarkLevel _benchmarkLevel = BenchmarkLevel::NONE;
     bool _isLogBenchmark = false;
     int64_t _mpiTime{};
     int64_t _entireComputationTime{};
 public:
     // secret sharing process
-    virtual void compute() = 0;
-    // get calculated getResult
-    [[nodiscard]] int64_t getResult() const;
-    void setBenchmark(BenchmarkLevel lv);
-    void setLogBenchmark(bool isLogBenchmark);
-    [[nodiscard]] int64_t getMpiTime() const;
-    [[nodiscard]] int64_t getEntireComputationTime() const;
+    virtual AbstractExecutor* execute() = 0;
+    // get calculated result
+    [[nodiscard]] int64_t result() const;
+    AbstractExecutor* benchmark(BenchmarkLevel lv);
+    AbstractExecutor* logBenchmark(bool isLogBenchmark);
+    [[nodiscard]] int64_t mpiTime() const;
+    [[nodiscard]] int64_t entireComputationTime() const;
 protected:
     [[nodiscard]] virtual std::string tag() const = 0;
     virtual void finalize();

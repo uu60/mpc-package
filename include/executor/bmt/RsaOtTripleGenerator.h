@@ -10,7 +10,7 @@
 
 class RsaOtTripleGenerator : public AbstractMultiplicationTripleGenerator {
 private:
-    // setBenchmark
+    // benchmark
     int64_t _otRsaGenerationTime{};
     int64_t _otRsaEncryptionTime{};
     int64_t _otRsaDecryptionTime{};
@@ -18,7 +18,7 @@ private:
     int64_t _otEntireComputationTime{};
 public:
     explicit RsaOtTripleGenerator(int l);
-    void compute() override;
+    RsaOtTripleGenerator* execute() override;
 private:
     void generateRandomAB();
     void computeU();
@@ -27,11 +27,11 @@ private:
     void computeC();
     [[nodiscard]] int64_t corr(int i, int64_t x) const;
 public:
-    [[nodiscard]] int64_t getOtRsaGenerationTime() const;
-    [[nodiscard]] int64_t getOtRsaEncryptionTime() const;
-    [[nodiscard]] int64_t getOtRsaDecryptionTime() const;
-    [[nodiscard]] int64_t getOtMpiTime() const;
-    [[nodiscard]] int64_t getOtEntireComputationTime() const;
+    [[nodiscard]] int64_t otRsaGenerationTime() const;
+    [[nodiscard]] int64_t otRsaEncryptionTime() const;
+    [[nodiscard]] int64_t otRsaDecryptionTime() const;
+    [[nodiscard]] int64_t otMpiTime() const;
+    [[nodiscard]] int64_t otEntireComputationTime() const;
 protected:
     [[nodiscard]] std::string tag() const override;
 };

@@ -11,9 +11,9 @@ FixedAndShareExecutor::FixedAndShareExecutor(bool x, bool y, bool dummy) : Abstr
 
 void FixedAndShareExecutor::obtainMultiplicationTriple() {
     FixedTripleGenerator e(1);
-    e.setBenchmark(_benchmarkLevel);
-    e.setLogBenchmark(false);
-    e.compute();
+    e.benchmark(_benchmarkLevel);
+    e.logBenchmark(false);
+    e.execute();
 
     _ai = e.getAi();
     _bi = e.getBi();

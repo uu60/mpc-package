@@ -7,7 +7,7 @@
 
 XorShareExecutor::XorShareExecutor(bool x, bool y) : AbstractBoolShareExecutor(x, y) {}
 
-void XorShareExecutor::compute() {
+XorShareExecutor* XorShareExecutor::execute() {
     bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         bool zi = _xi xor _yi;
@@ -18,6 +18,7 @@ void XorShareExecutor::compute() {
         Mpi::recvFrom(&z1, 1, _mpiTime, bm);
         _result = z0 xor z1;
     }
+    return this;
 }
 
 std::string XorShareExecutor::tag() const {

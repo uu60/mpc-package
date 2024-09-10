@@ -41,26 +41,26 @@ void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
             choice = (int) ((_bi >> i) & 1);
         }
         RsaOtExecutor r(sender, s0, s1, choice);
-        r.setLogBenchmark(false);
+        r.logBenchmark(false);
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            r.setBenchmark(BenchmarkLevel::DETAILED);
+            r.benchmark(BenchmarkLevel::DETAILED);
         }
-        r.compute();
+        r.execute();
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             // add mpi time
-            _mpiTime += r.getMpiTime();
-            _otMpiTime += r.getMpiTime();
-            _otRsaGenerationTime += r.getRsaGenerationTime();
-            _otRsaEncryptionTime += r.getRsaEncryptionTime();
-            _otRsaDecryptionTime += r.getRsaDecryptionTime();
-            _otEntireComputationTime += r.getEntireComputationTime();
+            _mpiTime += r.mpiTime();
+            _otMpiTime += r.mpiTime();
+            _otRsaGenerationTime += r.rsaGenerationTime();
+            _otRsaEncryptionTime += r.rsaEncryptionTime();
+            _otRsaDecryptionTime += r.rsaDecryptionTime();
+            _otEntireComputationTime += r.entireComputationTime();
         }
         if (isSender) {
             sum += s0;
         } else {
-            int64_t temp = r.getResult();
+            int64_t temp = r.result();
             if (choice == 0) {
-                temp = Math::ringMod(-r.getResult(), _l);
+                temp = Math::ringMod(-r.result(), _l);
             }
             sum += temp;
         }
@@ -72,31 +72,32 @@ void RsaOtTripleGenerator::computeC() {
     _ci = Math::ringMod(_ai * _bi + _ui + _vi, _l);
 }
 
-void RsaOtTripleGenerator::compute() {
+RsaOtTripleGenerator* RsaOtTripleGenerator::execute() {
     generateRandomAB();
 
     computeU();
     computeV();
     computeC();
+    return this;
 }
 
-int64_t RsaOtTripleGenerator::getOtRsaGenerationTime() const {
+int64_t RsaOtTripleGenerator::otRsaGenerationTime() const {
     return _otRsaGenerationTime;
 }
 
-int64_t RsaOtTripleGenerator::getOtRsaEncryptionTime() const {
+int64_t RsaOtTripleGenerator::otRsaEncryptionTime() const {
     return _otRsaEncryptionTime;
 }
 
-int64_t RsaOtTripleGenerator::getOtRsaDecryptionTime() const {
+int64_t RsaOtTripleGenerator::otRsaDecryptionTime() const {
     return _otRsaDecryptionTime;
 }
 
-int64_t RsaOtTripleGenerator::getOtMpiTime() const {
+int64_t RsaOtTripleGenerator::otMpiTime() const {
     return _otMpiTime;
 }
 
-int64_t RsaOtTripleGenerator::getOtEntireComputationTime() const {
+int64_t RsaOtTripleGenerator::otEntireComputationTime() const {
     return _otEntireComputationTime;
 }
 

@@ -11,7 +11,7 @@ FixedTripleGenerator::FixedTripleGenerator(int l) {
 }
 
 
-void FixedTripleGenerator::compute() {
+FixedTripleGenerator* FixedTripleGenerator::execute() {
     int64_t idx = 0;
     if (Mpi::rank() == 0) {
         idx = Math::rand64(0, 99);
@@ -30,6 +30,7 @@ void FixedTripleGenerator::compute() {
         _bi = (int64_t) std::get<1>(triple).second;
         _ci = (int64_t) std::get<2>(triple).second;
     }
+    return this;
 }
 
 std::string FixedTripleGenerator::tag() const {

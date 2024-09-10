@@ -10,8 +10,8 @@ RsaOtAndShareExecutor::RsaOtAndShareExecutor(bool x, bool y, bool dummy) : Abstr
 
 void RsaOtAndShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator m(1);
-    m.setBenchmark(_benchmarkLevel);
-    m.compute();
+    m.benchmark(_benchmarkLevel);
+    m.execute();
     if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
 
     }
@@ -20,11 +20,11 @@ void RsaOtAndShareExecutor::obtainMultiplicationTriple() {
     _ci = m.getCi();
 
     if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
-        Log::i(tag() + " OT RSA keys generation time: " + std::to_string(m.getOtRsaGenerationTime()) + " ms.");
-        Log::i(tag() + " OT RSA encryption time: " + std::to_string(m.getOtRsaEncryptionTime()) + " ms.");
-        Log::i(tag() + " OT RSA decryption time: " + std::to_string(m.getOtRsaDecryptionTime()) + " ms.");
-        Log::i(tag() + " OT MPI transmission and synchronization time: " + std::to_string(m.getOtMpiTime()) + " ms.");
-        Log::i(tag() + " OT total computation time: " + std::to_string(m.getOtEntireComputationTime()) + " ms.");
+        Log::i(tag() + " OT RSA keys generation time: " + std::to_string(m.otRsaGenerationTime()) + " ms.");
+        Log::i(tag() + " OT RSA encryption time: " + std::to_string(m.otRsaEncryptionTime()) + " ms.");
+        Log::i(tag() + " OT RSA decryption time: " + std::to_string(m.otRsaDecryptionTime()) + " ms.");
+        Log::i(tag() + " OT MPI transmission and synchronization time: " + std::to_string(m.otMpiTime()) + " ms.");
+        Log::i(tag() + " OT total computation time: " + std::to_string(m.otEntireComputationTime()) + " ms.");
     }
 }
 

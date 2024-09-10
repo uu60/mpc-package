@@ -9,7 +9,7 @@ ComparisonExecutor::ComparisonExecutor(int64_t x, int64_t y) : AbstractIntegerSh
 
 ComparisonExecutor::ComparisonExecutor(int64_t xi, int64_t yi, bool dummy) : AbstractIntegerShareExecutor(xi, yi, dummy) {}
 
-void ComparisonExecutor::compute() {
+ComparisonExecutor* ComparisonExecutor::execute() {
     bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         int64_t zi = _xi - _yi;
@@ -21,5 +21,6 @@ void ComparisonExecutor::compute() {
         int64_t z = z0 + z1;
         _result = (z > 0 ? 1 : ((z == 0) ? 0 : -1));
     }
+    return this;
 }
 
