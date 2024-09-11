@@ -8,14 +8,14 @@
 XorShareExecutor::XorShareExecutor(bool x, bool y) : AbstractBoolShareExecutor(x, y) {}
 
 XorShareExecutor* XorShareExecutor::execute() {
-    bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
+    bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         bool zi = _xi xor _yi;
-        Mpi::sendTo(&zi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
+        Mpi::sendTo(&zi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
     } else {
         bool z0, z1;
-        Mpi::recvFrom(&z0, 0, _mpiTime, bm);
-        Mpi::recvFrom(&z1, 1, _mpiTime, bm);
+        Mpi::recvFrom(&z0, 0, _mpiTime, detailed);
+        Mpi::recvFrom(&z1, 1, _mpiTime, detailed);
         _result = z0 xor z1;
     }
     return this;

@@ -50,21 +50,21 @@ void AbstractAndShareExecutor::process() {
      * For variable name description, please refer to
      * RsaOtMultiplicationShareExecution.cpp
      * */
-    bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
+    bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         bool ei = _ai xor _xi;
         bool fi = _bi xor _yi;
         bool eo, fo;
-        Mpi::exchange(&ei, &eo, _mpiTime, bm);
-        Mpi::exchange(&fi, &fo, _mpiTime, bm);
+        Mpi::exchangeC(&ei, &eo, _mpiTime, detailed);
+        Mpi::exchangeC(&fi, &fo, _mpiTime, detailed);
         bool e = ei xor eo;
         bool f = fi xor fo;
         bool z0 = Mpi::rank() * e * f xor f * _ai xor e * _bi xor _ci;
-        Mpi::sendTo(&z0, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
+        Mpi::sendTo(&z0, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
     } else {
         bool z0, z1;
-        Mpi::recvFrom(&z0, 0, _mpiTime, bm);
-        Mpi::recvFrom(&z1, 1, _mpiTime, bm);
+        Mpi::recvFrom(&z0, 0, _mpiTime, detailed);
+        Mpi::recvFrom(&z1, 1, _mpiTime, detailed);
         _result = z0 xor z1;
     }
 }

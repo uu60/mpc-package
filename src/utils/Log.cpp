@@ -57,3 +57,23 @@ void Log::print(const std::string& level, const std::string& msg) {
               << "[" << std::setw(5) << level << "] "
               << msg << std::endl;
 }
+
+void Log::print(const std::string& level, const std::string& tag, const std::string& msg) {
+    print(level, tag + " " + msg);
+}
+
+void Log::i(const std::string &tag, const std::string &msg) {
+    print(INFO, tag, msg);
+}
+
+void Log::d(const std::string &tag, const std::string &msg) {
+    print(DEBUG, tag, msg);
+}
+
+void Log::w(const std::string &tag, const std::string &msg) {
+    print(WARN, tag, msg);
+}
+
+void Log::e(const std::string &tag, const std::string &msg) {
+    print(ERROR, tag, msg);
+}

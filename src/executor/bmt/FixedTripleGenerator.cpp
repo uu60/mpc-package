@@ -15,9 +15,9 @@ FixedTripleGenerator* FixedTripleGenerator::execute() {
     int64_t idx = 0;
     if (Mpi::rank() == 0) {
         idx = Math::rand64(0, 99);
-        Mpi::send(&idx);
+        Mpi::sendC(&idx);
     } else {
-        Mpi::recv(&idx);
+        Mpi::recvC(&idx);
     }
     std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>> triple = getRandomTriple(
             (int) idx);

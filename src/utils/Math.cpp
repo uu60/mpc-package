@@ -132,11 +132,15 @@ std::string Math::add(const std::string &add0, const std::string &add1, bool min
     return resultStr;
 }
 
-int64_t Math::ringMod(int64_t num, int l) {
+int64_t Math::ring(int64_t num, int l) {
     int64_t ring = 1LL << l;
     return ((num % ring) + ring) % ring;
 }
 
 std::string Math::rand0b(int lowBytes, int highBytes) {
     return Math::rand0b(Math::rand32(lowBytes, highBytes));
+}
+
+int Math::realL(int l) {
+    return l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
 }

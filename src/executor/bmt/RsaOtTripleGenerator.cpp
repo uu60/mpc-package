@@ -25,7 +25,7 @@ void RsaOtTripleGenerator::computeV() {
 }
 
 int64_t RsaOtTripleGenerator::corr(int i, int64_t x) const {
-    return Math::ringMod((_ai << i) - x, _l);
+    return Math::ring((_ai << i) - x, _l);
 }
 
 void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
@@ -60,16 +60,16 @@ void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
         } else {
             int64_t temp = r.result();
             if (choice == 0) {
-                temp = Math::ringMod(-r.result(), _l);
+                temp = Math::ring(-r.result(), _l);
             }
             sum += temp;
         }
     }
-    mix = Math::ringMod(sum, _l);
+    mix = Math::ring(sum, _l);
 }
 
 void RsaOtTripleGenerator::computeC() {
-    _ci = Math::ringMod(_ai * _bi + _ui + _vi, _l);
+    _ci = Math::ring(_ai * _bi + _ui + _vi, _l);
 }
 
 RsaOtTripleGenerator* RsaOtTripleGenerator::execute() {

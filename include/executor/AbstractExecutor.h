@@ -10,11 +10,11 @@
 #include "../utils/System.h"
 #include "../utils/Log.h"
 
-enum class BenchmarkLevel {
-    NONE, GENERAL, DETAILED
-};
-
 class AbstractExecutor {
+public:
+    enum class BenchmarkLevel {
+        NONE, GENERAL, DETAILED
+    };
 protected:
     // result
     int64_t _result{};

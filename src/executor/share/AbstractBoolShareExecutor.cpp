@@ -7,20 +7,20 @@
 #include "utils/Mpi.h"
 
 AbstractBoolShareExecutor::AbstractBoolShareExecutor(int64_t x, int64_t y) {
-    bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
+    bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (!Mpi::isCalculator()) {
         bool x1 = Math::rand32(0, 1);
         bool x0 = x1 xor x;
         bool y1 = Math::rand32(0, 1);
         bool y0 = y1 xor y;
-        Mpi::sendTo(&x0, 0, _mpiTime, bm);
-        Mpi::sendTo(&y0, 0, _mpiTime, bm);
-        Mpi::sendTo(&x1, 1, _mpiTime, bm);
-        Mpi::sendTo(&y1, 1, _mpiTime, bm);
+        Mpi::sendTo(&x0, 0, _mpiTime, detailed);
+        Mpi::sendTo(&y0, 0, _mpiTime, detailed);
+        Mpi::sendTo(&x1, 1, _mpiTime, detailed);
+        Mpi::sendTo(&y1, 1, _mpiTime, detailed);
     } else {
         // data
-        Mpi::recvFrom(&_xi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
-        Mpi::recvFrom(&_yi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
+        Mpi::recvFrom(&_xi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
+        Mpi::recvFrom(&_yi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
     }
 }
 

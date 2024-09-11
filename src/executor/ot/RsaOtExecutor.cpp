@@ -57,17 +57,17 @@ void RsaOtExecutor::generateAndShareRsaKeys() {
                 Log::i(tag() + " RSA keys generation time: " + std::to_string(end - start) + " ms.");
             }
             _rsaGenerationTime = end - start;
-            Mpi::send(&_pub, _mpiTime);
+            Mpi::sendC(&_pub, _mpiTime);
         } else {
-            Mpi::send(&_pub);
+            Mpi::sendC(&_pub);
         }
         return;
     }
     // receiver
     if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-        Mpi::recv(&_pub, _mpiTime);
+        Mpi::recvC(&_pub, _mpiTime);
     } else {
-        Mpi::recv(&_pub);
+        Mpi::recvC(&_pub);
     }
 }
 
@@ -78,20 +78,20 @@ void RsaOtExecutor::generateAndShareRandoms() {
         _rand0 = Math::rand0b(1, maxLen);
         _rand1 = Math::rand0b(1, maxLen);
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::send(&_rand0, _mpiTime);
-            Mpi::send(&_rand1, _mpiTime);
+            Mpi::sendC(&_rand0, _mpiTime);
+            Mpi::sendC(&_rand1, _mpiTime);
         } else {
-            Mpi::send(&_rand0);
-            Mpi::send(&_rand1);
+            Mpi::sendC(&_rand0);
+            Mpi::sendC(&_rand1);
         }
     } else {
         _randK = Math::rand0b(1, maxLen);
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::recv(&_rand0, _mpiTime);
-            Mpi::recv(&_rand1, _mpiTime);
+            Mpi::recvC(&_rand0, _mpiTime);
+            Mpi::recvC(&_rand1, _mpiTime);
         } else {
-            Mpi::recv(&_rand0);
-            Mpi::recv(&_rand1);
+            Mpi::recvC(&_rand0);
+            Mpi::recvC(&_rand1);
         }
     }
 }
@@ -112,27 +112,27 @@ void RsaOtExecutor::process() {
         }
         std::string sumStr = Math::add(ek, _i == 0 ? _rand0 : _rand1);
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::send(&sumStr, _mpiTime);
+            Mpi::sendC(&sumStr, _mpiTime);
         } else {
-            Mpi::send(&sumStr);
+            Mpi::sendC(&sumStr);
         }
 
         std::string m0, m1;
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::recv(&m0);
-            Mpi::recv(&m1);
+            Mpi::recvC(&m0);
+            Mpi::recvC(&m1);
         } else {
-            Mpi::recv(&m0, _mpiTime);
-            Mpi::recv(&m1, _mpiTime);
+            Mpi::recvC(&m0, _mpiTime);
+            Mpi::recvC(&m1, _mpiTime);
         }
 
         _result = std::stoll(Math::minus(_i == 0 ? m0 : m1, _randK));
     } else {
         std::string sumStr;
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::recv(&sumStr, _mpiTime);
+            Mpi::recvC(&sumStr, _mpiTime);
         } else {
-            Mpi::recv(&sumStr);
+            Mpi::recvC(&sumStr);
         }
         int64_t start, end;
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
@@ -154,11 +154,11 @@ void RsaOtExecutor::process() {
         std::string m0 = Math::add(std::to_string(_m0), k0);
         std::string m1 = Math::add(std::to_string(_m1), k1);
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            Mpi::send(&m0, _mpiTime);
-            Mpi::send(&m1, _mpiTime);
+            Mpi::sendC(&m0, _mpiTime);
+            Mpi::sendC(&m1, _mpiTime);
         } else {
-            Mpi::send(&m0);
-            Mpi::send(&m1);
+            Mpi::sendC(&m0);
+            Mpi::sendC(&m1);
         }
     }
 }

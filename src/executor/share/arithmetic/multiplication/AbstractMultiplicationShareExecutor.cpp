@@ -7,14 +7,9 @@
 #include "utils/Math.h"
 #include "utils/Log.h"
 
-AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l)
-        : AbstractIntegerShareExecutor(x, y) {
-    _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
-}
+AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l) : AbstractIntShareExecutor(x, y, l) {}
 
-AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t xi, int64_t yi, int l, bool dummy) : AbstractIntegerShareExecutor(xi, yi, dummy) {
-    _l = l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
-}
+AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t xi, int64_t yi, int l, bool dummy) : AbstractIntShareExecutor(xi, yi, l, dummy) {}
 
 AbstractMultiplicationShareExecutor* AbstractMultiplicationShareExecutor::execute() {
     int64_t start, end, end1;
@@ -49,21 +44,21 @@ AbstractMultiplicationShareExecutor* AbstractMultiplicationShareExecutor::execut
 }
 
 void AbstractMultiplicationShareExecutor::process() {
-    bool bm = _benchmarkLevel == BenchmarkLevel::DETAILED;
+    bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         int64_t ei = _xi - _ai;
         int64_t fi = _yi - _bi;
         int64_t eo, fo;
-        Mpi::exchange(&ei, &eo, _mpiTime, bm);
-        Mpi::exchange(&fi, &fo, _mpiTime, bm);
+        Mpi::exchangeC(&ei, &eo, _mpiTime, detailed);
+        Mpi::exchangeC(&fi, &fo, _mpiTime, detailed);
         int64_t e = ei + eo;
         int64_t f = fi + fo;
         int64_t zi = Mpi::rank() * e * f + f * _ai + e * _bi + _ci;
-        Mpi::sendTo(&zi, Mpi::TASK_PUBLISHER_RANK, _mpiTime, bm);
+        Mpi::sendTo(&zi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
     } else {
         int64_t z0, z1;
-        Mpi::recvFrom(&z0, 0, _mpiTime, bm);
-        Mpi::recvFrom(&z1, 1, _mpiTime, bm);
-        _result = Math::ringMod(z0 + z1, _l);
+        Mpi::recvFrom(&z0, 0, _mpiTime, detailed);
+        Mpi::recvFrom(&z1, 1, _mpiTime, detailed);
+        _result = Math::ring(z0 + z1, _l);
     }
 }

@@ -45,8 +45,8 @@ add_library(${PROJECT_NAME} SHARED
         include/executor/share/boolean/and/FixedAndShareExecutor.h
         src/executor/share/comparison/ComparisonExecutor.cpp
         include/executor/share/comparison/ComparisonExecutor.h
-        src/executor/share/AbstractIntegerShareExecutor.cpp
-        include/executor/share/AbstractIntegerShareExecutor.h
+        src/executor/share/AbstractIntShareExecutor.cpp
+        include/executor/share/AbstractIntShareExecutor.h
         src/executor/share/AbstractBoolShareExecutor.cpp
         include/executor/share/AbstractBoolShareExecutor.h
 )

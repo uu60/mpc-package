@@ -24,7 +24,9 @@ public:
     static std::string minus(const std::string &add0, const std::string &add1);
     // dividend % divisor
     // divisor should be positive
-    static int64_t ringMod(int64_t num, int l);
+    static int64_t ring(int64_t num, int l);
+    // constraint l
+    static int realL(int l);
 private:
     // str as binary to bignum. "1" -> 49
     static BIGNUM *bignum(const std::string& str);

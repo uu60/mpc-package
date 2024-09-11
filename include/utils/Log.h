@@ -16,15 +16,20 @@ private:
 public:
     // info
     static void i(const std::string& msg);
+    static void i(const std::string& tag, const std::string& msg);
     // debug
     static void d(const std::string& msg);
+    static void d(const std::string& tag, const std::string& msg);
     // warn
     static void w(const std::string& msg);
+    static void w(const std::string& tag, const std::string& msg);
     // error
     static void e(const std::string& msg);
+    static void e(const std::string& tag, const std::string& msg);
 private:
     static std::string getCurrentTimestampStr();
     static void print(const std::string& level, const std::string& msg);
+    static void print(const std::string& level, const std::string& tag, const std::string& msg);
 };
 
 

@@ -13,7 +13,7 @@
  */
 class Mpi {
 public:
-    static const int TASK_PUBLISHER_RANK;
+    static const int DATA_HOLDER_RANK;
 private:
     // mpi env init
     static bool _envInited;
@@ -30,35 +30,36 @@ public:
     static void finalize();
     // judge identity
     static bool isCalculator();
+    static bool isDataHolder();
 // exchange source (for rank of 0 and 1)
-    static void exchange(const int64_t *source, int64_t *target);
-    static void exchange(const int64_t *source, int64_t *target, int64_t &mpiTime);
-    static void exchange(const int64_t *source, int64_t *target, int64_t &mpiTime, bool calculateTime);
-    static void exchange(const bool *source, bool *target);
-    static void exchange(const bool *source, bool *target, int64_t &mpiTime);
-    static void exchange(const bool *source, bool *target, int64_t &mpiTime, bool calculateTime);
+    static void exchangeC(const int64_t *source, int64_t *target);
+    static void exchangeC(const int64_t *source, int64_t *target, int64_t &mpiTime);
+    static void exchangeC(const int64_t *source, int64_t *target, int64_t &mpiTime, bool calculateTime);
+    static void exchangeC(const bool *source, bool *target);
+    static void exchangeC(const bool *source, bool *target, int64_t &mpiTime);
+    static void exchangeC(const bool *source, bool *target, int64_t &mpiTime, bool calculateTime);
 
-// send
-    static void send(const int64_t *source);
-    static void send(const int64_t *source, int64_t &mpiTime);
-    static void send(const int64_t *source, int64_t &mpiTime, bool calculateTime);
-    static void send(const bool *source);
-    static void send(const bool *source, int64_t &mpiTime);
-    static void send(const bool *source, int64_t &mpiTime, bool calculateTime);
-    static void send(const std::string *source);
-    static void send(const std::string *source, int64_t &mpiTime);
-    static void send(const std::string *source, int64_t &mpiTime, bool calculateTime);
+// sendC
+    static void sendC(const int64_t *source);
+    static void sendC(const int64_t *source, int64_t &mpiTime);
+    static void sendC(const int64_t *source, int64_t &mpiTime, bool calculateTime);
+    static void sendC(const bool *source);
+    static void sendC(const bool *source, int64_t &mpiTime);
+    static void sendC(const bool *source, int64_t &mpiTime, bool calculateTime);
+    static void sendC(const std::string *source);
+    static void sendC(const std::string *source, int64_t &mpiTime);
+    static void sendC(const std::string *source, int64_t &mpiTime, bool calculateTime);
 
-// recv
-    static void recv(int64_t *target);
-    static void recv(int64_t *target, int64_t &mpiTime);
-    static void recv(int64_t *target, int64_t &mpiTime, bool calculateTime);
-    static void recv(bool *target);
-    static void recv(bool *target, int64_t &mpiTime);
-    static void recv(bool *target, int64_t &mpiTime, bool calculateTime);
-    static void recv(std::string *target);
-    static void recv(std::string *target, int64_t &mpiTime);
-    static void recv(std::string *target, int64_t &mpiTime, bool calculateTime);
+// recvC
+    static void recvC(int64_t *target);
+    static void recvC(int64_t *target, int64_t &mpiTime);
+    static void recvC(int64_t *target, int64_t &mpiTime, bool calculateTime);
+    static void recvC(bool *target);
+    static void recvC(bool *target, int64_t &mpiTime);
+    static void recvC(bool *target, int64_t &mpiTime, bool calculateTime);
+    static void recvC(std::string *target);
+    static void recvC(std::string *target, int64_t &mpiTime);
+    static void recvC(std::string *target, int64_t &mpiTime, bool calculateTime);
 
 // reconstruct (for transmission between <0 and 2> or <1 and 2>)
     static void sendTo(const int64_t *source, int receiverRank);
