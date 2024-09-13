@@ -26,7 +26,8 @@ protected:
     int64_t _entireComputationTime{};
 public:
     // secret sharing process
-    virtual AbstractExecutor* execute() = 0;
+    virtual AbstractExecutor* execute(bool reconstruct) = 0;
+    virtual AbstractExecutor* reconstruct() = 0;
     // get calculated result
     [[nodiscard]] int64_t result() const;
     AbstractExecutor* benchmark(BenchmarkLevel lv);

@@ -14,7 +14,7 @@ private:
     std::tuple<std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>, std::pair<uint64_t, uint64_t>> getRandomTriple(int idx);
 public:
     explicit FixedTripleGenerator(int l);
-    FixedTripleGenerator* execute() override;
+    FixedTripleGenerator* execute(bool dummy) override;
 protected:
     [[nodiscard]] std::string tag() const override;
 // fixed MTs

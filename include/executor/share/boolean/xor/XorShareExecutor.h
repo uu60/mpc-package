@@ -11,7 +11,7 @@ class XorShareExecutor : public AbstractBoolShareExecutor {
 public:
     XorShareExecutor(bool x, bool y);
 
-    XorShareExecutor *execute() override;
+    XorShareExecutor *execute(bool reconstruct) override;
 
 protected:
     [[nodiscard]] std::string tag() const override;

@@ -15,3 +15,7 @@ int64_t AbstractMultiplicationTripleGenerator::getBi() const {
 int64_t AbstractMultiplicationTripleGenerator::getCi() const {
     return _ci;
 }
+
+AbstractMultiplicationTripleGenerator *AbstractMultiplicationTripleGenerator::reconstruct() {
+    return this;
+}

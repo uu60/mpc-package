@@ -45,10 +45,14 @@ add_library(${PROJECT_NAME} SHARED
         include/executor/share/boolean/and/FixedAndShareExecutor.h
         src/executor/share/comparison/ComparisonExecutor.cpp
         include/executor/share/comparison/ComparisonExecutor.h
-        src/executor/share/AbstractIntShareExecutor.cpp
-        include/executor/share/AbstractIntShareExecutor.h
+        src/executor/share/IntShareExecutor.cpp
+        include/executor/share/IntShareExecutor.h
         src/executor/share/AbstractBoolShareExecutor.cpp
         include/executor/share/AbstractBoolShareExecutor.h
+        src/data/Secret.cpp
+        include/data/Secret.h
+        src/data/IntSecret.cpp
+        include/data/IntSecret.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

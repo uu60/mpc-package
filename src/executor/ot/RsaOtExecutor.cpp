@@ -22,7 +22,7 @@ RsaOtExecutor::RsaOtExecutor(int bits, int sender, int64_t m0, int64_t m1, int i
     }
 }
 
-RsaOtExecutor* RsaOtExecutor::execute() {
+RsaOtExecutor* RsaOtExecutor::execute(bool dummy) {
     int64_t start, end;
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         start = System::currentTimeMillis();
@@ -177,4 +177,8 @@ int64_t RsaOtExecutor::rsaDecryptionTime() const {
 
 std::string RsaOtExecutor::tag() const {
     return "[RSA OT]";
+}
+
+RsaOtExecutor *RsaOtExecutor::reconstruct() {
+    return this;
 }

@@ -16,12 +16,12 @@ protected:
 public:
     AbstractAndShareExecutor(bool x, bool y);
     AbstractAndShareExecutor(bool x, bool y, bool dummy);
-    AbstractAndShareExecutor* execute() override;
+    AbstractAndShareExecutor* execute(bool reconstruct) override;
 protected:
     virtual void obtainMultiplicationTriple() = 0;
     [[nodiscard]] std::string tag() const override;
 private:
-    void process();
+    void process(bool reconstruct);
 };
 
 

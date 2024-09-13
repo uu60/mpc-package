@@ -1,6 +1,7 @@
 #!/bin/zsh
 
-cd $(dirname $(readlink -f "$0"))
+cd "$(dirname $(readlink -f "$0"))"
+cd ../
 sudo rm -rf build
 mkdir build && cd build
 cmake ..

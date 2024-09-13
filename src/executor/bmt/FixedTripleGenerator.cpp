@@ -11,7 +11,7 @@ FixedTripleGenerator::FixedTripleGenerator(int l) {
 }
 
 
-FixedTripleGenerator* FixedTripleGenerator::execute() {
+FixedTripleGenerator* FixedTripleGenerator::execute(bool dummy) {
     int64_t idx = 0;
     if (Mpi::rank() == 0) {
         idx = Math::rand64(0, 99);

@@ -15,7 +15,7 @@ void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
     FixedTripleGenerator e(_l);
     e.benchmark(_benchmarkLevel);
     e.logBenchmark(false);
-    e.execute();
+    e.execute(false);
 
     _ai = e.getAi();
     _bi = e.getBi();

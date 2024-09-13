@@ -7,16 +7,25 @@
 
 XorShareExecutor::XorShareExecutor(bool x, bool y) : AbstractBoolShareExecutor(x, y) {}
 
-XorShareExecutor* XorShareExecutor::execute() {
+XorShareExecutor* XorShareExecutor::execute(bool reconstruct) {
     bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
+    int64_t start = System::currentTimeMillis();
     if (Mpi::isCalculator()) {
-        bool zi = _xi xor _yi;
-        Mpi::sendTo(&zi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
-    } else {
-        bool z0, z1;
-        Mpi::recvFrom(&z0, 0, _mpiTime, detailed);
-        Mpi::recvFrom(&z1, 1, _mpiTime, detailed);
-        _result = z0 xor z1;
+        _zi = _xi xor _yi;
+        _result = _zi;
+    }
+    if (reconstruct) {
+        this->reconstruct();
+    }
+    if (_benchmarkLevel >= AbstractExecutor::BenchmarkLevel::GENERAL && _isLogBenchmark) {
+        _entireComputationTime = System::currentTimeMillis() - start;
+        if (_isLogBenchmark) {
+            if (detailed) {
+                Log::i(tag(),
+                       "Mpi synchronization and transmission time: " + std::to_string(_mpiTime) + " ms.");
+            }
+            Log::i(tag(), "Entire computation time: " + std::to_string(_entireComputationTime) + " ms.");
+        }
     }
     return this;
 }

@@ -15,7 +15,7 @@ void RsaOtMultiplicationShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator e(_l);
     e.benchmark(_benchmarkLevel);
     e.logBenchmark(false);
-    e.execute();
+    e.execute(false);
     if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
         _mpiTime += e.mpiTime();
     }

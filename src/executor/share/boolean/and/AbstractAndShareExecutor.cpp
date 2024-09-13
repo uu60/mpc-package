@@ -9,7 +9,7 @@ AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y) : AbstractBoo
 
 AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y, bool dummy) : AbstractBoolShareExecutor(x, y, dummy) {}
 
-AbstractAndShareExecutor* AbstractAndShareExecutor::execute() {
+AbstractAndShareExecutor* AbstractAndShareExecutor::execute(bool reconstruct) {
     // BMT
     int64_t start, end, end1;
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
@@ -26,7 +26,7 @@ AbstractAndShareExecutor* AbstractAndShareExecutor::execute() {
     }
 
     // process
-    process();
+    process(reconstruct);
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         end1 = System::currentTimeMillis();
         if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
@@ -45,7 +45,7 @@ std::string AbstractAndShareExecutor::tag() const {
     return "[And Boolean Share]";
 }
 
-void AbstractAndShareExecutor::process() {
+void AbstractAndShareExecutor::process(bool reconstruct) {
     /*
      * For variable name description, please refer to
      * RsaOtMultiplicationShareExecution.cpp
@@ -59,12 +59,10 @@ void AbstractAndShareExecutor::process() {
         Mpi::exchangeC(&fi, &fo, _mpiTime, detailed);
         bool e = ei xor eo;
         bool f = fi xor fo;
-        bool z0 = Mpi::rank() * e * f xor f * _ai xor e * _bi xor _ci;
-        Mpi::sendTo(&z0, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
-    } else {
-        bool z0, z1;
-        Mpi::recvFrom(&z0, 0, _mpiTime, detailed);
-        Mpi::recvFrom(&z1, 1, _mpiTime, detailed);
-        _result = z0 xor z1;
+        _zi = Mpi::rank() * e * f xor f * _ai xor e * _bi xor _ci;
+        _result = _zi;
+    }
+    if (reconstruct) {
+        this->reconstruct();
     }
 }

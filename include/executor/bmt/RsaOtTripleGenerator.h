@@ -18,7 +18,7 @@ private:
     int64_t _otEntireComputationTime{};
 public:
     explicit RsaOtTripleGenerator(int l);
-    RsaOtTripleGenerator* execute() override;
+    RsaOtTripleGenerator* execute(bool dummy) override;
 private:
     void generateRandomAB();
     void computeU();

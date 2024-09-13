@@ -4,6 +4,7 @@
 
 #ifndef MPC_PACKAGE_RSAOTEXECUTOR_H
 #define MPC_PACKAGE_RSAOTEXECUTOR_H
+
 #include <string>
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
@@ -40,10 +41,17 @@ public:
     // _m0 and _m1 are for sender (invalid for receiver)
     // i is for receiver (invalid for sender)
     explicit RsaOtExecutor(int sender, int64_t m0, int64_t m1, int i);
+
     explicit RsaOtExecutor(int bits, int sender, int64_t m0, int64_t m1, int i);
-    RsaOtExecutor* execute() override;
+
+    RsaOtExecutor *execute(bool dummy) override;
+
+    RsaOtExecutor *reconstruct() override;
+
     [[nodiscard]] int64_t rsaGenerationTime() const;
+
     [[nodiscard]] int64_t rsaEncryptionTime() const;
+
     [[nodiscard]] int64_t rsaDecryptionTime() const;
 
 protected:
@@ -52,7 +60,9 @@ protected:
 private:
     // methods for sender
     void generateAndShareRsaKeys();
+
     void generateAndShareRandoms();
+
     // methods for both
     void process();
 };

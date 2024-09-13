@@ -141,6 +141,6 @@ std::string Math::rand0b(int lowBytes, int highBytes) {
     return Math::rand0b(Math::rand32(lowBytes, highBytes));
 }
 
-int Math::realL(int l) {
+int Math::normL(int l) {
     return l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
 }

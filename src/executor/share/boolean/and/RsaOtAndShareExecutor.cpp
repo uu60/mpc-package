@@ -11,7 +11,7 @@ RsaOtAndShareExecutor::RsaOtAndShareExecutor(bool x, bool y, bool dummy) : Abstr
 void RsaOtAndShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator m(1);
     m.benchmark(_benchmarkLevel);
-    m.execute();
+    m.execute(false);
     if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
 
     }

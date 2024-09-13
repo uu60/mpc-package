@@ -18,7 +18,7 @@ AbstractBoolShareExecutor::AbstractBoolShareExecutor(int64_t x, int64_t y) {
         Mpi::sendTo(&x1, 1, _mpiTime, detailed);
         Mpi::sendTo(&y1, 1, _mpiTime, detailed);
     } else {
-        // data
+        // operator
         Mpi::recvFrom(&_xi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
         Mpi::recvFrom(&_yi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
     }
@@ -27,4 +27,17 @@ AbstractBoolShareExecutor::AbstractBoolShareExecutor(int64_t x, int64_t y) {
 AbstractBoolShareExecutor::AbstractBoolShareExecutor(int64_t xi, int64_t yi, bool dummy) {
     _xi = xi;
     _yi = yi;
+}
+
+AbstractExecutor *AbstractBoolShareExecutor::reconstruct() {
+    bool detailed = _benchmarkLevel == AbstractExecutor::BenchmarkLevel::DETAILED;
+    if (Mpi::isCalculator()) {
+        Mpi::sendTo(&_zi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
+    } else {
+        bool z0, z1;
+        Mpi::recvFrom(&z0, 0, _mpiTime, detailed);
+        Mpi::recvFrom(&z1, 1, _mpiTime, detailed);
+        _result = z0 xor z1;
+    }
+    return this;
 }

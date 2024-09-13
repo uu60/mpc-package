@@ -45,7 +45,7 @@ void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             r.benchmark(BenchmarkLevel::DETAILED);
         }
-        r.execute();
+        r.execute(false);
         if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
             // add mpi time
             _mpiTime += r.mpiTime();
@@ -72,7 +72,7 @@ void RsaOtTripleGenerator::computeC() {
     _ci = Math::ring(_ai * _bi + _ui + _vi, _l);
 }
 
-RsaOtTripleGenerator* RsaOtTripleGenerator::execute() {
+RsaOtTripleGenerator* RsaOtTripleGenerator::execute(bool dummy) {
     generateRandomAB();
 
     computeU();

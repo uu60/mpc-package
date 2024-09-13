@@ -11,8 +11,8 @@ A C++ package for implementing basic MPC operations (including OT, secret share 
 #### 2.1.2 For Linux (Ubuntu)
 - use source code to compile and install.
 1. `wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.5.tar.gz` (use same version for devices)
-2. `tar -xzvf openmpi-_x._x._x.tar.gz`
-3. `cd openmpi-_x._x._x`
+2. `tar -xzvf openmpi-_data._data._data.tar.gz`
+3. `cd openmpi-_data._data._data`
 4. `./configure --prefix=/usr/local/openmpi`
 5. `make`
 6. `sudo make install`

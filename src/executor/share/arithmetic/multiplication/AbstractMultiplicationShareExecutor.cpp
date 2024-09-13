@@ -7,11 +7,11 @@
 #include "utils/Math.h"
 #include "utils/Log.h"
 
-AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l) : AbstractIntShareExecutor(x, y, l) {}
+AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l) : IntShareExecutor(x, y, l) {}
 
-AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t xi, int64_t yi, int l, bool dummy) : AbstractIntShareExecutor(xi, yi, l, dummy) {}
+AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t xi, int64_t yi, int l, bool dummy) : IntShareExecutor(xi, yi, l, dummy) {}
 
-AbstractMultiplicationShareExecutor* AbstractMultiplicationShareExecutor::execute() {
+AbstractMultiplicationShareExecutor* AbstractMultiplicationShareExecutor::execute(bool reconstruct) {
     int64_t start, end, end1;
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         start = System::currentTimeMillis();
@@ -28,7 +28,7 @@ AbstractMultiplicationShareExecutor* AbstractMultiplicationShareExecutor::execut
     }
 
     // process
-    process();
+    process(reconstruct);
     if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
         end1 = System::currentTimeMillis();
         if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
@@ -43,7 +43,7 @@ AbstractMultiplicationShareExecutor* AbstractMultiplicationShareExecutor::execut
     return this;
 }
 
-void AbstractMultiplicationShareExecutor::process() {
+void AbstractMultiplicationShareExecutor::process(bool reconstruct) {
     bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         int64_t ei = _xi - _ai;
@@ -53,12 +53,15 @@ void AbstractMultiplicationShareExecutor::process() {
         Mpi::exchangeC(&fi, &fo, _mpiTime, detailed);
         int64_t e = ei + eo;
         int64_t f = fi + fo;
-        int64_t zi = Mpi::rank() * e * f + f * _ai + e * _bi + _ci;
-        Mpi::sendTo(&zi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
-    } else {
-        int64_t z0, z1;
-        Mpi::recvFrom(&z0, 0, _mpiTime, detailed);
-        Mpi::recvFrom(&z1, 1, _mpiTime, detailed);
-        _result = Math::ring(z0 + z1, _l);
+        _zi = Mpi::rank() * e * f + f * _ai + e * _bi + _ci;
+        _result = _zi;
     }
+    if (reconstruct) {
+        this->reconstruct();
+    }
+}
+
+AbstractMultiplicationShareExecutor *AbstractMultiplicationShareExecutor::reconstruct() {
+    // do nothing
+    return this;
 }

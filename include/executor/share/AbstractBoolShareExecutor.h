@@ -10,9 +10,12 @@ class AbstractBoolShareExecutor : public AbstractExecutor {
 protected:
     bool _xi{};
     bool _yi{};
+    bool _zi{};
 public:
     AbstractBoolShareExecutor(int64_t x, int64_t y);
     AbstractBoolShareExecutor(int64_t xi, int64_t yi, bool dummy);
+
+    AbstractExecutor * reconstruct() override;
 };
 
 
