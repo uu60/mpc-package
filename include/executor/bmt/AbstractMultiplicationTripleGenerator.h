@@ -19,11 +19,11 @@ protected:
     AbstractMultiplicationTripleGenerator *reconstruct() override;
 
 public:
-    [[nodiscard]] int64_t getAi() const;
+    [[nodiscard]] int64_t ai() const;
 
-    [[nodiscard]] int64_t getBi() const;
+    [[nodiscard]] int64_t bi() const;
 
-    [[nodiscard]] int64_t getCi() const;
+    [[nodiscard]] int64_t ci() const;
 };
 
 

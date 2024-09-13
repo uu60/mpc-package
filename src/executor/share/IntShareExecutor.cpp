@@ -10,6 +10,7 @@ IntShareExecutor::IntShareExecutor() = default;
 
 IntShareExecutor::IntShareExecutor(int64_t x, int l) {
     _l = Math::normL(l);
+    x = Math::ring(x, _l);
     bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
     // distribute operator
     if (Mpi::isDataHolder()) {
@@ -24,9 +25,11 @@ IntShareExecutor::IntShareExecutor(int64_t x, int l) {
 
 IntShareExecutor::IntShareExecutor(int64_t x, int64_t y, int l) {
     _l = Math::normL(l);
+    x = Math::ring(x, _l);
+    y = Math::ring(y, _l);
     bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
     // distribute operator
-    if (!Mpi::isCalculator()) {
+    if (Mpi::isDataHolder()) {
         int64_t x1 = Math::ring(Math::rand64(), _l);
         int64_t x0 = Math::ring(x - x1, _l);
         int64_t y1 = Math::ring(Math::rand64(), _l);

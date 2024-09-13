@@ -20,7 +20,7 @@ IntSecret IntSecret::add(int64_t xi, int64_t yi, int l) {
 }
 
 IntSecret IntSecret::multiply(int64_t yi) const {
-    return IntSecret(RsaOtMultiplicationShareExecutor(_data, yi, _l).execute(false)->result(), 0);
+    return IntSecret(RsaOtMultiplicationShareExecutor(_data, yi, _l, false).execute(false)->result(), _l);
 }
 
 IntSecret IntSecret::share() const {
@@ -36,7 +36,7 @@ IntSecret IntSecret::share(int64_t x, int l) {
 }
 
 IntSecret IntSecret::multiply(int64_t xi, int64_t yi, int l) {
-    return IntSecret(RsaOtMultiplicationShareExecutor(xi, yi, l).execute(false)->result(), 0);
+    return IntSecret(RsaOtMultiplicationShareExecutor(xi, yi, l, false).execute(false)->result(), l);
 }
 
 int64_t IntSecret::get() const {

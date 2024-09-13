@@ -53,15 +53,10 @@ void AbstractMultiplicationShareExecutor::process(bool reconstruct) {
         Mpi::exchangeC(&fi, &fo, _mpiTime, detailed);
         int64_t e = ei + eo;
         int64_t f = fi + fo;
-        _zi = Mpi::rank() * e * f + f * _ai + e * _bi + _ci;
+        _zi = Math::ring(Mpi::rank() * e * f + f * _ai + e * _bi + _ci, _l);
         _result = _zi;
     }
     if (reconstruct) {
         this->reconstruct();
     }
-}
-
-AbstractMultiplicationShareExecutor *AbstractMultiplicationShareExecutor::reconstruct() {
-    // do nothing
-    return this;
 }

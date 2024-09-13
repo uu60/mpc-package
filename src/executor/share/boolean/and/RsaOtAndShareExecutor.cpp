@@ -15,9 +15,9 @@ void RsaOtAndShareExecutor::obtainMultiplicationTriple() {
     if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
 
     }
-    _ai = m.getAi();
-    _bi = m.getBi();
-    _ci = m.getCi();
+    _ai = m.ai();
+    _bi = m.bi();
+    _ci = m.ci();
 
     if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
         Log::i(tag() + " OT RSA keys generation time: " + std::to_string(m.otRsaGenerationTime()) + " ms.");

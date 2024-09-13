@@ -13,15 +13,13 @@ RsaOtMultiplicationShareExecutor::RsaOtMultiplicationShareExecutor(int64_t x, in
 
 void RsaOtMultiplicationShareExecutor::obtainMultiplicationTriple() {
     RsaOtTripleGenerator e(_l);
-    e.benchmark(_benchmarkLevel);
-    e.logBenchmark(false);
-    e.execute(false);
+    e.benchmark(_benchmarkLevel)->logBenchmark(false)->execute(false);
     if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
         _mpiTime += e.mpiTime();
     }
-    _ai = e.getAi();
-    _bi = e.getBi();
-    _ci = e.getCi();
+    _ai = e.ai();
+    _bi = e.bi();
+    _ci = e.ci();
 
     if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
         Log::i(tag() + " OT RSA keys generation time: " + std::to_string(e.otRsaGenerationTime()) + " ms.");

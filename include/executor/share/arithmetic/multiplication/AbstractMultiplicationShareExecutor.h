@@ -8,7 +8,6 @@
 
 class AbstractMultiplicationShareExecutor : public IntShareExecutor {
 protected:
-    int _l{};
     int64_t _ai{};
     int64_t _bi{};
     int64_t _ci{};
@@ -20,9 +19,6 @@ public:
 
 protected:
     virtual void obtainMultiplicationTriple() = 0;
-
-public:
-    AbstractMultiplicationShareExecutor *reconstruct() override;
 
 private:
     void process(bool reconstruct);
