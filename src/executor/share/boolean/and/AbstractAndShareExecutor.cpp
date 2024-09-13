@@ -5,9 +5,9 @@
 #include "executor/share/boolean/and/AbstractAndShareExecutor.h"
 #include "utils/Mpi.h"
 
-AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y) : AbstractBoolShareExecutor(x, y) {}
+AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y) : BoolShareExecutor(x, y) {}
 
-AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y, bool dummy) : AbstractBoolShareExecutor(x, y, dummy) {}
+AbstractAndShareExecutor::AbstractAndShareExecutor(bool x, bool y, bool dummy) : BoolShareExecutor(x, y, dummy) {}
 
 AbstractAndShareExecutor* AbstractAndShareExecutor::execute(bool reconstruct) {
     // BMT

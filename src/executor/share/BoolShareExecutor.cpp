@@ -2,11 +2,11 @@
 // Created by 杜建璋 on 2024/9/6.
 //
 
-#include "executor/share/AbstractBoolShareExecutor.h"
+#include "executor/share/BoolShareExecutor.h"
 #include "utils/Math.h"
 #include "utils/Mpi.h"
 
-AbstractBoolShareExecutor::AbstractBoolShareExecutor(int64_t x, int64_t y) {
+BoolShareExecutor::BoolShareExecutor(int64_t x, int64_t y) {
     bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (!Mpi::isCalculator()) {
         bool x1 = Math::rand32(0, 1);
@@ -24,13 +24,13 @@ AbstractBoolShareExecutor::AbstractBoolShareExecutor(int64_t x, int64_t y) {
     }
 }
 
-AbstractBoolShareExecutor::AbstractBoolShareExecutor(int64_t xi, int64_t yi, bool dummy) {
+BoolShareExecutor::BoolShareExecutor(int64_t xi, int64_t yi, bool dummy) {
     _xi = xi;
     _yi = yi;
 }
 
-AbstractExecutor *AbstractBoolShareExecutor::reconstruct() {
-    bool detailed = _benchmarkLevel == AbstractExecutor::BenchmarkLevel::DETAILED;
+Executor *BoolShareExecutor::reconstruct() {
+    bool detailed = _benchmarkLevel == Executor::BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         Mpi::sendTo(&_zi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
     } else {
@@ -40,4 +40,12 @@ AbstractExecutor *AbstractBoolShareExecutor::reconstruct() {
         _result = z0 xor z1;
     }
     return this;
+}
+
+Executor *BoolShareExecutor::execute(bool reconstruct) {
+    throw std::runtime_error("This method cannot be called!");
+}
+
+std::string BoolShareExecutor::tag() const {
+    throw std::runtime_error("This method cannot be called!");
 }

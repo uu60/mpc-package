@@ -2,15 +2,15 @@
 // Created by 杜建璋 on 2024/7/7.
 //
 
-#ifndef MPC_PACKAGE_ABSTRACTEXECUTOR_H
-#define MPC_PACKAGE_ABSTRACTEXECUTOR_H
+#ifndef MPC_PACKAGE_EXECUTOR_H
+#define MPC_PACKAGE_EXECUTOR_H
 
 #include <cstdint>
 #include <string>
 #include "../utils/System.h"
 #include "../utils/Log.h"
 
-class AbstractExecutor {
+class Executor {
 public:
     enum class BenchmarkLevel {
         NONE, GENERAL, DETAILED
@@ -26,17 +26,17 @@ protected:
     int64_t _entireComputationTime{};
 public:
     // secret sharing process
-    virtual AbstractExecutor* execute(bool reconstruct) = 0;
-    virtual AbstractExecutor* reconstruct() = 0;
+    virtual Executor* execute(bool reconstruct);
+    virtual Executor* reconstruct();
     // get calculated result
     [[nodiscard]] int64_t result() const;
-    AbstractExecutor* benchmark(BenchmarkLevel lv);
-    AbstractExecutor* logBenchmark(bool isLogBenchmark);
+    Executor* benchmark(BenchmarkLevel lv);
+    Executor* logBenchmark(bool isLogBenchmark);
     [[nodiscard]] int64_t mpiTime() const;
     [[nodiscard]] int64_t entireComputationTime() const;
 protected:
-    [[nodiscard]] virtual std::string tag() const = 0;
+    [[nodiscard]] virtual std::string tag() const;
     virtual void finalize();
 };
 
-#endif //MPC_PACKAGE_ABSTRACTEXECUTOR_H
+#endif //MPC_PACKAGE_EXECUTOR_H

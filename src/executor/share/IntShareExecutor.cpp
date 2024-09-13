@@ -52,11 +52,11 @@ IntShareExecutor::IntShareExecutor(int64_t xi, int64_t yi, int l, bool dummy) {
 }
 
 IntShareExecutor *IntShareExecutor::execute(bool reconstruct) {
-    return nullptr;
+    throw std::runtime_error("This method cannot be called!");
 }
 
 std::string IntShareExecutor::tag() const {
-    return {};
+    throw std::runtime_error("This method cannot be called!");
 }
 
 int64_t IntShareExecutor::xi() const {

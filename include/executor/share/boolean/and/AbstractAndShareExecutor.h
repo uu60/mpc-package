@@ -4,9 +4,9 @@
 
 #ifndef MPC_PACKAGE_ABSTRACTANDSHAREEXECUTOR_H
 #define MPC_PACKAGE_ABSTRACTANDSHAREEXECUTOR_H
-#include "../../../../executor/share/AbstractBoolShareExecutor.h"
+#include "../../../../executor/share/BoolShareExecutor.h"
 
-class AbstractAndShareExecutor : public AbstractBoolShareExecutor {
+class AbstractAndShareExecutor : public BoolShareExecutor {
 protected:
     // triple
     bool _ai{};

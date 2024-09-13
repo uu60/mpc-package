@@ -9,6 +9,7 @@
 #include "../utils/Math.h"
 
 class Secret {
+
 };
 
 

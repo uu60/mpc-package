@@ -10,10 +10,10 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <openssl/sha.h>
-#include "../AbstractExecutor.h"
+#include "../Executor.h"
 
 // according to https://blog.csdn.net/qq_16763983/article/details/128055146
-class RsaOtExecutor : public AbstractExecutor {
+class RsaOtExecutor : public Executor {
 private:
     // for benchmark
     int64_t _rsaGenerationTime{};

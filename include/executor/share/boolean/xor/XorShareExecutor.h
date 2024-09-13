@@ -5,9 +5,9 @@
 #ifndef MPC_PACKAGE_XORSHAREEXECUTOR_H
 #define MPC_PACKAGE_XORSHAREEXECUTOR_H
 
-#include "../../../../executor/share/AbstractBoolShareExecutor.h"
+#include "../../../../executor/share/BoolShareExecutor.h"
 
-class XorShareExecutor : public AbstractBoolShareExecutor {
+class XorShareExecutor : public BoolShareExecutor {
 public:
     XorShareExecutor(bool x, bool y);
 

@@ -5,9 +5,9 @@
 #ifndef MPC_PACKAGE_ABSTRACTMULTIPLICATIONTRIPLEGENERATOR_H
 #define MPC_PACKAGE_ABSTRACTMULTIPLICATIONTRIPLEGENERATOR_H
 
-#include "../AbstractExecutor.h"
+#include "../Executor.h"
 
-class AbstractMultiplicationTripleGenerator : public AbstractExecutor {
+class AbstractMultiplicationTripleGenerator : public Executor {
 protected:
     int _l{};
     int64_t _ai{};

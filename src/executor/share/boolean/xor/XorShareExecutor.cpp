@@ -5,7 +5,7 @@
 #include "executor/share/boolean/xor/XorShareExecutor.h"
 #include "utils/Mpi.h"
 
-XorShareExecutor::XorShareExecutor(bool x, bool y) : AbstractBoolShareExecutor(x, y) {}
+XorShareExecutor::XorShareExecutor(bool x, bool y) : BoolShareExecutor(x, y) {}
 
 XorShareExecutor* XorShareExecutor::execute(bool reconstruct) {
     bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
@@ -17,7 +17,7 @@ XorShareExecutor* XorShareExecutor::execute(bool reconstruct) {
     if (reconstruct) {
         this->reconstruct();
     }
-    if (_benchmarkLevel >= AbstractExecutor::BenchmarkLevel::GENERAL && _isLogBenchmark) {
+    if (_benchmarkLevel >= Executor::BenchmarkLevel::GENERAL && _isLogBenchmark) {
         _entireComputationTime = System::currentTimeMillis() - start;
         if (_isLogBenchmark) {
             if (detailed) {
