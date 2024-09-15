@@ -8,7 +8,8 @@
 #include "AbstractMultiplicationTripleGenerator.h"
 #include <iostream>
 
-class RsaOtTripleGenerator : public AbstractMultiplicationTripleGenerator {
+template<typename T>
+class RsaOtTripleGenerator : public AbstractMultiplicationTripleGenerator<T> {
 private:
     // benchmark
     int64_t _otRsaGenerationTime{};
@@ -17,15 +18,15 @@ private:
     int64_t _otMpiTime{};
     int64_t _otEntireComputationTime{};
 public:
-    explicit RsaOtTripleGenerator(int l);
+    explicit RsaOtTripleGenerator();
     RsaOtTripleGenerator* execute(bool dummy) override;
 private:
     void generateRandomAB();
     void computeU();
     void computeV();
-    void computeMix(int sender, int64_t &mix);
+    void computeMix(int sender, T &mix);
     void computeC();
-    [[nodiscard]] int64_t corr(int i, int64_t x) const;
+    [[nodiscard]] T corr(int i, T x) const;
 public:
     [[nodiscard]] int64_t otRsaGenerationTime() const;
     [[nodiscard]] int64_t otRsaEncryptionTime() const;

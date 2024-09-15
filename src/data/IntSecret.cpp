@@ -6,42 +6,84 @@
 #include "executor/share/IntShareExecutor.h"
 #include "executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h"
 
-IntSecret::IntSecret(int64_t x, int l) {
-    _l = Math::normL(l);
-    _data = Math::ring(x, _l);
+template<typename T>
+IntSecret<T>::IntSecret(T x) {
+    _data = x;
 }
 
-IntSecret IntSecret::add(int64_t yi) const {
-    return IntSecret(Math::ring(_data + yi, _l), _l);
+template<typename T>
+IntSecret<T> IntSecret<T>::add(T yi) const {
+    return IntSecret(_data + yi);
 }
 
-IntSecret IntSecret::add(int64_t xi, int64_t yi, int l) {
-    return IntSecret(xi + yi, l);
+template<typename T>
+IntSecret<T> IntSecret<T>::add(T xi, T yi) {
+    return IntSecret(xi + yi);
 }
 
-IntSecret IntSecret::multiply(int64_t yi) const {
-    return IntSecret(RsaOtMultiplicationShareExecutor(_data, yi, _l, false).execute(false)->result(), _l);
+template<typename T>
+IntSecret<T> IntSecret<T>::multiply(T yi) const {
+    return IntSecret(RsaOtMultiplicationShareExecutor(_data, yi, false).execute(false)->result());
 }
 
-IntSecret IntSecret::share() const {
-    return IntSecret(IntShareExecutor(_data, _l).xi(), _l);
+template<typename T>
+IntSecret<T> IntSecret<T>::share() const {
+    return IntSecret(IntShareExecutor(_data).xi());
 }
 
-IntSecret IntSecret::reconstruct() const {
-    return IntSecret(IntShareExecutor(0, _l).zi(_data)->reconstruct()->result(), _l);
+template<typename T>
+IntSecret<T> IntSecret<T>::reconstruct() const {
+    return IntSecret(IntShareExecutor(0).zi(_data)->reconstruct()->result());
 }
 
-IntSecret IntSecret::share(int64_t x, int l) {
-    return IntSecret(IntShareExecutor(x, l).xi(), l);
+template<typename T>
+IntSecret<T> IntSecret<T>::share(T x) {
+    return IntSecret(IntShareExecutor(x).xi());
 }
 
-IntSecret IntSecret::multiply(int64_t xi, int64_t yi, int l) {
-    return IntSecret(RsaOtMultiplicationShareExecutor(xi, yi, l, false).execute(false)->result(), l);
+template<typename T>
+IntSecret<T> IntSecret<T>::multiply(T xi, T yi) {
+    return IntSecret(RsaOtMultiplicationShareExecutor(xi, yi, false).execute(false)->result());
 }
 
-int64_t IntSecret::get() const {
+template<typename T>
+T IntSecret<T>::get() const {
     return _data;
 }
+
+template<typename T>
+IntSecret<T> IntSecret<T>::sum(const std::vector<T>& xis) {
+    IntSecret<T> ret(0);
+    for (T x : xis) {
+        ret = ret.add(x);
+    }
+    return ret;
+}
+
+template<typename T>
+IntSecret<T> IntSecret<T>::add(IntSecret<T> yi) const {
+    return add(yi.get());
+}
+
+template<typename T>
+IntSecret<T> IntSecret<T>::multiply(IntSecret<T> yi) const {
+    return multiply(yi.get());
+}
+
+template<typename T>
+IntSecret<T> IntSecret<T>::sum(const std::vector<T> &xis, const std::vector<T> &yis) {
+    IntSecret<T> ret(0);
+    for (int i = 0; i < xis.size(); i++) {
+        ret = ret.add(xis[i]).add(yis[i]);
+    }
+    return ret;
+}
+
+template class IntSecret<bool>;
+template class IntSecret<int8_t>;
+template class IntSecret<int16_t>;
+template class IntSecret<int32_t>;
+template class IntSecret<int64_t>;
 
 
 

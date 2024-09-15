@@ -6,25 +6,34 @@
 #include "executor/bmt/FixedTripleGenerator.h"
 #include "utils/Mpi.h"
 
-FixedMultiplicationShareExecutor::FixedMultiplicationShareExecutor(int64_t x, int64_t y, int l) : AbstractMultiplicationShareExecutor(x, y, l) {}
+template<typename T>
+FixedMultiplicationShareExecutor<T>::FixedMultiplicationShareExecutor(T x, T y) : AbstractMultiplicationShareExecutor<T>(x, y) {}
 
-FixedMultiplicationShareExecutor::FixedMultiplicationShareExecutor(int64_t x, int64_t y, int l, bool dummy)
-        : AbstractMultiplicationShareExecutor(x, y, l, dummy) {}
+template<typename T>
+FixedMultiplicationShareExecutor<T>::FixedMultiplicationShareExecutor(T x, T y, bool dummy)
+        : AbstractMultiplicationShareExecutor<T>(x, y, dummy) {}
 
-void FixedMultiplicationShareExecutor::obtainMultiplicationTriple() {
-    FixedTripleGenerator e(_l);
-    e.benchmark(_benchmarkLevel);
+template<typename T>
+void FixedMultiplicationShareExecutor<T>::obtainMultiplicationTriple() {
+    FixedTripleGenerator<T> e;
+    e.benchmark(this->_benchmarkLevel);
     e.logBenchmark(false);
     e.execute(false);
 
-    _ai = e.ai();
-    _bi = e.bi();
-    _ci = e.ci();
+    this->_ai = e.ai();
+    this->_bi = e.bi();
+    this->_ci = e.ci();
 }
 
-std::string FixedMultiplicationShareExecutor::tag() const {
+template<typename T>
+std::string FixedMultiplicationShareExecutor<T>::tag() const {
     return "[Fixed Multiplication Share]";
 }
 
+template class FixedMultiplicationShareExecutor<bool>;
+template class FixedMultiplicationShareExecutor<int8_t>;
+template class FixedMultiplicationShareExecutor<int16_t>;
+template class FixedMultiplicationShareExecutor<int32_t>;
+template class FixedMultiplicationShareExecutor<int64_t>;
 
 

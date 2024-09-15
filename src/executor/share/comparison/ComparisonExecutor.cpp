@@ -5,24 +5,27 @@
 #include "executor/share/comparison/ComparisonExecutor.h"
 #include "utils/Mpi.h"
 
-ComparisonExecutor::ComparisonExecutor(int64_t x, int64_t y, int l) : IntShareExecutor(x, y, l) {}
+template<typename T>
+ComparisonExecutor<T>::ComparisonExecutor(T x, T y) : IntShareExecutor<T>(x, y) {}
 
-ComparisonExecutor::ComparisonExecutor(int64_t xi, int64_t yi, int l, bool dummy) : IntShareExecutor(xi, yi, l, dummy) {}
+template<typename T>
+ComparisonExecutor<T>::ComparisonExecutor(T xi, T yi, bool dummy) : IntShareExecutor<T>(xi, yi, dummy) {}
 
-ComparisonExecutor* ComparisonExecutor::execute(bool reconstruct) {
-    bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
+template<typename T>
+ComparisonExecutor<T> *ComparisonExecutor<T>::execute(bool reconstruct) {
+    bool detailed = this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
-        int64_t zi = _xi - _yi;
+        T zi = this->_xi - this->_yi;
         if (reconstruct) {
-            Mpi::sendTo(&zi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
+            Mpi::sendTo(&zi, Mpi::DATA_HOLDER_RANK, this->_mpiTime, detailed);
         }
     } else {
         if (reconstruct) {
-            int64_t z0, z1;
-            Mpi::recvFrom(&z0, 0, _mpiTime, detailed);
-            Mpi::recvFrom(&z1, 1, _mpiTime, detailed);
-            int64_t z = z0 + z1;
-            _result = (z > 0 ? 1 : ((z == 0) ? 0 : -1));
+            T z0, z1;
+            Mpi::recvFrom(&z0, 0, this->_mpiTime, detailed);
+            Mpi::recvFrom(&z1, 1, this->_mpiTime, detailed);
+            T z = z0 + z1;
+            this->_result = (z > 0 ? 1 : ((z == 0) ? 0 : -1));
         }
     }
     return this;

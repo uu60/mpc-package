@@ -6,22 +6,25 @@
 #include "utils/Mpi.h"
 #include "executor/bmt/RsaOtTripleGenerator.h"
 
-RsaOtMultiplicationShareExecutor::RsaOtMultiplicationShareExecutor(int64_t x, int64_t y, int l): AbstractMultiplicationShareExecutor(x, y, l) {}
+template<typename T>
+RsaOtMultiplicationShareExecutor<T>::RsaOtMultiplicationShareExecutor(T x, T y): AbstractMultiplicationShareExecutor<T>(x, y) {}
 
-RsaOtMultiplicationShareExecutor::RsaOtMultiplicationShareExecutor(int64_t x, int64_t y, int l, bool dummy)
-        : AbstractMultiplicationShareExecutor(x, y, l, dummy) {}
+template<typename T>
+RsaOtMultiplicationShareExecutor<T>::RsaOtMultiplicationShareExecutor(T x, T y, bool dummy)
+        : AbstractMultiplicationShareExecutor<T>(x, y, dummy) {}
 
-void RsaOtMultiplicationShareExecutor::obtainMultiplicationTriple() {
-    RsaOtTripleGenerator e(_l);
-    e.benchmark(_benchmarkLevel)->logBenchmark(false)->execute(false);
-    if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-        _mpiTime += e.mpiTime();
+template<typename T>
+void RsaOtMultiplicationShareExecutor<T>::obtainMultiplicationTriple() {
+    RsaOtTripleGenerator<T> e;
+    e.benchmark(this->_benchmarkLevel)->logBenchmark(false)->execute(false);
+    if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
+        this->_mpiTime += e.mpiTime();
     }
-    _ai = e.ai();
-    _bi = e.bi();
-    _ci = e.ci();
+    this->_ai = e.ai();
+    this->_bi = e.bi();
+    this->_ci = e.ci();
 
-    if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
+    if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED && this->_isLogBenchmark) {
         Log::i(tag() + " OT RSA keys generation time: " + std::to_string(e.otRsaGenerationTime()) + " ms.");
         Log::i(tag() + " OT RSA encryption time: " + std::to_string(e.otRsaEncryptionTime()) + " ms.");
         Log::i(tag() + " OT RSA decryption time: " + std::to_string(e.otRsaDecryptionTime()) + " ms.");
@@ -30,6 +33,13 @@ void RsaOtMultiplicationShareExecutor::obtainMultiplicationTriple() {
     }
 }
 
-std::string RsaOtMultiplicationShareExecutor::tag() const {
+template<typename T>
+std::string RsaOtMultiplicationShareExecutor<T>::tag() const {
     return "[RSA OT Multiplication Share]";
 }
+
+template class RsaOtMultiplicationShareExecutor<bool>;
+template class RsaOtMultiplicationShareExecutor<int8_t>;
+template class RsaOtMultiplicationShareExecutor<int16_t>;
+template class RsaOtMultiplicationShareExecutor<int32_t>;
+template class RsaOtMultiplicationShareExecutor<int64_t>;

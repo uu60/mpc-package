@@ -80,6 +80,58 @@ public:
     static void recvFrom(std::string *target, int senderRank);
     static void recvFrom(std::string *target, int senderRank, int64_t &mpiTime);
     static void recvFrom(std::string *target, int senderRank, int64_t &mpiTime, bool calculateTime);
+
+    // for int8
+    // exchangeC functions for int8_t
+    static void exchangeC(const int8_t *source, int8_t *target);
+    static void exchangeC(const int8_t *source, int8_t *target, int64_t &mpiTime);
+    static void exchangeC(const int8_t *source, int8_t *target, int64_t &mpiTime, bool calculateTime);
+    static void sendC(const int8_t *source);
+    static void sendC(const int8_t *source, int64_t &mpiTime);
+    static void sendC(const int8_t *source, int64_t &mpiTime, bool calculateTime);
+    static void recvC(int8_t *target);
+    static void recvC(int8_t *target, int64_t &mpiTime);
+    static void recvC(int8_t *target, int64_t &mpiTime, bool calculateTime);
+    static void sendTo(const int8_t *source, int receiverRank);
+    static void sendTo(const int8_t *source, int receiverRank, int64_t &mpiTime);
+    static void sendTo(const int8_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
+    static void recvFrom(int8_t *target, int senderRank);
+    static void recvFrom(int8_t *target, int senderRank, int64_t &mpiTime);
+    static void recvFrom(int8_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
+
+    // for int16
+    static void exchangeC(const int16_t *source, int16_t *target);
+    static void exchangeC(const int16_t *source, int16_t *target, int64_t &mpiTime);
+    static void exchangeC(const int16_t *source, int16_t *target, int64_t &mpiTime, bool calculateTime);
+    static void sendC(const int16_t *source);
+    static void sendC(const int16_t *source, int64_t &mpiTime);
+    static void sendC(const int16_t *source, int64_t &mpiTime, bool calculateTime);
+    static void recvC(int16_t *target);
+    static void recvC(int16_t *target, int64_t &mpiTime);
+    static void recvC(int16_t *target, int64_t &mpiTime, bool calculateTime);
+    static void sendTo(const int16_t *source, int receiverRank);
+    static void sendTo(const int16_t *source, int receiverRank, int64_t &mpiTime);
+    static void sendTo(const int16_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
+    static void recvFrom(int16_t *target, int senderRank);
+    static void recvFrom(int16_t *target, int senderRank, int64_t &mpiTime);
+    static void recvFrom(int16_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
+
+    // for int32
+    static void exchangeC(const int32_t *source, int32_t *target);
+    static void exchangeC(const int32_t *source, int32_t *target, int64_t &mpiTime);
+    static void exchangeC(const int32_t *source, int32_t *target, int64_t &mpiTime, bool calculateTime);
+    static void sendC(const int32_t *source);
+    static void sendC(const int32_t *source, int64_t &mpiTime);
+    static void sendC(const int32_t *source, int64_t &mpiTime, bool calculateTime);
+    static void recvC(int32_t *target);
+    static void recvC(int32_t *target, int64_t &mpiTime);
+    static void recvC(int32_t *target, int64_t &mpiTime, bool calculateTime);
+    static void sendTo(const int32_t *source, int receiverRank);
+    static void sendTo(const int32_t *source, int receiverRank, int64_t &mpiTime);
+    static void sendTo(const int32_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
+    static void recvFrom(int32_t *target, int senderRank);
+    static void recvFrom(int32_t *target, int senderRank, int64_t &mpiTime);
+    static void recvFrom(int32_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
 };
 
 

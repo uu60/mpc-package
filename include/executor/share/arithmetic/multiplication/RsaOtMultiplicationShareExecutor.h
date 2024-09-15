@@ -6,11 +6,11 @@
 #define MPC_PACKAGE_RSAOTMULTIPLICATIONSHAREEXECUTOR_H
 #include "../../arithmetic/multiplication/AbstractMultiplicationShareExecutor.h"
 
-
-class RsaOtMultiplicationShareExecutor : public AbstractMultiplicationShareExecutor {
+template<typename T>
+class RsaOtMultiplicationShareExecutor : public AbstractMultiplicationShareExecutor<T> {
 public:
-    RsaOtMultiplicationShareExecutor(int64_t x, int64_t y, int l);
-    RsaOtMultiplicationShareExecutor(int64_t x, int64_t y, int l, bool dummy);
+    RsaOtMultiplicationShareExecutor(T x, T y);
+    RsaOtMultiplicationShareExecutor(T x, T y, bool dummy);
 protected:
     void obtainMultiplicationTriple() override;
     [[nodiscard]] std::string tag() const override;

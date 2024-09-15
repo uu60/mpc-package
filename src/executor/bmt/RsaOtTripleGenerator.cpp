@@ -7,48 +7,52 @@
 #include "utils/Math.h"
 #include "utils/Mpi.h"
 
-RsaOtTripleGenerator::RsaOtTripleGenerator(int l) {
-    _l = l;
+template<typename T>
+RsaOtTripleGenerator<T>::RsaOtTripleGenerator() = default;
+
+template<typename T>
+void RsaOtTripleGenerator<T>::generateRandomAB() {
+    this->_ai = Math::rand64();
+    this->_bi = Math::rand64();
 }
 
-void RsaOtTripleGenerator::generateRandomAB() {
-    _ai = Math::rand64(0, (1LL << _l) - 1);
-    _bi = Math::rand64(0, (1LL << _l) - 1);
+template<typename T>
+void RsaOtTripleGenerator<T>::computeU() {
+    computeMix(0, this->_ui);
 }
 
-void RsaOtTripleGenerator::computeU() {
-    computeMix(0, _ui);
+template<typename T>
+void RsaOtTripleGenerator<T>::computeV() {
+    computeMix(1, this->_vi);
 }
 
-void RsaOtTripleGenerator::computeV() {
-    computeMix(1, _vi);
+template<typename T>
+T RsaOtTripleGenerator<T>::corr(int i, T x) const {
+    return (this->_ai << i) - x;
 }
 
-int64_t RsaOtTripleGenerator::corr(int i, int64_t x) const {
-    return Math::ring((_ai << i) - x, _l);
-}
-
-void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
+template<typename T>
+void RsaOtTripleGenerator<T>::computeMix(int sender, T &mix) {
     bool isSender = Mpi::rank() == sender;
-    int64_t sum = 0;
-    for (int i = 0; i < _l; i++) {
-        int64_t s0 = 0, s1 = 0;
+    T sum = 0;
+    for (int i = 0; i < sizeof(T) * 8; i++) {
+        T s0 = 0, s1 = 0;
         int choice = 0;
         if (isSender) {
-            s0 = Math::rand64(0, (1LL << _l) - 1);
+            s0 = Math::rand64();
             s1 = corr(i, s0);
         } else {
-            choice = (int) ((_bi >> i) & 1);
+            choice = (int) ((this->_bi >> i) & 1);
         }
         RsaOtExecutor r(sender, s0, s1, choice);
         r.logBenchmark(false);
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
-            r.benchmark(BenchmarkLevel::DETAILED);
+        if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
+            r.benchmark(Executor<T>::BenchmarkLevel::DETAILED);
         }
         r.execute(false);
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+        if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
             // add mpi time
-            _mpiTime += r.mpiTime();
+            this->_mpiTime += r.mpiTime();
             _otMpiTime += r.mpiTime();
             _otRsaGenerationTime += r.rsaGenerationTime();
             _otRsaEncryptionTime += r.rsaEncryptionTime();
@@ -60,19 +64,21 @@ void RsaOtTripleGenerator::computeMix(int sender, int64_t &mix) {
         } else {
             int64_t temp = r.result();
             if (choice == 0) {
-                temp = Math::ring(-r.result(), _l);
+                temp = -r.result();
             }
             sum += temp;
         }
     }
-    mix = Math::ring(sum, _l);
+    mix = sum;
 }
 
-void RsaOtTripleGenerator::computeC() {
-    _ci = Math::ring(_ai * _bi + _ui + _vi, _l);
+template<typename T>
+void RsaOtTripleGenerator<T>::computeC() {
+    this->_ci = this->_ai * this->_bi + this->_ui + this->_vi;
 }
 
-RsaOtTripleGenerator* RsaOtTripleGenerator::execute(bool dummy) {
+template<typename T>
+RsaOtTripleGenerator<T> *RsaOtTripleGenerator<T>::execute(bool dummy) {
     generateRandomAB();
 
     computeU();
@@ -81,27 +87,38 @@ RsaOtTripleGenerator* RsaOtTripleGenerator::execute(bool dummy) {
     return this;
 }
 
-int64_t RsaOtTripleGenerator::otRsaGenerationTime() const {
+template<typename T>
+int64_t RsaOtTripleGenerator<T>::otRsaGenerationTime() const {
     return _otRsaGenerationTime;
 }
 
-int64_t RsaOtTripleGenerator::otRsaEncryptionTime() const {
+template<typename T>
+int64_t RsaOtTripleGenerator<T>::otRsaEncryptionTime() const {
     return _otRsaEncryptionTime;
 }
 
-int64_t RsaOtTripleGenerator::otRsaDecryptionTime() const {
+template<typename T>
+int64_t RsaOtTripleGenerator<T>::otRsaDecryptionTime() const {
     return _otRsaDecryptionTime;
 }
 
-int64_t RsaOtTripleGenerator::otMpiTime() const {
+template<typename T>
+int64_t RsaOtTripleGenerator<T>::otMpiTime() const {
     return _otMpiTime;
 }
 
-int64_t RsaOtTripleGenerator::otEntireComputationTime() const {
+template<typename T>
+int64_t RsaOtTripleGenerator<T>::otEntireComputationTime() const {
     return _otEntireComputationTime;
 }
 
-
-std::string RsaOtTripleGenerator::tag() const {
+template<typename T>
+std::string RsaOtTripleGenerator<T>::tag() const {
     return "[BMT Generator]";
 }
+
+template class RsaOtTripleGenerator<bool>;
+template class RsaOtTripleGenerator<int8_t>;
+template class RsaOtTripleGenerator<int16_t>;
+template class RsaOtTripleGenerator<int32_t>;
+template class RsaOtTripleGenerator<int64_t>;

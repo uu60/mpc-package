@@ -6,10 +6,11 @@
 #define DEMO_FIXEDMULTIPLICATIONSHAREEXECUTOR_H
 #include "../../arithmetic/multiplication/AbstractMultiplicationShareExecutor.h"
 
-class FixedMultiplicationShareExecutor : public AbstractMultiplicationShareExecutor {
+template<typename T>
+class FixedMultiplicationShareExecutor : public AbstractMultiplicationShareExecutor<T> {
 public:
-    FixedMultiplicationShareExecutor(int64_t x, int64_t y, int l);
-    FixedMultiplicationShareExecutor(int64_t x, int64_t y, int l, bool dummy);
+    FixedMultiplicationShareExecutor(T x, T y);
+    FixedMultiplicationShareExecutor(T x, T y, bool dummy);
 
 protected:
     [[nodiscard]] std::string tag() const override;

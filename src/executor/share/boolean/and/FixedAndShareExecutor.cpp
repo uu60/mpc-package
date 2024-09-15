@@ -10,7 +10,7 @@ FixedAndShareExecutor::FixedAndShareExecutor(bool x, bool y) : AbstractAndShareE
 FixedAndShareExecutor::FixedAndShareExecutor(bool x, bool y, bool dummy) : AbstractAndShareExecutor(x, y, dummy) {}
 
 void FixedAndShareExecutor::obtainMultiplicationTriple() {
-    FixedTripleGenerator e(1);
+    FixedTripleGenerator<bool> e;
     e.benchmark(_benchmarkLevel);
     e.logBenchmark(false);
     e.execute(false);

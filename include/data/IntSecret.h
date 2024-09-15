@@ -6,24 +6,29 @@
 #define MPC_PACKAGE_INTSECRET_H
 #include "./Secret.h"
 #include "../utils/Mpi.h"
+#include <vector>
 
+template<typename T>
 class IntSecret: public Secret {
 private:
-    int _l{};
-    int64_t _data{};
+    T _data{};
 public:
-    explicit IntSecret(int64_t x, int l);
+    explicit IntSecret(T x);
 
     [[nodiscard]] IntSecret share() const;
-    [[nodiscard]] IntSecret add(int64_t yi) const;
-    [[nodiscard]] IntSecret multiply(int64_t yi) const;
+    [[nodiscard]] IntSecret add(T yi) const;
+    [[nodiscard]] IntSecret add(IntSecret yi) const;
+    [[nodiscard]] IntSecret multiply(T yi) const;
+    [[nodiscard]] IntSecret multiply(IntSecret yi) const;
     [[nodiscard]] IntSecret reconstruct() const;
-    [[nodiscard]] int64_t get() const;
+    [[nodiscard]] T get() const;
 
     // static methods for multiple usage
-    static IntSecret share(int64_t x, int l);
-    static IntSecret add(int64_t xi, int64_t yi, int l);
-    static IntSecret multiply(int64_t xi, int64_t yi, int l);
+    static IntSecret share(T x);
+    static IntSecret add(T xi, T yi);
+    static IntSecret multiply(T xi, T yi);
+    static IntSecret sum(const std::vector<T>& xis);
+    static IntSecret sum(const std::vector<T>& xis, const std::vector<T>& yis);
 };
 
 

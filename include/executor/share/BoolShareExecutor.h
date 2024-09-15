@@ -4,23 +4,25 @@
 
 #ifndef MPC_PACKAGE_BOOLSHAREEXECUTOR_H
 #define MPC_PACKAGE_BOOLSHAREEXECUTOR_H
+
 #include "../../executor/Executor.h"
 
-class BoolShareExecutor : public Executor {
+class BoolShareExecutor : public Executor<bool> {
 protected:
     bool _xi{};
     bool _yi{};
     bool _zi{};
 public:
-    BoolShareExecutor(int64_t x, int64_t y);
-    BoolShareExecutor(int64_t xi, int64_t yi, bool dummy);
+    BoolShareExecutor(bool x, bool y);
 
-    Executor * reconstruct() override;
+    BoolShareExecutor(bool xi, bool yi, bool dummy);
 
-    Executor *execute(bool reconstruct) override;
+    BoolShareExecutor *reconstruct() override;
+
+    BoolShareExecutor *execute(bool reconstruct) override;
 
 protected:
-    std::string tag() const override;
+    [[nodiscard]] std::string tag() const override;
 };
 
 

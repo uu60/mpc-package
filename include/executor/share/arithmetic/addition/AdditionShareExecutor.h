@@ -8,7 +8,8 @@
 #include "../../../../executor/share/IntShareExecutor.h"
 #include <vector>
 
-class AdditionShareExecutor : public IntShareExecutor {
+template<typename T>
+class AdditionShareExecutor : public IntShareExecutor<T> {
 private:
     enum class Mode {
         DUAL,
@@ -17,10 +18,10 @@ private:
 
     Mode mode = Mode::DUAL;
 public:
-    AdditionShareExecutor(int64_t x, int64_t y, int l);
+    AdditionShareExecutor(T x, T y);
 
-    AdditionShareExecutor(int64_t xi, int64_t yi, int l, bool dummy); // dummy just for overload
-    AdditionShareExecutor(std::vector<int64_t>& xis, int l);
+    AdditionShareExecutor(T xi, T yi, bool dummy); // dummy just for overload
+    explicit AdditionShareExecutor(std::vector<T>& xis);
 
     AdditionShareExecutor *execute(bool reconstruct) override;
 

@@ -3,47 +3,49 @@
 //
 
 #include "executor/share/arithmetic/addition/AdditionShareExecutor.h"
-#include "utils/Math.h"
 #include "utils/Mpi.h"
 #include "utils/System.h"
 #include <limits>
 
-AdditionShareExecutor::AdditionShareExecutor(int64_t x, int64_t y, int l) : IntShareExecutor(x, y, l) {}
+template<typename T>
+AdditionShareExecutor<T>::AdditionShareExecutor(T x, T y) : IntShareExecutor<T>(x, y) {}
 
-AdditionShareExecutor::AdditionShareExecutor(int64_t xi, int64_t yi, int l, bool dummy) : IntShareExecutor(xi, yi, l, dummy) {}
+template<typename T>
+AdditionShareExecutor<T>::AdditionShareExecutor(T xi, T yi, bool dummy) : IntShareExecutor<T>(xi, yi, dummy) {}
 
-AdditionShareExecutor::AdditionShareExecutor(std::vector<int64_t> &xis, int l) {
+template<typename T>
+AdditionShareExecutor<T>::AdditionShareExecutor(std::vector<T> &xis) {
     mode = Mode::ARRAY;
-    _l = l;
-    for (int64_t xi: xis) {
-        _zi += xi;
+    for (T xi: xis) {
+        this->_zi += xi;
     }
-    Math::ring(_zi, _l);
+    this->_zi;
 }
 
-AdditionShareExecutor *AdditionShareExecutor::execute(bool reconstruct) {
-    bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
+template<typename T>
+AdditionShareExecutor<T> *AdditionShareExecutor<T>::execute(bool reconstruct) {
+    bool detailed = this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED;
     switch (mode) {
         case Mode::DUAL: {
-            int64_t start;
-            if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
+            T start;
+            if (this->_benchmarkLevel >= Executor<T>::BenchmarkLevel::GENERAL) {
                 start = System::currentTimeMillis();
             }
             if (Mpi::isCalculator()) {
-                _zi = _xi + _yi;
-                _result = _zi;
+                this->_zi = this->_xi + this->_yi;
+                this->_result = this->_zi;
             }
             if (reconstruct) {
                 this->reconstruct();
             }
-            if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
-                _entireComputationTime = System::currentTimeMillis() - start;
-                if (_isLogBenchmark) {
+            if (this->_benchmarkLevel >= Executor<T>::BenchmarkLevel::GENERAL) {
+                this->_entireComputationTime = System::currentTimeMillis() - start;
+                if (this->_isLogBenchmark) {
                     if (detailed) {
                         Log::i(tag(),
-                               "Mpi synchronization and transmission time: " + std::to_string(_mpiTime) + " ms.");
+                               "Mpi synchronization and transmission time: " + std::to_string(this->_mpiTime) + " ms.");
                     }
-                    Log::i(tag(), "Entire computation time: " + std::to_string(_entireComputationTime) + " ms.");
+                    Log::i(tag(), "Entire computation time: " + std::to_string(this->_entireComputationTime) + " ms.");
                 }
             }
             break;
@@ -59,7 +61,13 @@ AdditionShareExecutor *AdditionShareExecutor::execute(bool reconstruct) {
     return this;
 }
 
-std::string AdditionShareExecutor::tag() const {
+template<typename T>
+std::string AdditionShareExecutor<T>::tag() const {
     return "[Addition Share]";
 }
 
+template class AdditionShareExecutor<bool>;
+template class AdditionShareExecutor<int8_t>;
+template class AdditionShareExecutor<int16_t>;
+template class AdditionShareExecutor<int32_t>;
+template class AdditionShareExecutor<int64_t>;

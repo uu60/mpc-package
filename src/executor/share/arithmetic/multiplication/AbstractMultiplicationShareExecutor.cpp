@@ -7,56 +7,66 @@
 #include "utils/Math.h"
 #include "utils/Log.h"
 
-AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l) : IntShareExecutor(x, y, l) {}
+template<typename T>
+AbstractMultiplicationShareExecutor<T>::AbstractMultiplicationShareExecutor(T x, T y) : IntShareExecutor<T>(x, y) {}
 
-AbstractMultiplicationShareExecutor::AbstractMultiplicationShareExecutor(int64_t xi, int64_t yi, int l, bool dummy) : IntShareExecutor(xi, yi, l, dummy) {}
+template<typename T>
+AbstractMultiplicationShareExecutor<T>::AbstractMultiplicationShareExecutor(T xi, T yi, bool dummy) : IntShareExecutor<T>(xi, yi, dummy) {}
 
-AbstractMultiplicationShareExecutor* AbstractMultiplicationShareExecutor::execute(bool reconstruct) {
-    int64_t start, end, end1;
-    if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
+template<typename T>
+AbstractMultiplicationShareExecutor<T>* AbstractMultiplicationShareExecutor<T>::execute(bool reconstruct) {
+    T start, end, end1;
+    if (this->_benchmarkLevel >= Executor<T>::BenchmarkLevel::GENERAL) {
         start = System::currentTimeMillis();
     }
     if (Mpi::isCalculator()) {
         // MT
         obtainMultiplicationTriple();
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED) {
+        if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
             end = System::currentTimeMillis();
-            if (_isLogBenchmark) {
-                Log::i(tag() + " Triple computation time: " + std::to_string(end - start) + " ms.");
+            if (this->_isLogBenchmark) {
+                Log::i(this->tag() + " Triple computation time: " + std::to_string(end - start) + " ms.");
             }
         }
     }
 
     // process
     process(reconstruct);
-    if (_benchmarkLevel >= BenchmarkLevel::GENERAL) {
+    if (this->_benchmarkLevel >= Executor<T>::BenchmarkLevel::GENERAL) {
         end1 = System::currentTimeMillis();
-        if (_benchmarkLevel == BenchmarkLevel::DETAILED && _isLogBenchmark) {
-            Log::i(tag() + " MPI transmission and synchronization time: " + std::to_string(_mpiTime) + " ms.");
+        if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED && this->_isLogBenchmark) {
+            Log::i(this->tag() + " MPI transmission and synchronization time: " + std::to_string(this->_mpiTime) + " ms.");
         }
-        if (_isLogBenchmark) {
-            Log::i(tag() + " Entire computation time: " + std::to_string(end1 - start) + " ms.");
+        if (this->_isLogBenchmark) {
+            Log::i(this->tag() + " Entire computation time: " + std::to_string(end1 - start) + " ms.");
         }
-        _entireComputationTime = end1 - start;
+        this->_entireComputationTime = end1 - start;
     }
 
     return this;
 }
 
-void AbstractMultiplicationShareExecutor::process(bool reconstruct) {
-    bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
+template<typename T>
+void AbstractMultiplicationShareExecutor<T>::process(bool reconstruct) {
+    bool detailed = this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
-        int64_t ei = _xi - _ai;
-        int64_t fi = _yi - _bi;
-        int64_t eo, fo;
-        Mpi::exchangeC(&ei, &eo, _mpiTime, detailed);
-        Mpi::exchangeC(&fi, &fo, _mpiTime, detailed);
-        int64_t e = ei + eo;
-        int64_t f = fi + fo;
-        _zi = Math::ring(Mpi::rank() * e * f + f * _ai + e * _bi + _ci, _l);
-        _result = _zi;
+        T ei = this->_xi - _ai;
+        T fi = this->_yi - _bi;
+        T eo, fo;
+        Mpi::exchangeC(&ei, &eo, this->_mpiTime, detailed);
+        Mpi::exchangeC(&fi, &fo, this->_mpiTime, detailed);
+        T e = ei + eo;
+        T f = fi + fo;
+        this->_zi = Mpi::rank() * e * f + f * _ai + e * _bi + _ci;
+        this->_result = this->_zi;
     }
     if (reconstruct) {
         this->reconstruct();
     }
 }
+
+template class AbstractMultiplicationShareExecutor<bool>;
+template class AbstractMultiplicationShareExecutor<int8_t>;
+template class AbstractMultiplicationShareExecutor<int16_t>;
+template class AbstractMultiplicationShareExecutor<int32_t>;
+template class AbstractMultiplicationShareExecutor<int64_t>;

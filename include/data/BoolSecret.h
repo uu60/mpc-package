@@ -7,7 +7,6 @@
 #include "./Secret.h"
 
 class BoolSecret : public Secret {
-
 };
 
 

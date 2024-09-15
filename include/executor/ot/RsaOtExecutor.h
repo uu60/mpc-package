@@ -13,7 +13,8 @@
 #include "../Executor.h"
 
 // according to https://blog.csdn.net/qq_16763983/article/details/128055146
-class RsaOtExecutor : public Executor {
+template<typename T>
+class RsaOtExecutor : public Executor<T> {
 private:
     // for benchmark
     int64_t _rsaGenerationTime{};
@@ -27,8 +28,8 @@ private:
     std::string _rand0{};
     std::string _rand1{};
     std::string _pri{};
-    int64_t _m0{};
-    int64_t _m1{};
+    T _m0{};
+    T _m1{};
 
     // params for receiver
     std::string _randK{};
@@ -40,9 +41,9 @@ private:
 public:
     // _m0 and _m1 are for sender (invalid for receiver)
     // i is for receiver (invalid for sender)
-    explicit RsaOtExecutor(int sender, int64_t m0, int64_t m1, int i);
+    explicit RsaOtExecutor(int sender, T m0, T m1, int i);
 
-    explicit RsaOtExecutor(int bits, int sender, int64_t m0, int64_t m1, int i);
+    explicit RsaOtExecutor(int bits, int sender, T m0, T m1, int i);
 
     RsaOtExecutor *execute(bool dummy) override;
 
