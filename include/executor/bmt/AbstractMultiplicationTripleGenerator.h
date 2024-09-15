@@ -7,23 +7,23 @@
 
 #include "../Executor.h"
 
-class AbstractMultiplicationTripleGenerator : public Executor {
+template<typename T>
+class AbstractMultiplicationTripleGenerator : public Executor<T> {
 protected:
-    int _l{};
-    int64_t _ai{};
-    int64_t _bi{};
-    int64_t _ci{};
-    int64_t _ui{};
-    int64_t _vi{};
+    T _ai{};
+    T _bi{};
+    T _ci{};
+    T _ui{};
+    T _vi{};
 protected:
     AbstractMultiplicationTripleGenerator *reconstruct() override;
 
 public:
-    [[nodiscard]] int64_t ai() const;
+    [[nodiscard]] T ai() const;
 
-    [[nodiscard]] int64_t bi() const;
+    [[nodiscard]] T bi() const;
 
-    [[nodiscard]] int64_t ci() const;
+    [[nodiscard]] T ci() const;
 };
 
 

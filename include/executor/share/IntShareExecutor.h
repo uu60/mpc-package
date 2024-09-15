@@ -7,26 +7,25 @@
 
 #include "../../executor/Executor.h"
 
-
-class IntShareExecutor : public Executor {
+template<typename T>
+class IntShareExecutor : public Executor<T> {
 protected:
-    int _l{};
-    int64_t _xi{};
-    int64_t _yi{};
-    int64_t _zi{};
+    T _xi{};
+    T _yi{};
+    T _zi{};
 public:
-    [[nodiscard]] int64_t xi() const;
+    [[nodiscard]] T xi() const;
 
-    IntShareExecutor *zi(int64_t zi);
+    IntShareExecutor *zi(T zi);
 
 public:
     IntShareExecutor();
 
-    IntShareExecutor(int64_t x, int l);
+    explicit IntShareExecutor(T x);
 
-    IntShareExecutor(int64_t x, int64_t y, int l);
+    IntShareExecutor(T x, T y);
 
-    IntShareExecutor(int64_t xi, int64_t yi, int l, bool dummy);
+    IntShareExecutor(T xi, T yi, bool dummy);
 
     IntShareExecutor *reconstruct() override;
 

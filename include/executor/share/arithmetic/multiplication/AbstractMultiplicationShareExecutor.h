@@ -6,15 +6,16 @@
 #define MPC_PACKAGE_ABSTRACTMULTIPLICATIONSHAREEXECUTOR_H
 #include "../../../../executor/share/IntShareExecutor.h"
 
-class AbstractMultiplicationShareExecutor : public IntShareExecutor {
+template<typename T>
+class AbstractMultiplicationShareExecutor : public IntShareExecutor<T> {
 protected:
-    int64_t _ai{};
-    int64_t _bi{};
-    int64_t _ci{};
+    T _ai{};
+    T _bi{};
+    T _ci{};
 
 public:
-    AbstractMultiplicationShareExecutor(int64_t x, int64_t y, int l);
-    AbstractMultiplicationShareExecutor(int64_t xi, int64_t yi, int l, bool dummy);
+    AbstractMultiplicationShareExecutor(T x, T y);
+    AbstractMultiplicationShareExecutor(T xi, T yi, bool dummy);
     AbstractMultiplicationShareExecutor* execute(bool reconstruct) override;
 
 protected:

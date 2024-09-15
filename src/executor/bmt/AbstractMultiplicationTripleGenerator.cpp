@@ -4,18 +4,22 @@
 
 #include "executor/bmt/AbstractMultiplicationTripleGenerator.h"
 
-int64_t AbstractMultiplicationTripleGenerator::ai() const {
+template<typename T>
+T AbstractMultiplicationTripleGenerator<T>::ai() const {
     return _ai;
 }
 
-int64_t AbstractMultiplicationTripleGenerator::bi() const {
+template<typename T>
+T AbstractMultiplicationTripleGenerator<T>::bi() const {
     return _bi;
 }
 
-int64_t AbstractMultiplicationTripleGenerator::ci() const {
+template<typename T>
+T AbstractMultiplicationTripleGenerator<T>::ci() const {
     return _ci;
 }
 
-AbstractMultiplicationTripleGenerator *AbstractMultiplicationTripleGenerator::reconstruct() {
+template<typename T>
+AbstractMultiplicationTripleGenerator<T> *AbstractMultiplicationTripleGenerator<T>::reconstruct() {
     return this;
 }

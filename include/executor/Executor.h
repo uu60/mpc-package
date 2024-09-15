@@ -10,6 +10,7 @@
 #include "../utils/System.h"
 #include "../utils/Log.h"
 
+template<typename T>
 class Executor {
 public:
     enum class BenchmarkLevel {
@@ -17,7 +18,7 @@ public:
     };
 protected:
     // result
-    int64_t _result{};
+    T _result{};
 
     // for benchmark
     BenchmarkLevel _benchmarkLevel = BenchmarkLevel::NONE;
@@ -29,7 +30,7 @@ public:
     virtual Executor* execute(bool reconstruct);
     virtual Executor* reconstruct();
     // get calculated result
-    [[nodiscard]] int64_t result() const;
+    [[nodiscard]] T result() const;
     Executor* benchmark(BenchmarkLevel lv);
     Executor* logBenchmark(bool isLogBenchmark);
     [[nodiscard]] int64_t mpiTime() const;

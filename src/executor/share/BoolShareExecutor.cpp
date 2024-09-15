@@ -6,7 +6,7 @@
 #include "utils/Math.h"
 #include "utils/Mpi.h"
 
-BoolShareExecutor::BoolShareExecutor(int64_t x, int64_t y) {
+BoolShareExecutor::BoolShareExecutor(bool x, bool y) {
     bool detailed = _benchmarkLevel == BenchmarkLevel::DETAILED;
     if (!Mpi::isCalculator()) {
         bool x1 = Math::rand32(0, 1);
@@ -24,12 +24,12 @@ BoolShareExecutor::BoolShareExecutor(int64_t x, int64_t y) {
     }
 }
 
-BoolShareExecutor::BoolShareExecutor(int64_t xi, int64_t yi, bool dummy) {
+BoolShareExecutor::BoolShareExecutor(bool xi, bool yi, bool dummy) {
     _xi = xi;
     _yi = yi;
 }
 
-Executor *BoolShareExecutor::reconstruct() {
+BoolShareExecutor *BoolShareExecutor::reconstruct() {
     bool detailed = _benchmarkLevel == Executor::BenchmarkLevel::DETAILED;
     if (Mpi::isCalculator()) {
         Mpi::sendTo(&_zi, Mpi::DATA_HOLDER_RANK, _mpiTime, detailed);
@@ -42,7 +42,7 @@ Executor *BoolShareExecutor::reconstruct() {
     return this;
 }
 
-Executor *BoolShareExecutor::execute(bool reconstruct) {
+BoolShareExecutor *BoolShareExecutor::execute(bool reconstruct) {
     throw std::runtime_error("This method cannot be called!");
 }
 
