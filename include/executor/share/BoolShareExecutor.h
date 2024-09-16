@@ -13,6 +13,8 @@ protected:
     bool _yi{};
     bool _zi{};
 public:
+    BoolShareExecutor(bool x);
+
     BoolShareExecutor(bool x, bool y);
 
     BoolShareExecutor(bool xi, bool yi, bool dummy);
@@ -20,6 +22,9 @@ public:
     BoolShareExecutor *reconstruct() override;
 
     BoolShareExecutor *execute(bool reconstruct) override;
+
+    [[nodiscard]] bool xi() const;
+    BoolShareExecutor *zi(bool zi);
 
 protected:
     [[nodiscard]] std::string tag() const override;
