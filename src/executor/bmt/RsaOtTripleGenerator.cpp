@@ -35,7 +35,8 @@ template<typename T>
 void RsaOtTripleGenerator<T>::computeMix(int sender, T &mix) {
     bool isSender = Mpi::rank() == sender;
     T sum = 0;
-    for (int i = 0; i < sizeof(T) * 8; i++) {
+    constexpr int bits = std::is_same_v<T, bool> ? sizeof(T) * 8 : 1;
+    for (int i = 0; i < bits; i++) {
         T s0 = 0, s1 = 0;
         int choice = 0;
         if (isSender) {
@@ -62,7 +63,7 @@ void RsaOtTripleGenerator<T>::computeMix(int sender, T &mix) {
         if (isSender) {
             sum += s0;
         } else {
-            int64_t temp = r.result();
+            T temp = r.result();
             if (choice == 0) {
                 temp = -r.result();
             }
