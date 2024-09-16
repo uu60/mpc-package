@@ -4,7 +4,8 @@ A C++ package for implementing basic MPC operations (including OT, secret share 
 
 > There is a test case project of the mpc-package, which is https://github.com/uu60/mpc-package-test.
 
-Currently, the secret can be bool, int8, int16, int32 and int64. All the classes are implemented as template classes. So when you use them, please clarify the secret's type (like AdditionExecutor<int64_t>).
+Currently, the secret can be bool, int8, int16, int32 and int64. All the classes are implemented as template classes. So when you use them, please clarify the secret's type (like `AdditionExecutor<int64_t>`).
+
 (☕️ I try to write C++ code in Java style to keep it readable)
 ## 2 Usage
 ### 2.1 OpenMPI Environment

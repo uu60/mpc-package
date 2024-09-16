@@ -19,7 +19,6 @@ AdditionShareExecutor<T>::AdditionShareExecutor(std::vector<T> &xis) {
     for (T xi: xis) {
         this->_zi += xi;
     }
-    this->_zi;
 }
 
 template<typename T>
