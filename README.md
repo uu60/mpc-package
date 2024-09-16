@@ -2,6 +2,9 @@
 ## 1 Introduction
 A C++ package for implementing basic MPC operations (including OT, secret share etc.) conveniently based on OpenMPI framework.
 
+> There is a test case project of the mpc-package, which is https://github.com/uu60/mpc-package-test.
+
+Currently, the secret can be bool, int8, int16, int32 and int64. All the classes are implemented as template classes. So when you use them, please clarify the secret's type (like AdditionExecutor<int64_t>).
 (☕️ I try to write C++ code in Java style to keep it readable)
 ## 2 Usage
 ### 2.1 OpenMPI Environment
@@ -58,6 +61,7 @@ which will imports the package into your project.
   - And Share with **RSA OT BMT** or **pre-generated BMT**
   - XOR Share
 - Utility functions (under `utils` directory)
+> There are some new classes under data/ directory which can execute MPC more easily. Please refer to test cases for their usage.
 ## 4 Test cases
 All test case project will be compiled as `demo`. Please execute by:
 ```shell
@@ -66,6 +70,7 @@ cmake .
 make
 mpirun -np 2 -hostfile hostfile.txt demo
 ```
+> There is a script file `test.sh` under shell_scripts/ directory which can conveniently upload and compile the project to your test server. You can modify details for your situation.
 ### 4.1 Multiplication share
 #### 4.1.1 With MTs through OT
 - The code is under **test_cases/demo**.
