@@ -96,9 +96,8 @@ IntSecret<T> IntSecret<T>::multiply(IntSecret<T> xi, IntSecret<T> yi) {
 }
 
 template<typename T>
-IntSecret<T> IntSecret<T>::sum(const std::vector<IntSecret<T>> &xis, bool dummy) {
-    std::vector<T> temp;
-    temp.reserve(xis.size());
+IntSecret<T> IntSecret<T>::sum(const std::vector<IntSecret<T>> &xis) {
+    std::vector<T> temp(xis.size());
     for (IntSecret<T> x: xis) {
         temp.push_back(x.get());
     }
@@ -106,16 +105,44 @@ IntSecret<T> IntSecret<T>::sum(const std::vector<IntSecret<T>> &xis, bool dummy)
 }
 
 template<typename T>
-IntSecret<T> IntSecret<T>::sum(const std::vector<IntSecret<T>> &xis, const std::vector<IntSecret<T>> &yis, bool dummy) {
-    std::vector<T> tempX(xis.size());
+IntSecret<T> IntSecret<T>::sum(const std::vector<IntSecret<T>> &xis, const std::vector<IntSecret<T>> &yis) {
+    std::vector<T> xVals(xis.size());
     for (IntSecret<T> x: xis) {
-        tempX.push_back(x.get());
+        xVals.push_back(x.get());
     }
-    std::vector<T> tempY(yis.size());
+    std::vector<T> yVals(yis.size());
     for (IntSecret<T> y: yis) {
-        tempY.push_back(y.get());
+        yVals.push_back(y.get());
     }
-    return sum(tempX, tempY);
+    return sum(xVals, yVals);
+}
+
+
+template<typename T>
+IntSecret<T> IntSecret<T>::product(const std::vector<T> &xis) {
+    IntSecret<T> ret(xis[0]);
+    for (int i = 0; i < xis.size() - 1; i++) {
+        ret = ret.multiply(xis[i + 1]);
+    }
+    return ret;
+}
+
+template<typename T>
+IntSecret<T> IntSecret<T>::product(const std::vector<IntSecret<T>> &xis) {
+    std::vector<T> vals(xis.size());
+    for (IntSecret<T> x: xis) {
+        vals.push_back(x.get());
+    }
+    return product(vals);
+}
+
+template<typename T>
+IntSecret<T> IntSecret<T>::dot(const std::vector<T> &xis, const std::vector<T> &yis) {
+    IntSecret<T> ret(0);
+    for (int i = 0; i < xis.size() - 1; i++) {
+        ret = ret.add(IntSecret<T>(xis[i]).multiply(yis[i]));
+    }
+    return ret;
 }
 
 template

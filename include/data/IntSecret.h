@@ -24,18 +24,21 @@ public:
     [[nodiscard]] T get() const;
 
     // static methods for multiple usage
-    static IntSecret share(T x);
-    static IntSecret share(IntSecret<T> x);
-    static IntSecret add(T xi, T yi);
-    static IntSecret add(IntSecret<T> xi, IntSecret<T> yi);
-    static IntSecret multiply(T xi, T yi);
-    static IntSecret multiply(IntSecret<T> xi, IntSecret<T> yi);
-    static IntSecret sum(const std::vector<T>& xis);
-    static IntSecret sum(const std::vector<IntSecret<T>>& xis, bool dummy);
-    static IntSecret sum(const std::vector<T>& xis, const std::vector<T>& yis);
-    static IntSecret sum(const std::vector<IntSecret<T>>& xis, const std::vector<IntSecret<T>>& yis, bool dummy);
+    static IntSecret<T> share(T x);
+    static IntSecret<T> share(IntSecret<T> x);
+    static IntSecret<T> add(T xi, T yi);
+    static IntSecret<T> add(IntSecret<T> xi, IntSecret<T> yi);
+    static IntSecret<T> multiply(T xi, T yi);
+    static IntSecret<T> multiply(IntSecret<T> xi, IntSecret<T> yi);
+    static IntSecret<T> sum(const std::vector<T>& xis);
+    static IntSecret<T> sum(const std::vector<IntSecret<T>>& xis);
+    static IntSecret<T> sum(const std::vector<T>& xis, const std::vector<T>& yis);
+    static IntSecret<T> sum(const std::vector<IntSecret<T>>& xis, const std::vector<IntSecret<T>>& yis);
+    static IntSecret<T> product(const std::vector<T>& xis);
+    static IntSecret<T> product(const std::vector<IntSecret<T>>& xis);
+    static IntSecret<T> dot(const std::vector<T>& xis, const std::vector<T>& yis);
+    static IntSecret<T> dot(const std::vector<IntSecret<T>>& xis, const std::vector<IntSecret<T>>& yis);
 };
-
 
 
 #endif //MPC_PACKAGE_INTSECRET_H
