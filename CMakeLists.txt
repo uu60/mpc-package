@@ -9,46 +9,46 @@ find_package(OpenSSL REQUIRED)
 add_library(${PROJECT_NAME} SHARED
         src/utils/Math.cpp
         include/utils/Math.h
-        src/executor/Executor.cpp
-        include/executor/Executor.h
+        src/Executor.cpp
+        include/Executor.h
         src/utils/Log.cpp
         include/utils/Log.h
-        src/executor/share/arithmetic/multiplication/AbstractMultiplicationShareExecutor.cpp
-        include/executor/share/arithmetic/multiplication/AbstractMultiplicationShareExecutor.h
-        src/executor/share/arithmetic/addition/AdditionShareExecutor.cpp
-        include/executor/share/arithmetic/addition/AdditionShareExecutor.h
-        src/executor/ot/RsaOtExecutor.cpp
-        include/executor/ot/RsaOtExecutor.h
+        src/share/arithmetic/multiplication/AbstractMultiplicationShareExecutor.cpp
+        include/share/arithmetic/multiplication/AbstractMultiplicationShareExecutor.h
+        src/share/arithmetic/addition/AdditionShareExecutor.cpp
+        include/share/arithmetic/addition/AdditionShareExecutor.h
+        src/ot/RsaOtExecutor.cpp
+        include/ot/RsaOtExecutor.h
         src/utils/Mpi.cpp
         include/utils/Mpi.h
         src/utils/Crypto.cpp
         include/utils/Crypto.h
         src/utils/System.cpp
         include/utils/System.h
-        src/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.cpp
-        include/executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
-        include/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.h
-        src/executor/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.cpp
-        src/executor/share/boolean/xor/XorShareExecutor.cpp
-        include/executor/share/boolean/xor/XorShareExecutor.h
-        src/executor/share/boolean/and/AbstractAndShareExecutor.cpp
-        include/executor/share/boolean/and/AbstractAndShareExecutor.h
-        src/executor/bmt/RsaOtTripleGenerator.cpp
-        include/executor/bmt/RsaOtTripleGenerator.h
-        src/executor/bmt/AbstractMultiplicationTripleGenerator.cpp
-        include/executor/bmt/AbstractMultiplicationTripleGenerator.h
-        src/executor/bmt/FixedTripleGenerator.cpp
-        include/executor/bmt/FixedTripleGenerator.h
-        src/executor/share/boolean/and/RsaOtAndShareExecutor.cpp
-        include/executor/share/boolean/and/RsaOtAndShareExecutor.h
-        src/executor/share/boolean/and/FixedAndShareExecutor.cpp
-        include/executor/share/boolean/and/FixedAndShareExecutor.h
-        src/executor/share/comparison/ComparisonExecutor.cpp
-        include/executor/share/comparison/ComparisonExecutor.h
-        src/executor/share/IntShareExecutor.cpp
-        include/executor/share/IntShareExecutor.h
-        src/executor/share/BoolShareExecutor.cpp
-        include/executor/share/BoolShareExecutor.h
+        src/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.cpp
+        include/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
+        include/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.h
+        src/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.cpp
+        src/share/boolean/xor/XorShareExecutor.cpp
+        include/share/boolean/xor/XorShareExecutor.h
+        src/share/boolean/and/AbstractAndShareExecutor.cpp
+        include/share/boolean/and/AbstractAndShareExecutor.h
+        src/bmt/RsaOtTripleGenerator.cpp
+        include/bmt/RsaOtTripleGenerator.h
+        src/bmt/AbstractMultiplicationTripleGenerator.cpp
+        include/bmt/AbstractMultiplicationTripleGenerator.h
+        src/bmt/FixedTripleGenerator.cpp
+        include/bmt/FixedTripleGenerator.h
+        src/share/boolean/and/RsaOtAndShareExecutor.cpp
+        include/share/boolean/and/RsaOtAndShareExecutor.h
+        src/share/boolean/and/FixedAndShareExecutor.cpp
+        include/share/boolean/and/FixedAndShareExecutor.h
+        src/share/comparison/ComparisonExecutor.cpp
+        include/share/comparison/ComparisonExecutor.h
+        src/share/arithmetic/IntShareExecutor.cpp
+        include/share/arithmetic/IntShareExecutor.h
+        src/share/boolean/BoolShareExecutor.cpp
+        include/share/boolean/BoolShareExecutor.h
         src/data/Secret.cpp
         include/data/Secret.h
         src/data/IntSecret.cpp

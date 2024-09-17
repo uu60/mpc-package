@@ -8,6 +8,8 @@
 #include "../utils/Mpi.h"
 #include "../utils/Math.h"
 
+// Secret class provides with a simpler method to use this package
+// Complex logics are implemented by using Executors
 class Secret {
 
 };

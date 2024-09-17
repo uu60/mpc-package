@@ -3,8 +3,8 @@
 //
 
 #include "data/IntSecret.h"
-#include "executor/share/IntShareExecutor.h"
-#include "executor/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h"
+#include "share/arithmetic/IntShareExecutor.h"
+#include "share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h"
 
 template<typename T>
 IntSecret<T>::IntSecret(T x) {

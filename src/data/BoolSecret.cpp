@@ -3,7 +3,7 @@
 //
 
 #include "data/BoolSecret.h"
-#include "executor/share/BoolShareExecutor.h"
+#include "share/boolean/BoolShareExecutor.h"
 
 BoolSecret::BoolSecret(bool x) {
     _data = x;
