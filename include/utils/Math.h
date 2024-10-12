@@ -16,6 +16,7 @@ public:
     static int rand32(int lowest, int highest);
     static int64_t rand64();
     static int64_t rand64(int64_t lowest, int64_t highest);
+    static int64_t pow(int64_t base, int64_t exponent);
     static std::string rand0b(int bytes);
     static std::string rand0b(int lowBytes, int highBytes);
     // '1' + 1 = 49 + 1 = 50 = '2'

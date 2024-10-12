@@ -144,3 +144,15 @@ std::string Math::rand0b(int lowBytes, int highBytes) {
 int Math::normL(int l) {
     return l >= 64 ? 64 : (l >= 32 ? 32 : (l >= 16 ? 16 : (l >= 8 ? 8 : 4)));
 }
+
+int64_t Math::pow(int64_t base, int64_t exponent) {
+    int64_t result = 1;
+    while (exponent > 0) {
+        if (exponent % 2 == 1) {
+            result *= base;
+        }
+        base *= base;
+        exponent /= 2;
+    }
+    return result;
+}

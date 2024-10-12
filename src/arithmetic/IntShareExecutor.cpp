@@ -15,8 +15,8 @@ IntShareExecutor<T>::IntShareExecutor(T x) {
     bool detailed = this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED;
     // distribute operator
     if (Mpi::isClient()) {
-        T x1 = Math::rand64();
-        T x0 = x - x1;
+        T x1 = Math::ring(Math::rand64(), this->_l);
+        T x0 = Math::ring(x - x1, this->_l);
         Mpi::send(&x0, 0, this->_mpiTime, detailed);
         Mpi::send(&x1, 1, this->_mpiTime, detailed);
     } else {
@@ -29,10 +29,10 @@ IntShareExecutor<T>::IntShareExecutor(T x, T y) {
     bool detailed = this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED;
     // distribute operator
     if (Mpi::isClient()) {
-        T x1 = Math::rand64();
-        T x0 = x - x1;
-        T y1 = Math::rand64();
-        T y0 = y - y1;
+        T x1 = Math::ring(Math::rand64(), this->_l);
+        T x0 = Math::ring(x - x1, this->_l);
+        T y1 = Math::ring(Math::rand64(), this->_l);
+        T y0 = Math::ring(y - y1, this->_l);
         Mpi::send(&x0, 0, this->_mpiTime, detailed);
         Mpi::send(&y0, 0, this->_mpiTime, detailed);
         Mpi::send(&x1, 1, this->_mpiTime, detailed);
@@ -85,8 +85,17 @@ IntShareExecutor<T> *IntShareExecutor<T>::reconstruct() {
     return this;
 }
 
-template class IntShareExecutor<bool>;
-template class IntShareExecutor<int8_t>;
-template class IntShareExecutor<int16_t>;
-template class IntShareExecutor<int32_t>;
-template class IntShareExecutor<int64_t>;
+template
+class IntShareExecutor<bool>;
+
+template
+class IntShareExecutor<int8_t>;
+
+template
+class IntShareExecutor<int16_t>;
+
+template
+class IntShareExecutor<int32_t>;
+
+template
+class IntShareExecutor<int64_t>;

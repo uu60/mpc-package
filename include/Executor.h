@@ -20,6 +20,9 @@ protected:
     // result
     T _result{};
 
+    // _l
+    const int _l = std::is_same_v<T, bool> ? 1 : sizeof _result * 8;
+
     // for benchmark
     BenchmarkLevel _benchmarkLevel = BenchmarkLevel::NONE;
     bool _isLogBenchmark = false;

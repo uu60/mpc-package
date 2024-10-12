@@ -12,8 +12,8 @@ RsaOtTripleGenerator<T>::RsaOtTripleGenerator() = default;
 
 template<typename T>
 void RsaOtTripleGenerator<T>::generateRandomAB() {
-    this->_ai = Math::rand64();
-    this->_bi = Math::rand64();
+    this->_ai = Math::ring(Math::rand64(), this->_l);
+    this->_bi = Math::ring(Math::rand64(), this->_l);
 }
 
 template<typename T>
@@ -28,19 +28,18 @@ void RsaOtTripleGenerator<T>::computeV() {
 
 template<typename T>
 T RsaOtTripleGenerator<T>::corr(int i, T x) const {
-    return (this->_ai << i) - x;
+    return Math::ring((this->_ai << i) - x, this->_l);
 }
 
 template<typename T>
 void RsaOtTripleGenerator<T>::computeMix(int sender, T &mix) {
     bool isSender = Mpi::rank() == sender;
     T sum = 0;
-    constexpr int bits = std::is_same_v<T, bool> ? sizeof(T) * 8 : 1;
-    for (int i = 0; i < bits; i++) {
+    for (int i = 0; i < this->_l; i++) {
         T s0 = 0, s1 = 0;
         int choice = 0;
         if (isSender) {
-            s0 = Math::rand64();
+            s0 = Math::ring(Math::rand64(), this->_l);
             s1 = corr(i, s0);
         } else {
             choice = (int) ((this->_bi >> i) & 1);
@@ -70,7 +69,7 @@ void RsaOtTripleGenerator<T>::computeMix(int sender, T &mix) {
             sum += temp;
         }
     }
-    mix = sum;
+    mix = Math::ring(sum, this->_l);
 }
 
 template<typename T>

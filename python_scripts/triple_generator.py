@@ -1,7 +1,7 @@
 import random
 
 def generate_triplets(bits, count):
-    max_val = 2 ** bits - 1
+    max_val = 2 ** (bits - 1) - 1
     mask = max_val
     triplets = []
     for _ in range(count):
@@ -22,12 +22,11 @@ def split_to_sums(value):
 
 def format_triplets_for_cpp(triplets, bits):
     type_map = {
-        1: "uint8_t",
-        4: "uint8_t",
-        8: "uint8_t",
-        16: "uint16_t",
-        32: "uint32_t",
-        64: "uint64_t"
+        1: "bool",
+        8: "int8_t",
+        16: "int16_t",
+        32: "int32_t",
+        64: "int64_t"
     }
     cpp_type = type_map[bits]
     formatted_triplets = []
@@ -35,13 +34,13 @@ def format_triplets_for_cpp(triplets, bits):
         a1, a2 = split_to_sums(a)
         b1, b2 = split_to_sums(b)
         r1, r2 = split_to_sums(result)
-        formatted_triplets.append(f"{{{{{a1}u, {a2}u}}, {{{b1}u, {b2}u}}, {{{r1}u, {r2}u}}}}")
+        formatted_triplets.append(f"{{{{{a1}, {a2}}}, {{{b1}, {b2}}}, {{{r1}, {r2}}}}}")
     return f"std::array<std::tuple<std::pair<{cpp_type}, {cpp_type}>, std::pair<{cpp_type}, {cpp_type}>, std::pair<{cpp_type}, {cpp_type}>>, {len(triplets)}> triplets_{bits} = {{{{{', '.join(formatted_triplets)}}}}};"
 
 
 if __name__ == '__main__':
     # Generate and format triplets for different bit sizes
-    bit_sizes = [1, 4, 8, 16, 32, 64]
+    bit_sizes = [1, 8, 16, 32, 64]
     triplets_count = 100  # Number of triplets to generate for each bit size
 
     for bits in bit_sizes:
