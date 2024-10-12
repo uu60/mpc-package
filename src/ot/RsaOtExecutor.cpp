@@ -61,17 +61,17 @@ void RsaOtExecutor<T>::generateAndShareRsaKeys() {
                 Log::i(tag() + " RSA keys generation time: " + std::to_string(end - start) + " ms.");
             }
             _rsaGenerationTime = end - start;
-            Mpi::sendC(&_pub, this->_mpiTime);
+            Mpi::ssend(&_pub, this->_mpiTime);
         } else {
-            Mpi::sendC(&_pub);
+            Mpi::ssend(&_pub);
         }
         return;
     }
     // receiver
     if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
-        Mpi::recvC(&_pub, this->_mpiTime);
+        Mpi::srecv(&_pub, this->_mpiTime);
     } else {
-        Mpi::recvC(&_pub);
+        Mpi::srecv(&_pub);
     }
 }
 
@@ -83,20 +83,20 @@ void RsaOtExecutor<T>::generateAndShareRandoms() {
         _rand0 = Math::rand0b(1, maxLen);
         _rand1 = Math::rand0b(1, maxLen);
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
-            Mpi::sendC(&_rand0, this->_mpiTime);
-            Mpi::sendC(&_rand1, this->_mpiTime);
+            Mpi::ssend(&_rand0, this->_mpiTime);
+            Mpi::ssend(&_rand1, this->_mpiTime);
         } else {
-            Mpi::sendC(&_rand0);
-            Mpi::sendC(&_rand1);
+            Mpi::ssend(&_rand0);
+            Mpi::ssend(&_rand1);
         }
     } else {
         _randK = Math::rand0b(1, maxLen);
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
-            Mpi::recvC(&_rand0, this->_mpiTime);
-            Mpi::recvC(&_rand1, this->_mpiTime);
+            Mpi::srecv(&_rand0, this->_mpiTime);
+            Mpi::srecv(&_rand1, this->_mpiTime);
         } else {
-            Mpi::recvC(&_rand0);
-            Mpi::recvC(&_rand1);
+            Mpi::srecv(&_rand0);
+            Mpi::srecv(&_rand1);
         }
     }
 }
@@ -118,27 +118,27 @@ void RsaOtExecutor<T>::process() {
         }
         std::string sumStr = Math::add(ek, _i == 0 ? _rand0 : _rand1);
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
-            Mpi::sendC(&sumStr, this->_mpiTime);
+            Mpi::ssend(&sumStr, this->_mpiTime);
         } else {
-            Mpi::sendC(&sumStr);
+            Mpi::ssend(&sumStr);
         }
 
         std::string m0, m1;
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
-            Mpi::recvC(&m0);
-            Mpi::recvC(&m1);
+            Mpi::srecv(&m0);
+            Mpi::srecv(&m1);
         } else {
-            Mpi::recvC(&m0, this->_mpiTime);
-            Mpi::recvC(&m1, this->_mpiTime);
+            Mpi::srecv(&m0, this->_mpiTime);
+            Mpi::srecv(&m1, this->_mpiTime);
         }
 
         this->_result = std::stoll(Math::minus(_i == 0 ? m0 : m1, _randK));
     } else {
         std::string sumStr;
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
-            Mpi::recvC(&sumStr, this->_mpiTime);
+            Mpi::srecv(&sumStr, this->_mpiTime);
         } else {
-            Mpi::recvC(&sumStr);
+            Mpi::srecv(&sumStr);
         }
         int64_t start, end;
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
@@ -160,11 +160,11 @@ void RsaOtExecutor<T>::process() {
         std::string m0 = Math::add(std::to_string(_m0), k0);
         std::string m1 = Math::add(std::to_string(_m1), k1);
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
-            Mpi::sendC(&m0, this->_mpiTime);
-            Mpi::sendC(&m1, this->_mpiTime);
+            Mpi::ssend(&m0, this->_mpiTime);
+            Mpi::ssend(&m1, this->_mpiTime);
         } else {
-            Mpi::sendC(&m0);
-            Mpi::sendC(&m1);
+            Mpi::ssend(&m0);
+            Mpi::ssend(&m1);
         }
     }
 }

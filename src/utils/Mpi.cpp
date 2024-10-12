@@ -11,7 +11,7 @@
 #include "utils/System.h"
 
 // init
-const int Mpi::DATA_HOLDER_RANK = 2;
+const int Mpi::CLIENT_RANK = 2;
 bool Mpi::_envInited = false;
 int Mpi::_mpiRank = 0;
 int Mpi::_mpiSize = 0;
@@ -37,25 +37,25 @@ void Mpi::init(int argc, char **argv) {
     }
 }
 
-void Mpi::exchangeC(const int64_t *source, int64_t *target) {
-    sendC(source);
-    recvC(target);
+void Mpi::sexch(const int64_t *source, int64_t *target) {
+    ssend(source);
+    srecv(target);
 }
 
-void Mpi::sendC(const int64_t *source) {
-    sendTo(source, 1 - _mpiRank);
+void Mpi::ssend(const int64_t *source) {
+    send(source, 1 - _mpiRank);
 }
 
-void Mpi::sendC(const std::string *source) {
-    sendTo(source, 1 - _mpiRank);
+void Mpi::ssend(const std::string *source) {
+    send(source, 1 - _mpiRank);
 }
 
-void Mpi::recvC(int64_t *target) {
-    recvFrom(target, 1 - _mpiRank);
+void Mpi::srecv(int64_t *target) {
+    recv(target, 1 - _mpiRank);
 }
 
-void Mpi::recvC(std::string *target) {
-    recvFrom(target, 1 - _mpiRank);
+void Mpi::srecv(std::string *target) {
+    recv(target, 1 - _mpiRank);
 }
 
 bool Mpi::inited() {
@@ -70,41 +70,41 @@ int Mpi::rank() {
     return _mpiRank;
 }
 
-void Mpi::exchangeC(const int64_t *source, int64_t *target, int64_t &mpiTime) {
+void Mpi::sexch(const int64_t *source, int64_t *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    exchangeC(source, target);
+    sexch(source, target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::sendC(const int64_t *source, int64_t &mpiTime) {
-    sendTo(source, 1 - _mpiRank, mpiTime);
+void Mpi::ssend(const int64_t *source, int64_t &mpiTime) {
+    send(source, 1 - _mpiRank, mpiTime);
 }
 
-void Mpi::recvC(int64_t *target, int64_t &mpiTime) {
-    recvFrom(target, 1 - _mpiRank, mpiTime);
+void Mpi::srecv(int64_t *target, int64_t &mpiTime) {
+    recv(target, 1 - _mpiRank, mpiTime);
 }
 
-void Mpi::sendC(const std::string *source, int64_t &mpiTime) {
-    sendTo(source, 1 - _mpiRank, mpiTime);
+void Mpi::ssend(const std::string *source, int64_t &mpiTime) {
+    send(source, 1 - _mpiRank, mpiTime);
 }
 
-void Mpi::recvC(std::string *target, int64_t &mpiTime) {
-    recvFrom(target, 1 - _mpiRank, mpiTime);
+void Mpi::srecv(std::string *target, int64_t &mpiTime) {
+    recv(target, 1 - _mpiRank, mpiTime);
 }
 
-void Mpi::sendTo(const int64_t *source, int receiverRank) {
+void Mpi::send(const int64_t *source, int receiverRank) {
     MPI_Send(source, 1, MPI_INT64_T, receiverRank, 0, MPI_COMM_WORLD);
 }
 
-void Mpi::sendTo(const int64_t *source, int receiverRank, int64_t &mpiTime) {
+void Mpi::send(const int64_t *source, int receiverRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    sendTo(source, receiverRank);
+    send(source, receiverRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::sendTo(const std::string *source, int receiverRank) {
+void Mpi::send(const std::string *source, int receiverRank) {
     if (source->length() > static_cast<size_t>(std::numeric_limits<int>::max())) {
         std::cerr << "String size exceeds MPI_Send limit." << std::endl;
         MPI_Abort(MPI_COMM_WORLD, 1);
@@ -112,25 +112,25 @@ void Mpi::sendTo(const std::string *source, int receiverRank) {
     MPI_Send(source->data(), static_cast<int>(source->length()), MPI_CHAR, receiverRank, 0, MPI_COMM_WORLD);
 }
 
-void Mpi::sendTo(const std::string *source, int receiverRank, int64_t &mpiTime) {
+void Mpi::send(const std::string *source, int receiverRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    sendTo(source, receiverRank);
+    send(source, receiverRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recvFrom(int64_t *target, int senderRank) {
+void Mpi::recv(int64_t *target, int senderRank) {
     MPI_Recv(target, 1, MPI_INT64_T, senderRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
 
-void Mpi::recvFrom(int64_t *target, int senderRank, int64_t &mpiTime) {
+void Mpi::recv(int64_t *target, int senderRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recvFrom(target, senderRank);
+    recv(target, senderRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recvFrom(std::string *target, int senderRank) {
+void Mpi::recv(std::string *target, int senderRank) {
     MPI_Status status;
     MPI_Probe(senderRank, 0, MPI_COMM_WORLD, &status);
 
@@ -142,486 +142,486 @@ void Mpi::recvFrom(std::string *target, int senderRank) {
     *target = std::string(buffer.data(), count);
 }
 
-void Mpi::recvFrom(std::string *target, int senderRank, int64_t &mpiTime) {
+void Mpi::recv(std::string *target, int senderRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recvFrom(target, senderRank);
+    recv(target, senderRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-bool Mpi::isCalculator() {
-    return _mpiRank != DATA_HOLDER_RANK;
+bool Mpi::isServer() {
+    return _mpiRank != CLIENT_RANK;
 }
 
-bool Mpi::isDataHolder() {
-    return !isCalculator();
+bool Mpi::isClient() {
+    return !isServer();
 }
 
-void Mpi::sendTo(const bool *source, int receiverRank) {
+void Mpi::send(const bool *source, int receiverRank) {
     MPI_Send(source, 1, MPI_CXX_BOOL, receiverRank, 0, MPI_COMM_WORLD);
 }
 
-void Mpi::sendTo(const bool *source, int receiverRank, int64_t &mpiTime) {
+void Mpi::send(const bool *source, int receiverRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    sendTo(source, receiverRank);
+    send(source, receiverRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recvFrom(bool *target, int senderRank) {
+void Mpi::recv(bool *target, int senderRank) {
     MPI_Recv(target, 1, MPI_CXX_BOOL, senderRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
 
-void Mpi::recvFrom(bool *target, int senderRank, int64_t &mpiTime) {
+void Mpi::recv(bool *target, int senderRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recvFrom(target, senderRank);
+    recv(target, senderRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::exchangeC(const bool *source, bool *target, int64_t &mpiTime) {
+void Mpi::sexch(const bool *source, bool *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    exchangeC(source, target);
+    sexch(source, target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::sendC(const bool *source) {
-    sendTo(source, 1 - _mpiRank);
+void Mpi::ssend(const bool *source) {
+    send(source, 1 - _mpiRank);
 }
 
-void Mpi::sendC(const bool *source, int64_t &mpiTime) {
-    sendTo(source, 1 - _mpiRank, mpiTime);
+void Mpi::ssend(const bool *source, int64_t &mpiTime) {
+    send(source, 1 - _mpiRank, mpiTime);
 }
 
-void Mpi::recvC(bool *target) {
-    recvFrom(target, 1 - _mpiRank);
+void Mpi::srecv(bool *target) {
+    recv(target, 1 - _mpiRank);
 }
 
-void Mpi::recvC(bool *target, int64_t &mpiTime) {
-    recvFrom(target, 1 - _mpiRank, mpiTime);
+void Mpi::srecv(bool *target, int64_t &mpiTime) {
+    recv(target, 1 - _mpiRank, mpiTime);
 }
 
-void Mpi::exchangeC(const bool *source, bool *target) {
-    sendC(source);
-    recvC(target);
+void Mpi::sexch(const bool *source, bool *target) {
+    ssend(source);
+    srecv(target);
 }
 
 // exchange source (for rank of 0 and 1)
-void Mpi::exchangeC(const int64_t *source, int64_t *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::sexch(const int64_t *source, int64_t *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        exchangeC(source, target, mpiTime);
+        sexch(source, target, mpiTime);
     } else {
-        exchangeC(source, target);
+        sexch(source, target);
     }
 }
 
-void Mpi::exchangeC(const bool *source, bool *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::sexch(const bool *source, bool *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        exchangeC(source, target, mpiTime);
+        sexch(source, target, mpiTime);
     } else {
-        exchangeC(source, target);
+        sexch(source, target);
     }
 }
 
-// sendC
-void Mpi::sendC(const int64_t *source, int64_t &mpiTime, bool calculateTime) {
+// ssend
+void Mpi::ssend(const int64_t *source, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendC(source, mpiTime);
+        ssend(source, mpiTime);
     } else {
-        sendC(source);
+        ssend(source);
     }
 }
 
-void Mpi::sendC(const bool *source, int64_t &mpiTime, bool calculateTime) {
+void Mpi::ssend(const bool *source, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendC(source, mpiTime);
+        ssend(source, mpiTime);
     } else {
-        sendC(source);
+        ssend(source);
     }
 }
 
-void Mpi::sendC(const std::string *source, int64_t &mpiTime, bool calculateTime) {
+void Mpi::ssend(const std::string *source, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendC(source, mpiTime);
+        ssend(source, mpiTime);
     } else {
-        sendC(source);
+        ssend(source);
     }
 }
 
-// recvC
-void Mpi::recvC(int64_t *target, int64_t &mpiTime, bool calculateTime) {
+// srecv
+void Mpi::srecv(int64_t *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvC(target, mpiTime);
+        srecv(target, mpiTime);
     } else {
-        recvC(target);
+        srecv(target);
     }
 }
 
-void Mpi::recvC(bool *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::srecv(bool *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvC(target, mpiTime);
+        srecv(target, mpiTime);
     } else {
-        recvC(target);
+        srecv(target);
     }
 }
 
-void Mpi::recvC(std::string *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::srecv(std::string *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvC(target, mpiTime);
+        srecv(target, mpiTime);
     } else {
-        recvC(target);
+        srecv(target);
     }
 }
 
 // reconstruct (for transmission between <0 and 2> or <1 and 2>)
-void Mpi::sendTo(const int64_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::send(const int64_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendTo(source, receiverRank, mpiTime);
+        send(source, receiverRank, mpiTime);
     } else {
-        sendTo(source, receiverRank);
+        send(source, receiverRank);
     }
 }
 
-void Mpi::sendTo(const bool *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::send(const bool *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendTo(source, receiverRank, mpiTime);
+        send(source, receiverRank, mpiTime);
     } else {
-        sendTo(source, receiverRank);
+        send(source, receiverRank);
     }
 }
 
-void Mpi::sendTo(const std::string *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::send(const std::string *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendTo(source, receiverRank, mpiTime);
+        send(source, receiverRank, mpiTime);
     } else {
-        sendTo(source, receiverRank);
+        send(source, receiverRank);
     }
 }
 
-void Mpi::recvFrom(int64_t *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::recv(int64_t *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvFrom(target, senderRank, mpiTime);
+        recv(target, senderRank, mpiTime);
     } else {
-        recvFrom(target, senderRank);
+        recv(target, senderRank);
     }
 }
 
-void Mpi::recvFrom(bool *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::recv(bool *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvFrom(target, senderRank, mpiTime);
+        recv(target, senderRank, mpiTime);
     } else {
-        recvFrom(target, senderRank);
+        recv(target, senderRank);
     }
 }
 
-void Mpi::recvFrom(std::string *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::recv(std::string *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvFrom(target, senderRank, mpiTime);
+        recv(target, senderRank, mpiTime);
     } else {
-        recvFrom(target, senderRank);
+        recv(target, senderRank);
     }
 }
 
-// exchangeC functions
-void Mpi::exchangeC(const int8_t *source, int8_t *target) {
-    sendC(source);
-    recvC(target);
+// sexch functions
+void Mpi::sexch(const int8_t *source, int8_t *target) {
+    ssend(source);
+    srecv(target);
 }
 
-void Mpi::exchangeC(const int8_t *source, int8_t *target, int64_t &mpiTime) {
+void Mpi::sexch(const int8_t *source, int8_t *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    exchangeC(source, target);
+    sexch(source, target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::exchangeC(const int8_t *source, int8_t *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::sexch(const int8_t *source, int8_t *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        exchangeC(source, target, mpiTime);
+        sexch(source, target, mpiTime);
     } else {
-        exchangeC(source, target);
+        sexch(source, target);
     }
 }
 
-// sendC functions
-void Mpi::sendC(const int8_t *source) {
-    sendTo(source, 1 - _mpiRank);
+// ssend functions
+void Mpi::ssend(const int8_t *source) {
+    send(source, 1 - _mpiRank);
 }
 
-void Mpi::sendC(const int8_t *source, int64_t &mpiTime) {
+void Mpi::ssend(const int8_t *source, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    sendC(source);
+    ssend(source);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::sendC(const int8_t *source, int64_t &mpiTime, bool calculateTime) {
+void Mpi::ssend(const int8_t *source, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendC(source, mpiTime);
+        ssend(source, mpiTime);
     } else {
-        sendC(source);
+        ssend(source);
     }
 }
 
-// recvC functions
-void Mpi::recvC(int8_t *target) {
-    recvFrom(target, 1 - _mpiRank);
+// srecv functions
+void Mpi::srecv(int8_t *target) {
+    recv(target, 1 - _mpiRank);
 }
 
-void Mpi::recvC(int8_t *target, int64_t &mpiTime) {
+void Mpi::srecv(int8_t *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recvC(target);
+    srecv(target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recvC(int8_t *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::srecv(int8_t *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvC(target, mpiTime);
+        srecv(target, mpiTime);
     } else {
-        recvC(target);
+        srecv(target);
     }
 }
 
-// sendTo functions
-void Mpi::sendTo(const int8_t *source, int receiverRank) {
+// send functions
+void Mpi::send(const int8_t *source, int receiverRank) {
     MPI_Send(source, 1, MPI_INT8_T, receiverRank, 0, MPI_COMM_WORLD);
 }
 
-void Mpi::sendTo(const int8_t *source, int receiverRank, int64_t &mpiTime) {
+void Mpi::send(const int8_t *source, int receiverRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    sendTo(source, receiverRank);
+    send(source, receiverRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::sendTo(const int8_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::send(const int8_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendTo(source, receiverRank, mpiTime);
+        send(source, receiverRank, mpiTime);
     } else {
-        sendTo(source, receiverRank);
+        send(source, receiverRank);
     }
 }
 
-// recvFrom functions
-void Mpi::recvFrom(int8_t *target, int senderRank) {
+// recv functions
+void Mpi::recv(int8_t *target, int senderRank) {
     MPI_Recv(target, 1, MPI_INT8_T, senderRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
 
-void Mpi::recvFrom(int8_t *target, int senderRank, int64_t &mpiTime) {
+void Mpi::recv(int8_t *target, int senderRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recvFrom(target, senderRank);
+    recv(target, senderRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recvFrom(int8_t *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::recv(int8_t *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvFrom(target, senderRank, mpiTime);
+        recv(target, senderRank, mpiTime);
     } else {
-        recvFrom(target, senderRank);
+        recv(target, senderRank);
     }
 }
 
-// exchangeC functions
-void Mpi::exchangeC(const int16_t *source, int16_t *target) {
-    sendC(source);
-    recvC(target);
+// sexch functions
+void Mpi::sexch(const int16_t *source, int16_t *target) {
+    ssend(source);
+    srecv(target);
 }
 
-void Mpi::exchangeC(const int16_t *source, int16_t *target, int64_t &mpiTime) {
+void Mpi::sexch(const int16_t *source, int16_t *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    exchangeC(source, target);
+    sexch(source, target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::exchangeC(const int16_t *source, int16_t *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::sexch(const int16_t *source, int16_t *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        exchangeC(source, target, mpiTime);
+        sexch(source, target, mpiTime);
     } else {
-        exchangeC(source, target);
+        sexch(source, target);
     }
 }
 
-// sendC functions
-void Mpi::sendC(const int16_t *source) {
-    sendTo(source, 1 - _mpiRank);
+// ssend functions
+void Mpi::ssend(const int16_t *source) {
+    send(source, 1 - _mpiRank);
 }
 
-void Mpi::sendC(const int16_t *source, int64_t &mpiTime) {
+void Mpi::ssend(const int16_t *source, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    sendC(source);
+    ssend(source);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::sendC(const int16_t *source, int64_t &mpiTime, bool calculateTime) {
+void Mpi::ssend(const int16_t *source, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendC(source, mpiTime);
+        ssend(source, mpiTime);
     } else {
-        sendC(source);
+        ssend(source);
     }
 }
 
-// recvC functions
-void Mpi::recvC(int16_t *target) {
-    recvFrom(target, 1 - _mpiRank);
+// srecv functions
+void Mpi::srecv(int16_t *target) {
+    recv(target, 1 - _mpiRank);
 }
 
-void Mpi::recvC(int16_t *target, int64_t &mpiTime) {
+void Mpi::srecv(int16_t *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recvC(target);
+    srecv(target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recvC(int16_t *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::srecv(int16_t *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvC(target, mpiTime);
+        srecv(target, mpiTime);
     } else {
-        recvC(target);
+        srecv(target);
     }
 }
 
-// sendTo functions
-void Mpi::sendTo(const int16_t *source, int receiverRank) {
+// send functions
+void Mpi::send(const int16_t *source, int receiverRank) {
     MPI_Send(source, 1, MPI_INT16_T, receiverRank, 0, MPI_COMM_WORLD);
 }
 
-void Mpi::sendTo(const int16_t *source, int receiverRank, int64_t &mpiTime) {
+void Mpi::send(const int16_t *source, int receiverRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    sendTo(source, receiverRank);
+    send(source, receiverRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::sendTo(const int16_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::send(const int16_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendTo(source, receiverRank, mpiTime);
+        send(source, receiverRank, mpiTime);
     } else {
-        sendTo(source, receiverRank);
+        send(source, receiverRank);
     }
 }
 
-// recvFrom functions
-void Mpi::recvFrom(int16_t *target, int senderRank) {
+// recv functions
+void Mpi::recv(int16_t *target, int senderRank) {
     MPI_Recv(target, 1, MPI_INT16_T, senderRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
 
-void Mpi::recvFrom(int16_t *target, int senderRank, int64_t &mpiTime) {
+void Mpi::recv(int16_t *target, int senderRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recvFrom(target, senderRank);
+    recv(target, senderRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recvFrom(int16_t *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::recv(int16_t *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvFrom(target, senderRank, mpiTime);
+        recv(target, senderRank, mpiTime);
     } else {
-        recvFrom(target, senderRank);
+        recv(target, senderRank);
     }
 }
 
-// exchangeC functions
-void Mpi::exchangeC(const int32_t *source, int32_t *target) {
-    sendC(source);
-    recvC(target);
+// sexch functions
+void Mpi::sexch(const int32_t *source, int32_t *target) {
+    ssend(source);
+    srecv(target);
 }
 
-void Mpi::exchangeC(const int32_t *source, int32_t *target, int64_t &mpiTime) {
+void Mpi::sexch(const int32_t *source, int32_t *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    exchangeC(source, target);
+    sexch(source, target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::exchangeC(const int32_t *source, int32_t *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::sexch(const int32_t *source, int32_t *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        exchangeC(source, target, mpiTime);
+        sexch(source, target, mpiTime);
     } else {
-        exchangeC(source, target);
+        sexch(source, target);
     }
 }
 
-// sendC functions
-void Mpi::sendC(const int32_t *source) {
-    sendTo(source, 1 - _mpiRank);
+// ssend functions
+void Mpi::ssend(const int32_t *source) {
+    send(source, 1 - _mpiRank);
 }
 
-void Mpi::sendC(const int32_t *source, int64_t &mpiTime) {
+void Mpi::ssend(const int32_t *source, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    sendC(source);
+    ssend(source);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::sendC(const int32_t *source, int64_t &mpiTime, bool calculateTime) {
+void Mpi::ssend(const int32_t *source, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendC(source, mpiTime);
+        ssend(source, mpiTime);
     } else {
-        sendC(source);
+        ssend(source);
     }
 }
 
-// recvC functions
-void Mpi::recvC(int32_t *target) {
-    recvFrom(target, 1 - _mpiRank);
+// srecv functions
+void Mpi::srecv(int32_t *target) {
+    recv(target, 1 - _mpiRank);
 }
 
-void Mpi::recvC(int32_t *target, int64_t &mpiTime) {
+void Mpi::srecv(int32_t *target, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recvC(target);
+    srecv(target);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recvC(int32_t *target, int64_t &mpiTime, bool calculateTime) {
+void Mpi::srecv(int32_t *target, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvC(target, mpiTime);
+        srecv(target, mpiTime);
     } else {
-        recvC(target);
+        srecv(target);
     }
 }
 
-// sendTo functions
-void Mpi::sendTo(const int32_t *source, int receiverRank) {
+// send functions
+void Mpi::send(const int32_t *source, int receiverRank) {
     MPI_Send(source, 1, MPI_INT32_T, receiverRank, 0, MPI_COMM_WORLD);
 }
 
-void Mpi::sendTo(const int32_t *source, int receiverRank, int64_t &mpiTime) {
+void Mpi::send(const int32_t *source, int receiverRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    sendTo(source, receiverRank);
+    send(source, receiverRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::sendTo(const int32_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::send(const int32_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        sendTo(source, receiverRank, mpiTime);
+        send(source, receiverRank, mpiTime);
     } else {
-        sendTo(source, receiverRank);
+        send(source, receiverRank);
     }
 }
 
-// recvFrom functions
-void Mpi::recvFrom(int32_t *target, int senderRank) {
+// recv functions
+void Mpi::recv(int32_t *target, int senderRank) {
     MPI_Recv(target, 1, MPI_INT32_T, senderRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 }
 
-void Mpi::recvFrom(int32_t *target, int senderRank, int64_t &mpiTime) {
+void Mpi::recv(int32_t *target, int senderRank, int64_t &mpiTime) {
     int64_t start = System::currentTimeMillis();
-    recvFrom(target, senderRank);
+    recv(target, senderRank);
     int64_t end = System::currentTimeMillis();
     mpiTime += end - start;
 }
 
-void Mpi::recvFrom(int32_t *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
+void Mpi::recv(int32_t *target, int senderRank, int64_t &mpiTime, bool calculateTime) {
     if (calculateTime) {
-        recvFrom(target, senderRank, mpiTime);
+        recv(target, senderRank, mpiTime);
     } else {
-        recvFrom(target, senderRank);
+        recv(target, senderRank);
     }
 }

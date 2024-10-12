@@ -4,7 +4,7 @@
 
 #ifndef MPC_PACKAGE_RSAOTTRIPLEGENERATOR_H
 #define MPC_PACKAGE_RSAOTTRIPLEGENERATOR_H
-#include "Executor.h"
+#include "../Executor.h"
 #include "./AbstractMultiplicationTripleGenerator.h"
 #include <iostream>
 

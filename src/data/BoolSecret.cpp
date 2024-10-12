@@ -3,7 +3,7 @@
 //
 
 #include "data/BoolSecret.h"
-#include "share/boolean/BoolShareExecutor.h"
+#include "boolean/BoolShareExecutor.h"
 
 BoolSecret::BoolSecret(bool x) {
     _data = x;
@@ -14,7 +14,7 @@ BoolSecret BoolSecret::share() const {
 }
 
 BoolSecret BoolSecret::xor_(bool yi) const {
-    return BoolSecret(_data xor yi);
+    return BoolSecret(_data ^ yi);
 }
 
 BoolSecret BoolSecret::xor_(BoolSecret yi) const {
@@ -22,7 +22,7 @@ BoolSecret BoolSecret::xor_(BoolSecret yi) const {
 }
 
 BoolSecret BoolSecret::and_(bool yi) const {
-    return BoolSecret(_data and yi);
+    return BoolSecret(_data && yi);
 }
 
 BoolSecret BoolSecret::and_(BoolSecret yi) const {
@@ -42,7 +42,7 @@ BoolSecret BoolSecret::share(bool x) {
 }
 
 BoolSecret BoolSecret::xor_(bool xi, bool yi) {
-    return BoolSecret(xi xor yi);
+    return BoolSecret(xi ^ yi);
 }
 
 BoolSecret BoolSecret::xor_(BoolSecret xi, BoolSecret yi) {
@@ -50,7 +50,7 @@ BoolSecret BoolSecret::xor_(BoolSecret xi, BoolSecret yi) {
 }
 
 BoolSecret BoolSecret::and_(bool xi, bool yi) {
-    return BoolSecret(xi and yi);
+    return BoolSecret(xi && yi);
 }
 
 BoolSecret BoolSecret::and_(BoolSecret xi, BoolSecret yi) {

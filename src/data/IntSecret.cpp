@@ -3,8 +3,8 @@
 //
 
 #include "data/IntSecret.h"
-#include "share/arithmetic/IntShareExecutor.h"
-#include "share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h"
+#include "arithmetic/IntShareExecutor.h"
+#include "arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h"
 
 template<typename T>
 IntSecret<T>::IntSecret(T x) {
@@ -106,15 +106,15 @@ IntSecret<T> IntSecret<T>::sum(const std::vector<IntSecret<T>> &xis) {
 
 template<typename T>
 IntSecret<T> IntSecret<T>::sum(const std::vector<IntSecret<T>> &xis, const std::vector<IntSecret<T>> &yis) {
-    std::vector<T> xVals(xis.size());
+    std::vector<T> xs(xis.size());
     for (IntSecret<T> x: xis) {
-        xVals.push_back(x.get());
+        xs.push_back(x.get());
     }
-    std::vector<T> yVals(yis.size());
+    std::vector<T> ys(yis.size());
     for (IntSecret<T> y: yis) {
-        yVals.push_back(y.get());
+        ys.push_back(y.get());
     }
-    return sum(xVals, yVals);
+    return sum(xs, ys);
 }
 
 

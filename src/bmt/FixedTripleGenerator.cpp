@@ -14,9 +14,9 @@ FixedTripleGenerator<T> *FixedTripleGenerator<T>::execute(bool dummy) {
     int idx = 0;
     if (Mpi::rank() == 0) {
         idx = Math::rand32(0, 99);
-        Mpi::sendC(&idx);
+        Mpi::ssend(&idx);
     } else {
-        Mpi::recvC(&idx);
+        Mpi::srecv(&idx);
     }
     std::tuple<std::pair<T, T>, std::pair<T, T>, std::pair<T, T>> triple = getRandomTriple(
             idx);

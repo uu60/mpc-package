@@ -13,7 +13,7 @@
  */
 class Mpi {
 public:
-    static const int DATA_HOLDER_RANK;
+    static const int CLIENT_RANK;
 private:
     // mpi env init
     static bool _envInited;
@@ -29,109 +29,109 @@ public:
     static void init(int argc, char **argv);
     static void finalize();
     // judge identity
-    static bool isCalculator();
-    static bool isDataHolder();
+    static bool isServer();
+    static bool isClient();
 // exchange source (for rank of 0 and 1)
-    static void exchangeC(const int64_t *source, int64_t *target);
-    static void exchangeC(const int64_t *source, int64_t *target, int64_t &mpiTime);
-    static void exchangeC(const int64_t *source, int64_t *target, int64_t &mpiTime, bool calculateTime);
-    static void exchangeC(const bool *source, bool *target);
-    static void exchangeC(const bool *source, bool *target, int64_t &mpiTime);
-    static void exchangeC(const bool *source, bool *target, int64_t &mpiTime, bool calculateTime);
+    static void sexch(const int64_t *source, int64_t *target);
+    static void sexch(const int64_t *source, int64_t *target, int64_t &mpiTime);
+    static void sexch(const int64_t *source, int64_t *target, int64_t &mpiTime, bool calculateTime);
+    static void sexch(const bool *source, bool *target);
+    static void sexch(const bool *source, bool *target, int64_t &mpiTime);
+    static void sexch(const bool *source, bool *target, int64_t &mpiTime, bool calculateTime);
 
-// sendC
-    static void sendC(const int64_t *source);
-    static void sendC(const int64_t *source, int64_t &mpiTime);
-    static void sendC(const int64_t *source, int64_t &mpiTime, bool calculateTime);
-    static void sendC(const bool *source);
-    static void sendC(const bool *source, int64_t &mpiTime);
-    static void sendC(const bool *source, int64_t &mpiTime, bool calculateTime);
-    static void sendC(const std::string *source);
-    static void sendC(const std::string *source, int64_t &mpiTime);
-    static void sendC(const std::string *source, int64_t &mpiTime, bool calculateTime);
+// ssend
+    static void ssend(const int64_t *source);
+    static void ssend(const int64_t *source, int64_t &mpiTime);
+    static void ssend(const int64_t *source, int64_t &mpiTime, bool calculateTime);
+    static void ssend(const bool *source);
+    static void ssend(const bool *source, int64_t &mpiTime);
+    static void ssend(const bool *source, int64_t &mpiTime, bool calculateTime);
+    static void ssend(const std::string *source);
+    static void ssend(const std::string *source, int64_t &mpiTime);
+    static void ssend(const std::string *source, int64_t &mpiTime, bool calculateTime);
 
-// recvC
-    static void recvC(int64_t *target);
-    static void recvC(int64_t *target, int64_t &mpiTime);
-    static void recvC(int64_t *target, int64_t &mpiTime, bool calculateTime);
-    static void recvC(bool *target);
-    static void recvC(bool *target, int64_t &mpiTime);
-    static void recvC(bool *target, int64_t &mpiTime, bool calculateTime);
-    static void recvC(std::string *target);
-    static void recvC(std::string *target, int64_t &mpiTime);
-    static void recvC(std::string *target, int64_t &mpiTime, bool calculateTime);
+// srecv
+    static void srecv(int64_t *target);
+    static void srecv(int64_t *target, int64_t &mpiTime);
+    static void srecv(int64_t *target, int64_t &mpiTime, bool calculateTime);
+    static void srecv(bool *target);
+    static void srecv(bool *target, int64_t &mpiTime);
+    static void srecv(bool *target, int64_t &mpiTime, bool calculateTime);
+    static void srecv(std::string *target);
+    static void srecv(std::string *target, int64_t &mpiTime);
+    static void srecv(std::string *target, int64_t &mpiTime, bool calculateTime);
 
 // reconstruct (for transmission between <0 and 2> or <1 and 2>)
-    static void sendTo(const int64_t *source, int receiverRank);
-    static void sendTo(const int64_t *source, int receiverRank, int64_t &mpiTime);
-    static void sendTo(const int64_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
-    static void sendTo(const bool *source, int receiverRank);
-    static void sendTo(const bool *source, int receiverRank, int64_t &mpiTime);
-    static void sendTo(const bool *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
-    static void sendTo(const std::string *source, int receiverRank);
-    static void sendTo(const std::string *source, int receiverRank, int64_t &mpiTime);
-    static void sendTo(const std::string *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
-    static void recvFrom(int64_t *target, int senderRank);
-    static void recvFrom(int64_t *target, int senderRank, int64_t &mpiTime);
-    static void recvFrom(int64_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
-    static void recvFrom(bool *target, int senderRank);
-    static void recvFrom(bool *target, int senderRank, int64_t &mpiTime);
-    static void recvFrom(bool *target, int senderRank, int64_t &mpiTime, bool calculateTime);
-    static void recvFrom(std::string *target, int senderRank);
-    static void recvFrom(std::string *target, int senderRank, int64_t &mpiTime);
-    static void recvFrom(std::string *target, int senderRank, int64_t &mpiTime, bool calculateTime);
+    static void send(const int64_t *source, int receiverRank);
+    static void send(const int64_t *source, int receiverRank, int64_t &mpiTime);
+    static void send(const int64_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
+    static void send(const bool *source, int receiverRank);
+    static void send(const bool *source, int receiverRank, int64_t &mpiTime);
+    static void send(const bool *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
+    static void send(const std::string *source, int receiverRank);
+    static void send(const std::string *source, int receiverRank, int64_t &mpiTime);
+    static void send(const std::string *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
+    static void recv(int64_t *target, int senderRank);
+    static void recv(int64_t *target, int senderRank, int64_t &mpiTime);
+    static void recv(int64_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
+    static void recv(bool *target, int senderRank);
+    static void recv(bool *target, int senderRank, int64_t &mpiTime);
+    static void recv(bool *target, int senderRank, int64_t &mpiTime, bool calculateTime);
+    static void recv(std::string *target, int senderRank);
+    static void recv(std::string *target, int senderRank, int64_t &mpiTime);
+    static void recv(std::string *target, int senderRank, int64_t &mpiTime, bool calculateTime);
 
     // for int8
-    // exchangeC functions for int8_t
-    static void exchangeC(const int8_t *source, int8_t *target);
-    static void exchangeC(const int8_t *source, int8_t *target, int64_t &mpiTime);
-    static void exchangeC(const int8_t *source, int8_t *target, int64_t &mpiTime, bool calculateTime);
-    static void sendC(const int8_t *source);
-    static void sendC(const int8_t *source, int64_t &mpiTime);
-    static void sendC(const int8_t *source, int64_t &mpiTime, bool calculateTime);
-    static void recvC(int8_t *target);
-    static void recvC(int8_t *target, int64_t &mpiTime);
-    static void recvC(int8_t *target, int64_t &mpiTime, bool calculateTime);
-    static void sendTo(const int8_t *source, int receiverRank);
-    static void sendTo(const int8_t *source, int receiverRank, int64_t &mpiTime);
-    static void sendTo(const int8_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
-    static void recvFrom(int8_t *target, int senderRank);
-    static void recvFrom(int8_t *target, int senderRank, int64_t &mpiTime);
-    static void recvFrom(int8_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
+    // sexch functions for int8_t
+    static void sexch(const int8_t *source, int8_t *target);
+    static void sexch(const int8_t *source, int8_t *target, int64_t &mpiTime);
+    static void sexch(const int8_t *source, int8_t *target, int64_t &mpiTime, bool calculateTime);
+    static void ssend(const int8_t *source);
+    static void ssend(const int8_t *source, int64_t &mpiTime);
+    static void ssend(const int8_t *source, int64_t &mpiTime, bool calculateTime);
+    static void srecv(int8_t *target);
+    static void srecv(int8_t *target, int64_t &mpiTime);
+    static void srecv(int8_t *target, int64_t &mpiTime, bool calculateTime);
+    static void send(const int8_t *source, int receiverRank);
+    static void send(const int8_t *source, int receiverRank, int64_t &mpiTime);
+    static void send(const int8_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
+    static void recv(int8_t *target, int senderRank);
+    static void recv(int8_t *target, int senderRank, int64_t &mpiTime);
+    static void recv(int8_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
 
     // for int16
-    static void exchangeC(const int16_t *source, int16_t *target);
-    static void exchangeC(const int16_t *source, int16_t *target, int64_t &mpiTime);
-    static void exchangeC(const int16_t *source, int16_t *target, int64_t &mpiTime, bool calculateTime);
-    static void sendC(const int16_t *source);
-    static void sendC(const int16_t *source, int64_t &mpiTime);
-    static void sendC(const int16_t *source, int64_t &mpiTime, bool calculateTime);
-    static void recvC(int16_t *target);
-    static void recvC(int16_t *target, int64_t &mpiTime);
-    static void recvC(int16_t *target, int64_t &mpiTime, bool calculateTime);
-    static void sendTo(const int16_t *source, int receiverRank);
-    static void sendTo(const int16_t *source, int receiverRank, int64_t &mpiTime);
-    static void sendTo(const int16_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
-    static void recvFrom(int16_t *target, int senderRank);
-    static void recvFrom(int16_t *target, int senderRank, int64_t &mpiTime);
-    static void recvFrom(int16_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
+    static void sexch(const int16_t *source, int16_t *target);
+    static void sexch(const int16_t *source, int16_t *target, int64_t &mpiTime);
+    static void sexch(const int16_t *source, int16_t *target, int64_t &mpiTime, bool calculateTime);
+    static void ssend(const int16_t *source);
+    static void ssend(const int16_t *source, int64_t &mpiTime);
+    static void ssend(const int16_t *source, int64_t &mpiTime, bool calculateTime);
+    static void srecv(int16_t *target);
+    static void srecv(int16_t *target, int64_t &mpiTime);
+    static void srecv(int16_t *target, int64_t &mpiTime, bool calculateTime);
+    static void send(const int16_t *source, int receiverRank);
+    static void send(const int16_t *source, int receiverRank, int64_t &mpiTime);
+    static void send(const int16_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
+    static void recv(int16_t *target, int senderRank);
+    static void recv(int16_t *target, int senderRank, int64_t &mpiTime);
+    static void recv(int16_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
 
     // for int32
-    static void exchangeC(const int32_t *source, int32_t *target);
-    static void exchangeC(const int32_t *source, int32_t *target, int64_t &mpiTime);
-    static void exchangeC(const int32_t *source, int32_t *target, int64_t &mpiTime, bool calculateTime);
-    static void sendC(const int32_t *source);
-    static void sendC(const int32_t *source, int64_t &mpiTime);
-    static void sendC(const int32_t *source, int64_t &mpiTime, bool calculateTime);
-    static void recvC(int32_t *target);
-    static void recvC(int32_t *target, int64_t &mpiTime);
-    static void recvC(int32_t *target, int64_t &mpiTime, bool calculateTime);
-    static void sendTo(const int32_t *source, int receiverRank);
-    static void sendTo(const int32_t *source, int receiverRank, int64_t &mpiTime);
-    static void sendTo(const int32_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
-    static void recvFrom(int32_t *target, int senderRank);
-    static void recvFrom(int32_t *target, int senderRank, int64_t &mpiTime);
-    static void recvFrom(int32_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
+    static void sexch(const int32_t *source, int32_t *target);
+    static void sexch(const int32_t *source, int32_t *target, int64_t &mpiTime);
+    static void sexch(const int32_t *source, int32_t *target, int64_t &mpiTime, bool calculateTime);
+    static void ssend(const int32_t *source);
+    static void ssend(const int32_t *source, int64_t &mpiTime);
+    static void ssend(const int32_t *source, int64_t &mpiTime, bool calculateTime);
+    static void srecv(int32_t *target);
+    static void srecv(int32_t *target, int64_t &mpiTime);
+    static void srecv(int32_t *target, int64_t &mpiTime, bool calculateTime);
+    static void send(const int32_t *source, int receiverRank);
+    static void send(const int32_t *source, int receiverRank, int64_t &mpiTime);
+    static void send(const int32_t *source, int receiverRank, int64_t &mpiTime, bool calculateTime);
+    static void recv(int32_t *target, int senderRank);
+    static void recv(int32_t *target, int senderRank, int64_t &mpiTime);
+    static void recv(int32_t *target, int senderRank, int64_t &mpiTime, bool calculateTime);
 };
 
 

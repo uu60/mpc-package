@@ -13,10 +13,10 @@ add_library(${PROJECT_NAME} SHARED
         include/Executor.h
         src/utils/Log.cpp
         include/utils/Log.h
-        src/share/arithmetic/multiplication/AbstractMultiplicationShareExecutor.cpp
-        include/share/arithmetic/multiplication/AbstractMultiplicationShareExecutor.h
-        src/share/arithmetic/addition/AdditionShareExecutor.cpp
-        include/share/arithmetic/addition/AdditionShareExecutor.h
+        src/arithmetic/multiplication/AbstractMultiplicationShareExecutor.cpp
+        include/arithmetic/multiplication/AbstractMultiplicationShareExecutor.h
+        src/arithmetic/addition/AdditionShareExecutor.cpp
+        include/arithmetic/addition/AdditionShareExecutor.h
         src/ot/RsaOtExecutor.cpp
         include/ot/RsaOtExecutor.h
         src/utils/Mpi.cpp
@@ -25,30 +25,30 @@ add_library(${PROJECT_NAME} SHARED
         include/utils/Crypto.h
         src/utils/System.cpp
         include/utils/System.h
-        src/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.cpp
-        include/share/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
-        include/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.h
-        src/share/arithmetic/multiplication/FixedMultiplicationShareExecutor.cpp
-        src/share/boolean/xor/XorShareExecutor.cpp
-        include/share/boolean/xor/XorShareExecutor.h
-        src/share/boolean/and/AbstractAndShareExecutor.cpp
-        include/share/boolean/and/AbstractAndShareExecutor.h
+        src/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.cpp
+        include/arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h
+        include/arithmetic/multiplication/FixedMultiplicationShareExecutor.h
+        src/arithmetic/multiplication/FixedMultiplicationShareExecutor.cpp
+        src/boolean/xor/XorShareExecutor.cpp
+        include/boolean/xor/XorShareExecutor.h
+        src/boolean/and/AbstractAndShareExecutor.cpp
+        include/boolean/and/AbstractAndShareExecutor.h
         src/bmt/RsaOtTripleGenerator.cpp
         include/bmt/RsaOtTripleGenerator.h
         src/bmt/AbstractMultiplicationTripleGenerator.cpp
         include/bmt/AbstractMultiplicationTripleGenerator.h
         src/bmt/FixedTripleGenerator.cpp
         include/bmt/FixedTripleGenerator.h
-        src/share/boolean/and/RsaOtAndShareExecutor.cpp
-        include/share/boolean/and/RsaOtAndShareExecutor.h
-        src/share/boolean/and/FixedAndShareExecutor.cpp
-        include/share/boolean/and/FixedAndShareExecutor.h
-        src/share/comparison/ComparisonExecutor.cpp
-        include/share/comparison/ComparisonExecutor.h
-        src/share/arithmetic/IntShareExecutor.cpp
-        include/share/arithmetic/IntShareExecutor.h
-        src/share/boolean/BoolShareExecutor.cpp
-        include/share/boolean/BoolShareExecutor.h
+        src/boolean/and/RsaOtAndShareExecutor.cpp
+        include/boolean/and/RsaOtAndShareExecutor.h
+        src/boolean/and/FixedAndShareExecutor.cpp
+        include/boolean/and/FixedAndShareExecutor.h
+        src/comparison/ComparisonExecutor.cpp
+        include/comparison/ComparisonExecutor.h
+        src/arithmetic/IntShareExecutor.cpp
+        include/arithmetic/IntShareExecutor.h
+        src/boolean/BoolShareExecutor.cpp
+        include/boolean/BoolShareExecutor.h
         src/data/Secret.cpp
         include/data/Secret.h
         src/data/IntSecret.cpp

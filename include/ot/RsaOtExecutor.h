@@ -27,7 +27,7 @@ private:
     // params for sender
     std::string _rand0{};
     std::string _rand1{};
-    std::string _pri{};
+    std::string _pri;
     T _m0{};
     T _m1{};
 
@@ -36,7 +36,7 @@ private:
     int _i; // msg choice
 
     // params for both
-    std::string _pub{};
+    std::string _pub;
 
 public:
     // _m0 and _m1 are for sender (invalid for receiver)

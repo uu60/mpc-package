@@ -8,8 +8,16 @@
 #include <vector>
 #include <string>
 
+std::unordered_map<int, std::string> Crypto::_pubs = {};
+std::unordered_map<int, std::string> Crypto::_pris = {};
+
 // copilot
 void Crypto::generateRsaKeys(int bits, std::string &publicKey, std::string &privateKey) {
+    if (_pubs.count(bits) > 0) {
+        publicKey = _pubs[bits];
+        privateKey = _pris[bits];
+        return;
+    }
     EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr);
     EVP_PKEY *pkey = nullptr;
 
@@ -39,7 +47,8 @@ void Crypto::generateRsaKeys(int bits, std::string &publicKey, std::string &priv
 
     privateKey = std::string(pri_key);
     publicKey = std::string(pub_key);
-
+    _pubs[bits] = publicKey;
+    _pris[bits] = privateKey;
     EVP_PKEY_free(pkey);
     BIO_free_all(pub);
     BIO_free_all(pri);
