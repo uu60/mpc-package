@@ -10,6 +10,8 @@
 #include "./utils/System.h"
 #include "./utils/Log.h"
 
+using namespace std;
+
 template<typename T>
 class Executor {
 public:

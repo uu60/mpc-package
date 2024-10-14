@@ -65,7 +65,6 @@ void AbstractMultiplicationShareExecutor<T>::process(bool reconstruct) {
     }
 }
 
-template class AbstractMultiplicationShareExecutor<bool>;
 template class AbstractMultiplicationShareExecutor<int8_t>;
 template class AbstractMultiplicationShareExecutor<int16_t>;
 template class AbstractMultiplicationShareExecutor<int32_t>;

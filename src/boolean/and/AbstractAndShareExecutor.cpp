@@ -41,10 +41,6 @@ AbstractAndShareExecutor* AbstractAndShareExecutor::execute(bool reconstruct) {
     return this;
 }
 
-std::string AbstractAndShareExecutor::tag() const {
-    return "[And Boolean Share]";
-}
-
 void AbstractAndShareExecutor::process(bool reconstruct) {
     /*
      * For variable name description, please refer to

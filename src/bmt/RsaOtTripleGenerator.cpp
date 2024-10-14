@@ -12,8 +12,15 @@ RsaOtTripleGenerator<T>::RsaOtTripleGenerator() = default;
 
 template<typename T>
 void RsaOtTripleGenerator<T>::generateRandomAB() {
-    this->_ai = Math::ring(Math::rand64(), this->_l);
-    this->_bi = Math::ring(Math::rand64(), this->_l);
+    if (_boolType) {
+        this->_ai = Math::rand32(0, 1);
+        this->_bi = Math::rand32(0, 1);
+        Log::i("ai: " + to_string(this->_ai) + " bi: " + to_string(this->_bi));
+        return;
+    }
+    this->_ai = Math::rand64();
+    this->_bi = Math::rand64();
+    Log::i("ai: " + to_string(this->_ai) + " bi: " + to_string(this->_bi));
 }
 
 template<typename T>
@@ -28,7 +35,10 @@ void RsaOtTripleGenerator<T>::computeV() {
 
 template<typename T>
 T RsaOtTripleGenerator<T>::corr(int i, T x) const {
-    return Math::ring((this->_ai << i) - x, this->_l);
+    if (_boolType) {
+        return ((this->_ai << i) - x) & 1;
+    }
+    return (this->_ai << i) - x;
 }
 
 template<typename T>
@@ -39,17 +49,24 @@ void RsaOtTripleGenerator<T>::computeMix(int sender, T &mix) {
         T s0 = 0, s1 = 0;
         int choice = 0;
         if (isSender) {
-            s0 = Math::ring(Math::rand64(), this->_l);
+            s0 = _boolType ? Math::rand32(0, 1) : Math::rand64();
             s1 = corr(i, s0);
         } else {
             choice = (int) ((this->_bi >> i) & 1);
         }
-        RsaOtExecutor r(sender, s0, s1, choice);
+        RsaOtExecutor<T> r(sender, s0, s1, choice);
         r.logBenchmark(false);
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
             r.benchmark(Executor<T>::BenchmarkLevel::DETAILED);
         }
         r.execute(false);
+        if (isSender) {
+            Log::i("sender: s0: " + to_string(s0) + " s1: " + to_string(s1));
+        } else {
+            Log::i("recver: choice: " + to_string(choice) + " get: " + to_string(r.result()));
+        }
+
+
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
             // add mpi time
             this->_mpiTime += r.mpiTime();
@@ -59,21 +76,26 @@ void RsaOtTripleGenerator<T>::computeMix(int sender, T &mix) {
             _otRsaDecryptionTime += r.rsaDecryptionTime();
             _otEntireComputationTime += r.entireComputationTime();
         }
+
         if (isSender) {
-            sum += s0;
+            sum = _boolType ? sum ^ s0 : sum + s0;
         } else {
             T temp = r.result();
             if (choice == 0) {
-                temp = -r.result();
+                temp = _boolType ? temp : -temp;
             }
-            sum += temp;
+            sum = _boolType ? sum ^ temp : sum + temp;
         }
     }
-    mix = Math::ring(sum, this->_l);
+    mix = sum;
 }
 
 template<typename T>
 void RsaOtTripleGenerator<T>::computeC() {
+    if (_boolType) {
+        this->_ci = this->_ai & this->_bi ^ this->_ui ^ this->_vi;
+        return;
+    }
     this->_ci = this->_ai * this->_bi + this->_ui + this->_vi;
 }
 

@@ -6,6 +6,7 @@
 #include "boolean/and/RsaOtAndShareExecutor.h"
 #include "utils/Mpi.h"
 #include "utils/Math.h"
+#include <vector>
 
 template<typename T>
 ComparisonExecutor<T>::ComparisonExecutor(T x, T y) : IntShareExecutor<T>(x, y) {
@@ -33,21 +34,24 @@ template<typename T>
 ComparisonExecutor<T> *ComparisonExecutor<T>::convertZToBoolShare() {
     // bitwise separate zi
     // zi is xor shared into zi_i and zi_o
+//    Log::i("zi = " + std::to_string(this->_zi));
     T zi_i = Math::rand64();
     T zi_o = zi_i ^ this->_zi;
     bool carry_i = false;
-    for (int i = 0; i < sizeof(this->_zi) * 8; i++) {
-        bool ai = (zi_i >> i) & 1;
-        bool ao = (zi_o >> i) & 1;
-        bool bi;
-        Mpi::sexch(&ao, &bi, this->_mpiTime);
+//    std::vector<int> ais, bis;
+
+    for (int i = 0; i < this->_l; i++) {
+        bool ai, ao, bi, bo;
+        bool *self_i = Mpi::rank() == 0 ? &ai : &bi;
+        bool *self_o = Mpi::rank() == 0 ? &ao : &bo;
+        bool *other_i = Mpi::rank() == 0 ? &bi : &ai;
+        *self_i = (zi_i >> i) & 1;
+        *self_o = (zi_o >> i) & 1;
+        Mpi::sexch(self_o, other_i, this->_mpiTime);
         this->_cvtZ += ((ai ^ bi) ^ carry_i) << i;
 
-        bool *actualAi = Mpi::rank() == 0 ? &ai : &bi;
-        bool *actualBi = Mpi::rank() == 0 ? &bi : &ai;
-
         // Compute carry_i
-        bool generate_i = RsaOtAndShareExecutor(*actualAi, *actualBi, false).execute(false)->zi();
+        bool generate_i = RsaOtAndShareExecutor(ai, bi, false).execute(false)->zi();
         bool propagate_i = ai ^ bi;
         bool tempCarry_i = RsaOtAndShareExecutor(propagate_i, carry_i, false).execute(false)->zi();
         bool sum_i = generate_i ^ tempCarry_i;
@@ -78,7 +82,6 @@ std::string ComparisonExecutor<T>::tag() const {
     return "[Comparison]";
 }
 
-template class ComparisonExecutor<bool>;
 template class ComparisonExecutor<int8_t>;
 template class ComparisonExecutor<int16_t>;
 template class ComparisonExecutor<int32_t>;

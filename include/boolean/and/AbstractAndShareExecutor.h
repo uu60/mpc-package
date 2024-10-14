@@ -19,7 +19,6 @@ public:
     AbstractAndShareExecutor* execute(bool reconstruct) override;
 protected:
     virtual void obtainMultiplicationTriple() = 0;
-    [[nodiscard]] std::string tag() const override;
 private:
     void process(bool reconstruct);
 };

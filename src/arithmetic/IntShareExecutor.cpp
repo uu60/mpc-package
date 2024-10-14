@@ -15,8 +15,8 @@ IntShareExecutor<T>::IntShareExecutor(T x) {
     bool detailed = this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED;
     // distribute operator
     if (Mpi::isClient()) {
-        T x1 = Math::ring(Math::rand64(), this->_l);
-        T x0 = Math::ring(x - x1, this->_l);
+        T x1 = Math::rand64();
+        T x0 = x - x1;
         Mpi::send(&x0, 0, this->_mpiTime, detailed);
         Mpi::send(&x1, 1, this->_mpiTime, detailed);
     } else {
@@ -29,10 +29,10 @@ IntShareExecutor<T>::IntShareExecutor(T x, T y) {
     bool detailed = this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED;
     // distribute operator
     if (Mpi::isClient()) {
-        T x1 = Math::ring(Math::rand64(), this->_l);
-        T x0 = Math::ring(x - x1, this->_l);
-        T y1 = Math::ring(Math::rand64(), this->_l);
-        T y0 = Math::ring(y - y1, this->_l);
+        T x1 = Math::rand64();
+        T x0 = x - x1;
+        T y1 = Math::rand64();
+        T y0 = y - y1;
         Mpi::send(&x0, 0, this->_mpiTime, detailed);
         Mpi::send(&y0, 0, this->_mpiTime, detailed);
         Mpi::send(&x1, 1, this->_mpiTime, detailed);
@@ -77,16 +77,13 @@ IntShareExecutor<T> *IntShareExecutor<T>::reconstruct() {
     if (Mpi::isServer()) {
         Mpi::send(&_zi, Mpi::CLIENT_RANK, this->_mpiTime, detailed);
     } else {
-        int64_t z0, z1;
+        T z0, z1;
         Mpi::recv(&z0, 0, this->_mpiTime, detailed);
         Mpi::recv(&z1, 1, this->_mpiTime, detailed);
         this->_result = z0 + z1;
     }
     return this;
 }
-
-template
-class IntShareExecutor<bool>;
 
 template
 class IntShareExecutor<int8_t>;

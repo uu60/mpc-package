@@ -30,7 +30,6 @@ std::string FixedMultiplicationShareExecutor<T>::tag() const {
     return "[Fixed Multiplication Share]";
 }
 
-template class FixedMultiplicationShareExecutor<bool>;
 template class FixedMultiplicationShareExecutor<int8_t>;
 template class FixedMultiplicationShareExecutor<int16_t>;
 template class FixedMultiplicationShareExecutor<int32_t>;

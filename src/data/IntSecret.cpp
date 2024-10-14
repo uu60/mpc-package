@@ -28,22 +28,22 @@ IntSecret<T> IntSecret<T>::multiply(T yi) const {
 
 template<typename T>
 IntSecret<T> IntSecret<T>::share() const {
-    return IntSecret(IntShareExecutor(_data).xi());
+    return IntSecret<T>(IntShareExecutor<T>(_data).xi());
 }
 
 template<typename T>
 IntSecret<T> IntSecret<T>::reconstruct() const {
-    return IntSecret(IntShareExecutor(0).zi(_data)->reconstruct()->result());
+    return IntSecret<T>(IntShareExecutor<T>(0).zi(_data)->reconstruct()->result());
 }
 
 template<typename T>
 IntSecret<T> IntSecret<T>::share(T x) {
-    return IntSecret(IntShareExecutor(x).xi());
+    return IntSecret<T>(IntShareExecutor<T>(x).xi());
 }
 
 template<typename T>
 IntSecret<T> IntSecret<T>::multiply(T xi, T yi) {
-    return IntSecret(RsaOtMultiplicationShareExecutor(xi, yi, false).execute(false)->result());
+    return IntSecret<T>(RsaOtMultiplicationShareExecutor<T>(xi, yi, false).execute(false)->result());
 }
 
 template<typename T>
@@ -144,9 +144,6 @@ IntSecret<T> IntSecret<T>::dot(const std::vector<T> &xis, const std::vector<T> &
     }
     return ret;
 }
-
-template
-class IntSecret<bool>;
 
 template
 class IntSecret<int8_t>;

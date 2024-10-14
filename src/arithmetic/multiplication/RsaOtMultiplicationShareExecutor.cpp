@@ -38,7 +38,6 @@ std::string RsaOtMultiplicationShareExecutor<T>::tag() const {
     return "[RSA OT Multiplication Share]";
 }
 
-template class RsaOtMultiplicationShareExecutor<bool>;
 template class RsaOtMultiplicationShareExecutor<int8_t>;
 template class RsaOtMultiplicationShareExecutor<int16_t>;
 template class RsaOtMultiplicationShareExecutor<int32_t>;

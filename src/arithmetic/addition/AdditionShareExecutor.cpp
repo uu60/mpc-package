@@ -65,7 +65,6 @@ std::string AdditionShareExecutor<T>::tag() const {
     return "[Addition Share]";
 }
 
-template class AdditionShareExecutor<bool>;
 template class AdditionShareExecutor<int8_t>;
 template class AdditionShareExecutor<int16_t>;
 template class AdditionShareExecutor<int32_t>;
