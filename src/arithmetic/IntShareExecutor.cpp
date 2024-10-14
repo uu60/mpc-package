@@ -3,6 +3,7 @@
 //
 
 #include "arithmetic/IntShareExecutor.h"
+#include "boolean/and/RsaOtAndShareExecutor.h"
 #include "utils/Mpi.h"
 #include "utils/Math.h"
 #include <vector>
@@ -83,6 +84,43 @@ IntShareExecutor<T> *IntShareExecutor<T>::reconstruct() {
         this->_result = z0 + z1;
     }
     return this;
+}
+
+template<typename T>
+IntShareExecutor<T> *IntShareExecutor<T>::convertToBool() {
+    // bitwise separate zi
+    // zi is xor shared into zi_i and zi_o
+    T zi_i = Math::rand64();
+    T zi_o = zi_i ^ this->_zi;
+    this->_zi = 0;
+    bool carry_i = false;
+
+    for (int i = 0; i < this->_l; i++) {
+        bool ai, ao, bi, bo;
+        bool *self_i = Mpi::rank() == 0 ? &ai : &bi;
+        bool *self_o = Mpi::rank() == 0 ? &ao : &bo;
+        bool *other_i = Mpi::rank() == 0 ? &bi : &ai;
+        *self_i = (zi_i >> i) & 1;
+        *self_o = (zi_o >> i) & 1;
+        Mpi::sexch(self_o, other_i, this->_mpiTime);
+        this->_zi += ((ai ^ bi) ^ carry_i) << i;
+
+        // Compute carry_i
+        bool generate_i = RsaOtAndShareExecutor(ai, bi, false).execute(false)->zi();
+        bool propagate_i = ai ^ bi;
+        bool tempCarry_i = RsaOtAndShareExecutor(propagate_i, carry_i, false).execute(false)->zi();
+        bool sum_i = generate_i ^ tempCarry_i;
+        bool and_i = RsaOtAndShareExecutor(generate_i, tempCarry_i, false).execute(false)->zi();
+
+        carry_i = sum_i ^ and_i;
+    }
+
+    return this;
+}
+
+template<typename T>
+T IntShareExecutor<T>::zi() {
+    return _zi;
 }
 
 template

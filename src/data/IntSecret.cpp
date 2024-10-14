@@ -5,6 +5,7 @@
 #include "data/IntSecret.h"
 #include "arithmetic/IntShareExecutor.h"
 #include "arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h"
+#include "comparison/ComparisonExecutor.h"
 
 template<typename T>
 IntSecret<T>::IntSecret(T x) {
@@ -143,6 +144,21 @@ IntSecret<T> IntSecret<T>::dot(const std::vector<T> &xis, const std::vector<T> &
         ret = ret.add(IntSecret<T>(xis[i]).multiply(yis[i]));
     }
     return ret;
+}
+
+template<typename T>
+IntSecret<T> IntSecret<T>::convertToBool() const {
+    return IntSecret<T>(IntShareExecutor<T>().zi(_data)->convertToBool()->zi());
+}
+
+template<typename T>
+BoolSecret IntSecret<T>::compare(T yi) const {
+    return BoolSecret(ComparisonExecutor<T>(_data, yi, false).execute(false)->sign());
+}
+
+template<typename T>
+BoolSecret IntSecret<T>::compare(IntSecret<T> yi) const {
+    return compare(yi.get());
 }
 
 template

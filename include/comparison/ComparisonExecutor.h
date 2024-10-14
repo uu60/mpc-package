@@ -10,7 +10,6 @@
 template<typename T>
 class ComparisonExecutor : public IntShareExecutor<T> {
 private:
-    T _cvtZ{};
     bool _sign{};
 public:
     ComparisonExecutor(T x, T y);
@@ -23,9 +22,7 @@ public:
 
     [[nodiscard]] std::string tag() const override;
 
-private:
-    ComparisonExecutor *convertZToBoolShare();
+    bool sign();
 };
-
 
 #endif //MPC_PACKAGE_COMPARISONEXECUTOR_H

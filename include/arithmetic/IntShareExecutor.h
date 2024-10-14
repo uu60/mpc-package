@@ -18,6 +18,8 @@ public:
 
     IntShareExecutor *zi(T zi);
 
+    T zi();
+
 public:
     IntShareExecutor();
 
@@ -33,6 +35,8 @@ public:
     IntShareExecutor *execute(bool reconstruct) override;
 
     [[nodiscard]] std::string tag() const override;
+
+    virtual IntShareExecutor *convertToBool();
 };
 
 

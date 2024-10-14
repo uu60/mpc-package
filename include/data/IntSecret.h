@@ -6,6 +6,7 @@
 #define MPC_PACKAGE_INTSECRET_H
 #include "./Secret.h"
 #include "../utils/Mpi.h"
+#include "./BoolSecret.h"
 #include <vector>
 
 template<typename T>
@@ -21,6 +22,9 @@ public:
     [[nodiscard]] IntSecret<T> multiply(T yi) const;
     [[nodiscard]] IntSecret<T> multiply(IntSecret<T> yi) const;
     [[nodiscard]] IntSecret<T> reconstruct() const;
+    [[nodiscard]] IntSecret<T> convertToBool() const;
+    [[nodiscard]] BoolSecret compare(T yi) const;
+    [[nodiscard]] BoolSecret compare(IntSecret<T> yi) const;
     [[nodiscard]] T get() const;
 
     // static methods for multiple usage
@@ -39,6 +43,5 @@ public:
     static IntSecret<T> dot(const std::vector<T>& xis, const std::vector<T>& yis);
     static IntSecret<T> dot(const std::vector<IntSecret<T>>& xis, const std::vector<IntSecret<T>>& yis);
 };
-
 
 #endif //MPC_PACKAGE_INTSECRET_H
