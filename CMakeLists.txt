@@ -49,12 +49,12 @@ add_library(${PROJECT_NAME} SHARED
         include/arithmetic/IntShareExecutor.h
         src/boolean/BoolShareExecutor.cpp
         include/boolean/BoolShareExecutor.h
-        src/data/Secret.cpp
-        include/data/Secret.h
-        src/data/IntSecret.cpp
-        include/data/IntSecret.h
-        src/data/BoolSecret.cpp
-        include/data/BoolSecret.h
+        src/api/Secret.cpp
+        include/api/Secret.h
+        src/api/IntSecret.cpp
+        include/api/IntSecret.h
+        src/api/BoolSecret.cpp
+        include/api/BoolSecret.h
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

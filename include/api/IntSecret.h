@@ -23,6 +23,7 @@ public:
     [[nodiscard]] IntSecret<T> multiply(IntSecret<T> yi) const;
     [[nodiscard]] IntSecret<T> reconstruct() const;
     [[nodiscard]] IntSecret<T> convertToBool() const;
+    [[nodiscard]] IntSecret<T> convertToArithmetic() const;
     [[nodiscard]] BoolSecret compare(T yi) const;
     [[nodiscard]] BoolSecret compare(IntSecret<T> yi) const;
     [[nodiscard]] T get() const;

@@ -88,7 +88,7 @@ IntShareExecutor<T> *IntShareExecutor<T>::reconstruct() {
 }
 
 template<typename T>
-IntShareExecutor<T> *IntShareExecutor<T>::convertZiBool() {
+IntShareExecutor<T> *IntShareExecutor<T>::convertZiToBool() {
     if (Mpi::isServer()) {
         // bitwise separate zi
         // zi is xor shared into zi_i and zi_o
@@ -122,7 +122,7 @@ IntShareExecutor<T> *IntShareExecutor<T>::convertZiBool() {
 }
 
 template<typename T>
-IntShareExecutor<T> *IntShareExecutor<T>::convertZiArithmetic() {
+IntShareExecutor<T> *IntShareExecutor<T>::convertZiToArithmetic() {
     if (Mpi::isServer()) {
         int sender = 0;
         T xa = 0;

@@ -2,7 +2,7 @@
 // Created by 杜建璋 on 2024/9/12.
 //
 
-#include "data/IntSecret.h"
+#include "api/IntSecret.h"
 #include "arithmetic/IntShareExecutor.h"
 #include "arithmetic/multiplication/RsaOtMultiplicationShareExecutor.h"
 #include "comparison/ComparisonExecutor.h"
@@ -148,7 +148,12 @@ IntSecret<T> IntSecret<T>::dot(const std::vector<T> &xis, const std::vector<T> &
 
 template<typename T>
 IntSecret<T> IntSecret<T>::convertToBool() const {
-    return IntSecret<T>(IntShareExecutor<T>().zi(_data)->convertZiBool()->zi());
+    return IntSecret<T>(IntShareExecutor<T>().zi(_data)->convertZiToBool()->zi());
+}
+
+template<typename T>
+IntSecret<T> IntSecret<T>::convertToArithmetic() const {
+    return IntSecret<T>(IntShareExecutor<T>().zi(_data)->convertZiToArithmetic()->zi());
 }
 
 template<typename T>

@@ -36,9 +36,9 @@ public:
 
     [[nodiscard]] std::string tag() const override;
 
-    IntShareExecutor *convertZiBool();
+    IntShareExecutor *convertZiToBool();
 
-    IntShareExecutor *convertZiArithmetic();
+    IntShareExecutor *convertZiToArithmetic();
 };
 
 

@@ -18,7 +18,7 @@ ComparisonExecutor<T>::ComparisonExecutor(T xi, T yi, bool dummy) : IntShareExec
 template<typename T>
 ComparisonExecutor<T> *ComparisonExecutor<T>::execute(bool reconstruct) {
     if (Mpi::isServer()) {
-        this->convertZiBool();
+        this->convertZiToBool();
         this->_sign = this->_zi < 0;
     }
     if (reconstruct) {
