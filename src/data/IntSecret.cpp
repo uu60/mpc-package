@@ -148,7 +148,7 @@ IntSecret<T> IntSecret<T>::dot(const std::vector<T> &xis, const std::vector<T> &
 
 template<typename T>
 IntSecret<T> IntSecret<T>::convertToBool() const {
-    return IntSecret<T>(IntShareExecutor<T>().zi(_data)->convertToBool()->zi());
+    return IntSecret<T>(IntShareExecutor<T>().zi(_data)->convertZiBool()->zi());
 }
 
 template<typename T>

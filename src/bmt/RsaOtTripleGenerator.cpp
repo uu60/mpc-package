@@ -15,12 +15,10 @@ void RsaOtTripleGenerator<T>::generateRandomAB() {
     if (_boolType) {
         this->_ai = Math::rand32(0, 1);
         this->_bi = Math::rand32(0, 1);
-        Log::i("ai: " + to_string(this->_ai) + " bi: " + to_string(this->_bi));
         return;
     }
     this->_ai = Math::rand64();
     this->_bi = Math::rand64();
-    Log::i("ai: " + to_string(this->_ai) + " bi: " + to_string(this->_bi));
 }
 
 template<typename T>
@@ -60,12 +58,6 @@ void RsaOtTripleGenerator<T>::computeMix(int sender, T &mix) {
             r.benchmark(Executor<T>::BenchmarkLevel::DETAILED);
         }
         r.execute(false);
-        if (isSender) {
-            Log::i("sender: s0: " + to_string(s0) + " s1: " + to_string(s1));
-        } else {
-            Log::i("recver: choice: " + to_string(choice) + " get: " + to_string(r.result()));
-        }
-
 
         if (this->_benchmarkLevel == Executor<T>::BenchmarkLevel::DETAILED) {
             // add mpi time
