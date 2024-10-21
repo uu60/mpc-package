@@ -18,14 +18,12 @@ void Crypto::generateRsaKeys(int bits, std::string &publicKey, std::string &priv
         privateKey = _pris[bits];
         return;
     }
+
     EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr);
     EVP_PKEY *pkey = nullptr;
-
-    if (!ctx || EVP_PKEY_keygen_init(ctx) <= 0 || EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, bits) <= 0 || EVP_PKEY_keygen(ctx, &pkey) <= 0) {
-        // Handle errors
-        if (ctx) EVP_PKEY_CTX_free(ctx);
-        return;
-    }
+    EVP_PKEY_keygen_init(ctx);
+    EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, bits);
+    EVP_PKEY_keygen(ctx, &pkey);
 
     BIO *pri = BIO_new(BIO_s_mem());
     BIO *pub = BIO_new(BIO_s_mem());
@@ -62,46 +60,17 @@ std::string Crypto::rsaEncrypt(const std::string &data, const std::string &publi
     EVP_PKEY_CTX *ctx = nullptr;
     BIO *keybio = BIO_new_mem_buf((void *)publicKey.c_str(), -1);
     pkey = PEM_read_bio_PUBKEY(keybio, nullptr, nullptr, nullptr);
-
-    if (!pkey) {
-        BIO_free(keybio);
-        throw std::runtime_error("Failed to read public key");
-    }
-
     ctx = EVP_PKEY_CTX_new(pkey, nullptr);
-    if (!ctx) {
-        EVP_PKEY_free(pkey);
-        BIO_free(keybio);
-        throw std::runtime_error("Failed to create context");
-    }
-
-    if (EVP_PKEY_encrypt_init(ctx) <= 0) {
-        EVP_PKEY_CTX_free(ctx);
-        EVP_PKEY_free(pkey);
-        BIO_free(keybio);
-        throw std::runtime_error("Failed to initialize encryption");
-    }
+    EVP_PKEY_encrypt_init(ctx);
 
     size_t outlen;
-    if (EVP_PKEY_encrypt(ctx, nullptr, &outlen, (unsigned char *)data.c_str(), data.size()) <= 0) {
-        EVP_PKEY_CTX_free(ctx);
-        EVP_PKEY_free(pkey);
-        BIO_free(keybio);
-        throw std::runtime_error("Failed to determine buffer length");
-    }
-
+    EVP_PKEY_encrypt(ctx, nullptr, &outlen, (unsigned char *)data.c_str(), data.size());
     std::vector<unsigned char> outbuf(outlen);
-    if (EVP_PKEY_encrypt(ctx, outbuf.data(), &outlen, (unsigned char *)data.c_str(), data.size()) <= 0) {
-        EVP_PKEY_CTX_free(ctx);
-        EVP_PKEY_free(pkey);
-        BIO_free(keybio);
-        throw std::runtime_error("Encryption failed");
-    }
+    EVP_PKEY_encrypt(ctx, outbuf.data(), &outlen, (unsigned char *)data.c_str(), data.size());
 
     EVP_PKEY_CTX_free(ctx);
     EVP_PKEY_free(pkey);
     BIO_free(keybio);
-
     return std::string(outbuf.begin(), outbuf.end());
 }
 
@@ -111,42 +80,13 @@ std::string Crypto::rsaDecrypt(const std::string &encryptedData, const std::stri
     EVP_PKEY_CTX *ctx = nullptr;
     BIO *keybio = BIO_new_mem_buf((void *)privateKey.c_str(), -1);
     pkey = PEM_read_bio_PrivateKey(keybio, nullptr, nullptr, nullptr);
-
-    if (!pkey) {
-        BIO_free(keybio);
-        throw std::runtime_error("Failed to read private key");
-    }
-
     ctx = EVP_PKEY_CTX_new(pkey, nullptr);
-    if (!ctx) {
-        EVP_PKEY_free(pkey);
-        BIO_free(keybio);
-        throw std::runtime_error("Failed to create context");
-    }
-
-    if (EVP_PKEY_decrypt_init(ctx) <= 0) {
-        EVP_PKEY_CTX_free(ctx);
-        EVP_PKEY_free(pkey);
-        BIO_free(keybio);
-        throw std::runtime_error("Failed to initialize decryption");
-    }
+    EVP_PKEY_decrypt_init(ctx);
 
     size_t outlen;
-    if (EVP_PKEY_decrypt(ctx, nullptr, &outlen, (unsigned char *)encryptedData.c_str(), encryptedData.size()) <= 0) {
-        EVP_PKEY_CTX_free(ctx);
-        EVP_PKEY_free(pkey);
-        BIO_free(keybio);
-        throw std::runtime_error("Failed to determine buffer length");
-    }
-
+    EVP_PKEY_decrypt(ctx, nullptr, &outlen, (unsigned char *)encryptedData.c_str(), encryptedData.size());
     std::string decryptedStr(outlen, '\0');
-    if (EVP_PKEY_decrypt(ctx, (unsigned char *)decryptedStr.data(), &outlen, (unsigned char *)encryptedData.c_str(), encryptedData.size()) <= 0) {
-        EVP_PKEY_CTX_free(ctx);
-        EVP_PKEY_free(pkey);
-        BIO_free(keybio);
-        throw std::runtime_error("Decryption failed");
-    }
-
+    EVP_PKEY_decrypt(ctx, (unsigned char *)decryptedStr.data(), &outlen, (unsigned char *)encryptedData.c_str(), encryptedData.size());
     decryptedStr.resize(outlen);
 
     EVP_PKEY_CTX_free(ctx);
