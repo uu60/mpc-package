@@ -3,7 +3,9 @@
 
 #include <vector>
 #include <array>
+#include <atomic>
 #include <cstdint>
+#include <future>
 
 #include "./item/Bmt.h"
 #include "./item/SRot.h"
@@ -26,6 +28,9 @@ private:
 public:
     inline static std::vector<AbstractBlockingQueue<Bmt> *> _bmtQs;
     inline static std::vector<AbstractBlockingQueue<BitwiseBmt> *> _bitwiseBmtQs;
+    inline static std::vector<std::future<void> > _generatorFutures;
+    inline static std::atomic<int64_t> _arithBmtsConsumed{0};
+    inline static std::atomic<int64_t> _bitwiseBmtsConsumed{0};
 
     inline static Bmt _fixedBmt;
     inline static BitwiseBmt _fixedBitwiseBmt;
@@ -71,6 +76,10 @@ public:
     static std::vector<Bmt> pollBmts(int count, int width);
 
     static std::vector<BitwiseBmt> pollBitwiseBmts(int count, int width);
+
+    static int64_t arithBmtInventory();
+
+    static int64_t bitwiseBmtInventory();
 };
 
 

@@ -8,6 +8,7 @@
 #include "intermediate/BmtGenerator.h"
 #include "intermediate/BitwiseBmtBatchGenerator.h"
 #include "intermediate/BitwiseBmtGenerator.h"
+#include "intermediate/IntermediateDataSupport.h"
 #include "accelerate/SimdSupport.h"
 
 #include <chrono>
@@ -74,6 +75,10 @@ public:
     explicit Timer(std::string workload) : _workload(std::move(workload)) {
         Comm::barrier();
         _bmtStartedMillis = bmtMillis();
+        _arithBmtInitialInventory = IntermediateDataSupport::arithBmtInventory();
+        _bitwiseBmtInitialInventory = IntermediateDataSupport::bitwiseBmtInventory();
+        _arithBmtsConsumed = IntermediateDataSupport::_arithBmtsConsumed.load(std::memory_order_relaxed);
+        _bitwiseBmtsConsumed = IntermediateDataSupport::_bitwiseBmtsConsumed.load(std::memory_order_relaxed);
         _started = Clock::now();
     }
 
@@ -102,6 +107,12 @@ public:
                   << "\"rank\":" << Comm::rank() << ','
                   << "\"elapsed_seconds\":" << std::fixed << std::setprecision(9) << seconds << ','
                   << "\"bmt_generator_accumulated_seconds\":" << bmtSeconds << ','
+                  << "\"arith_bmt_initial_inventory\":" << _arithBmtInitialInventory << ','
+                  << "\"bitwise_bmt_initial_inventory\":" << _bitwiseBmtInitialInventory << ','
+                  << "\"arith_bmts_consumed\":"
+                  << IntermediateDataSupport::_arithBmtsConsumed.load(std::memory_order_relaxed) - _arithBmtsConsumed << ','
+                  << "\"bitwise_bmts_consumed\":"
+                  << IntermediateDataSupport::_bitwiseBmtsConsumed.load(std::memory_order_relaxed) - _bitwiseBmtsConsumed << ','
                   << "\"output_rows\":" << outputRows << ','
                   << "\"workload_seed\":" << workloadSeed() << ','
                   << "\"simd_enabled\":" << (Conf::ENABLE_SIMD ? "true" : "false") << ','
@@ -115,6 +126,10 @@ private:
     std::string _workload;
     Clock::time_point _started{};
     int64_t _bmtStartedMillis{0};
+    int64_t _arithBmtInitialInventory{0};
+    int64_t _bitwiseBmtInitialInventory{0};
+    int64_t _arithBmtsConsumed{0};
+    int64_t _bitwiseBmtsConsumed{0};
     bool _finished{false};
 
     static int64_t bmtMillis() {
