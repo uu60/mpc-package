@@ -70,6 +70,14 @@ pgrep -af '[m]pirun|[b]enchmark_|artifact/run.py|/exp_[1-8] ' || true
 ./artifact/run.sh smoke --skip-build
 ```
 
+To apply the same eight expected-result checks to Background BMT generation, use a small bounded
+queue suitable for correctness testing:
+
+```bash
+./artifact/run.sh smoke --skip-build \
+  --bmt-method=bmt_background --max-bmts=10000
+```
+
 For a clean end-to-end evaluation, `run_all.sh` includes doctor and smoke before the fixed
 paper-scale performance workflows:
 
@@ -148,9 +156,9 @@ hostname is intentional and no rankfile or hostfile is required. Missing ORQ/SEC
 scope warning, not an environment failure.
 
 Smoke is a functional-correctness check, not a benchmark. Its summary contains only per-experiment
-pass/fail status and the communication backend. It does not report elapsed time, throughput, output
-size, or any other performance measurement. Wall-clock measurements are collected only by the
-Figure/Table performance commands below.
+pass/fail status, the communication backend, and the selected BMT method/capacity. It does not report
+elapsed time, throughput, output size, or any other performance measurement. Wall-clock measurements
+are collected only by the Figure/Table performance commands below.
 
 ### 4. Run one paper-scale two-node workload
 

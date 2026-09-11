@@ -1159,7 +1159,10 @@ def run_smoke(args: argparse.Namespace) -> int:
     verify_command = [
         str(REPO_ROOT / "db" / "exp" / "correctness" / "verify_all.sh"),
         f"--comm={args.comm}", f"--timeout={args.timeout}",
+        f"--bmt-method={args.bmt_method}",
     ]
+    if args.max_bmts is not None:
+        verify_command.append(f"--max-bmts={args.max_bmts}")
     if args.comm == "mpi":
         verify_command.append(f"--mpirun={args.mpirun}")
         verify_command.extend(f"--mpi-arg={value}" for value in args.mpi_arg)
@@ -1171,7 +1174,7 @@ def run_smoke(args: argparse.Namespace) -> int:
     passed = sorted({int(value) for value in re.findall(r"^PASS exp_(\d+) \[(?:tcp|mpi)\]$", verify["output"], re.MULTILINE)})
     missing = sorted(set(EXPECTED_SMOKE_IDS) - set(passed))
     succeeded = verify["return_code"] == 0 and not missing
-    summary = correctness_summary(passed, missing, args.comm)
+    summary = correctness_summary(passed, missing, args.comm, args.bmt_method, args.max_bmts)
     write_json(output_dir / "summary" / "smoke.json", summary)
     manifest.update({"status": summary["status"], "completed_at": utc_now(), "summary": "summary/smoke.json"})
     write_json(output_dir / "manifest.json", manifest)
@@ -1179,7 +1182,10 @@ def run_smoke(args: argparse.Namespace) -> int:
     return 0 if succeeded else 1
 
 
-def correctness_summary(passed: list[int], missing: list[int], comm: str) -> dict[str, Any]:
+def correctness_summary(
+    passed: list[int], missing: list[int], comm: str,
+    bmt_method: str = "bmt_jit", max_bmts: int | None = None,
+) -> dict[str, Any]:
     """Return pass/fail evidence without exposing correctness runs as benchmarks."""
     passed_set = set(passed)
     return {
@@ -1188,6 +1194,8 @@ def correctness_summary(passed: list[int], missing: list[int], comm: str) -> dic
         "evaluation_mode": "functional_correctness_only",
         "status": "passed" if not missing and len(passed_set) == len(EXPECTED_SMOKE_IDS) else "failed",
         "comm": comm,
+        "bmt_method": bmt_method,
+        "max_bmts": max_bmts,
         "passed_count": len(passed_set),
         "total_checks": len(EXPECTED_SMOKE_IDS),
         "checks": [
@@ -1347,6 +1355,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Repeat to replace the default AWS MPI host, mapping, and binding arguments.",
     )
     smoke.add_argument("--timeout", type=float, default=90)
+    smoke.add_argument(
+        "--bmt-method", choices=("bmt_jit", "bmt_background"), default="bmt_jit",
+        help="BMT acquisition strategy used by all eight correctness checks.",
+    )
+    smoke.add_argument(
+        "--max-bmts", type=int,
+        help="Optional per-queue BMT capacity; the configured default is used when omitted.",
+    )
     smoke.add_argument("--build-mode", choices=("O2", "O3"), default="O3")
     smoke.add_argument("--simd-target", choices=("portable", "native", "avx512"), default="native")
     smoke.add_argument("--output-dir")
@@ -1405,6 +1421,8 @@ def validate_args(args: argparse.Namespace) -> None:
         args.timeout = PAPER_TIMEOUT_SECONDS
     if getattr(args, "timeout", 1) <= 0:
         raise ValueError("--timeout must be positive")
+    if getattr(args, "max_bmts", None) is not None and args.max_bmts <= 0:
+        raise ValueError("--max-bmts must be positive")
     if hasattr(args, "mpi_arg") and args.comm == "mpi" and not args.mpi_arg:
         args.mpi_arg = list(DEFAULT_MPI_ARGS)
 

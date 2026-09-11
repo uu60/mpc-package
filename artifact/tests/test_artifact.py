@@ -118,6 +118,14 @@ class ArtifactTests(unittest.TestCase):
             "--host", "parsec0,parsec1,parsec0",
         ])
 
+    def test_smoke_accepts_background_bmt_correctness_mode(self) -> None:
+        args = build_parser().parse_args([
+            "smoke", "--skip-build", "--bmt-method=bmt_background", "--max-bmts=10000",
+        ])
+        validate_args(args)
+        self.assertEqual(args.bmt_method, "bmt_background")
+        self.assertEqual(args.max_bmts, 10000)
+
     def test_mpi_is_the_default_for_all_executable_workflows(self) -> None:
         parser = build_parser()
         commands = [
